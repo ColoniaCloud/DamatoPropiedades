@@ -1,0 +1,92 @@
+"use client";
+
+import { useEffect } from "react";
+import Link from "next/link";
+import { X, Phone, Mail } from "lucide-react";
+import { cn } from "@/lib/utils";
+
+interface MobileMenuProps {
+  open: boolean;
+  onClose: () => void;
+  links: Array<{ href: string; label: string }>;
+}
+
+export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
+  useEffect(() => {
+    if (open) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "";
+    }
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [open]);
+
+  return (
+    <>
+      {/* Backdrop */}
+      <div
+        className={cn(
+          "fixed inset-0 z-50 bg-black/60 transition-opacity duration-300 md:hidden",
+          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+        )}
+        onClick={onClose}
+      />
+
+      {/* Drawer */}
+      <div
+        className={cn(
+          "fixed top-0 right-0 bottom-0 z-50 w-[85vw] max-w-sm bg-[#0c1b2e] flex flex-col transition-transform duration-300 ease-out md:hidden",
+          open ? "translate-x-0" : "translate-x-full"
+        )}
+      >
+        {/* Header */}
+        <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
+          <span className="font-display text-white font-bold text-lg">
+            D&apos;Amato Propiedades
+          </span>
+          <button
+            onClick={onClose}
+            aria-label="Cerrar menú"
+            className="p-2 text-white/70 hover:text-white"
+          >
+            <X className="w-6 h-6" />
+          </button>
+        </div>
+
+        {/* Nav links */}
+        <nav className="flex-1 overflow-y-auto px-6 py-8 flex flex-col gap-2">
+          {links.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              onClick={onClose}
+              className="text-white/90 hover:text-[#e8b931] font-medium text-lg py-3 border-b border-white/10 transition-colors"
+            >
+              {link.label}
+            </Link>
+          ))}
+        </nav>
+
+        {/* Contact info */}
+        <div className="px-6 py-6 border-t border-white/10 space-y-3">
+          <a
+            href="tel:01120052222"
+            className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
+          >
+            <Phone className="w-5 h-5 text-[#e8b931]" />
+            <span className="text-sm">011 2005-2222</span>
+          </a>
+          <a
+            href="mailto:contacto@damatopropiedades.com.ar"
+            className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
+          >
+            <Mail className="w-5 h-5 text-[#e8b931]" />
+            <span className="text-sm">contacto@damatopropiedades.com.ar</span>
+          </a>
+        </div>
+      </div>
+    </>
+  );
+}
