@@ -1,6 +1,6 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
-import type { Property, PropertyOperation } from "./types";
+import type { Property, PropertyOperation, Development } from "./types";
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -87,4 +87,31 @@ export function getNeighborhood(property: Property): string {
 export function truncate(text: string, length: number): string {
   if (text.length <= length) return text;
   return text.substring(0, length).trim() + "…";
+}
+
+export function getDevelopmentPath(development: Development): string {
+  return `/emprendimientos/${development.id}/${slugify(development.name)}`;
+}
+
+export function formatConstructionDate(dateStr: string): string {
+  if (!dateStr) return "A confirmar";
+  const months = [
+    "Enero","Febrero","Marzo","Abril","Mayo","Junio",
+    "Julio","Agosto","Septiembre","Octubre","Noviembre","Diciembre",
+  ];
+  const [year, month] = dateStr.split("-");
+  const idx = parseInt(month, 10) - 1;
+  return `${months[idx] ?? ""} ${year}`;
+}
+
+const CONSTRUCTION_STATUS: Record<number, { label: string; color: string }> = {
+  1: { label: "En pozo", color: "bg-gray-400" },
+  2: { label: "En pozo avanzado", color: "bg-[#00b4d8]/60" },
+  3: { label: "En construcción", color: "bg-[#00b4d8]" },
+  4: { label: "Construcción avanzada", color: "bg-[#1a5fb4]" },
+  5: { label: "Terminado", color: "bg-[#10b981]" },
+};
+
+export function getConstructionStatusInfo(status: number): { label: string; color: string } {
+  return CONSTRUCTION_STATUS[status] ?? { label: "Sin estado", color: "bg-gray-300" };
 }

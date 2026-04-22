@@ -4,9 +4,9 @@ import PropertyGrid from "@/components/property/PropertyGrid";
 import { searchProperties } from "@/lib/tokko";
 
 export const metadata: Metadata = {
-  title: "Alquiler Temporario en Buenos Aires | D'Amato Propiedades",
+  title: "Alquiler Temporario en Villa Devoto y General San Martín | D'Amato Propiedades",
   description:
-    "Propiedades en alquiler temporario en Buenos Aires. Departamentos, casas y PH disponibles por temporada. D'Amato Propiedades.",
+    "Propiedades en alquiler temporario en Villa Devoto y General San Martín. Departamentos, casas y PH disponibles por temporada.",
 };
 
 export const revalidate = 300;
@@ -25,8 +25,8 @@ export default async function AlquilerTemporarioPage() {
   }
 
   return (
-    <div className="min-h-screen pt-20">
-      <div className="bg-[#0c1b2e] py-10 px-4 sm:px-6">
+    <div className="min-h-screen">
+      <div className="bg-[#0c1b2e] pt-28 pb-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
             Alquiler Temporario

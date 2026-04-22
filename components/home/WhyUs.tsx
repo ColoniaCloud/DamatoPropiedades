@@ -5,7 +5,7 @@ const FEATURES = [
     icon: ShieldCheck,
     title: "Experiencia comprobada",
     description:
-      "Más de 20 años en el mercado inmobiliario de Buenos Aires respaldan cada operación.",
+      "Más de 35 años en construcción e intermediación inmobiliaria en Villa Devoto y General San Martín.",
   },
   {
     icon: Users,

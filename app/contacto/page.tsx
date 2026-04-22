@@ -36,11 +36,11 @@ const CONTACT_INFO = [
 
 export default function ContactPage() {
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen">
       {/* Header */}
-      <div className="bg-[#0c1b2e] py-12 px-4 sm:px-6">
+      <div className="bg-[#0c1b2e] pt-28 pb-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
-          <span className="text-[#e8b931] text-sm font-semibold uppercase tracking-widest">
+          <span className="text-[#00b4d8] text-sm font-semibold uppercase tracking-widest">
             Estamos para ayudarte
           </span>
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white mt-2">

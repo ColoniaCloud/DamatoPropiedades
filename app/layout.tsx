@@ -2,15 +2,16 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
+import WhatsAppFloat from "@/components/contact/WhatsAppFloat";
 import { Toaster } from "sonner";
 
 export const metadata: Metadata = {
   title: {
     template: "%s | D'Amato Propiedades",
-    default: "D'Amato Propiedades — Inmobiliaria en Buenos Aires",
+    default: "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín",
   },
   description:
-    "Encontrá tu próxima propiedad en Buenos Aires con D'Amato Propiedades. Departamentos, casas, PH, locales en venta y alquiler.",
+    "Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades en Villa Devoto, CABA y General San Martín. D'Amato Propiedades.",
   metadataBase: new URL(
     process.env.NEXT_PUBLIC_SITE_URL || "https://damatopropiedades.com.ar"
   ),
@@ -39,6 +40,7 @@ export default function RootLayout({
         <Header />
         <main className="flex-1">{children}</main>
         <Footer />
+        <WhatsAppFloat />
         <Toaster richColors position="top-right" />
       </body>
     </html>

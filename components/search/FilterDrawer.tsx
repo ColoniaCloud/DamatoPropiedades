@@ -68,7 +68,7 @@ export default function FilterDrawer() {
         <SlidersHorizontal className="w-4 h-4" />
         Filtrar
         {activeCount > 0 && (
-          <span className="bg-[#e8b931] text-[#1a1a2e] rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold">
+          <span className="bg-[#00b4d8] text-[#1a1a2e] rounded-full w-5 h-5 text-xs flex items-center justify-center font-bold">
             {activeCount}
           </span>
         )}
