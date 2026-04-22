@@ -2,6 +2,7 @@
 
 import { useEffect } from "react";
 import Link from "next/link";
+import Image from "next/image";
 import { X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -43,9 +44,13 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
       >
         {/* Header */}
         <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
-          <span className="font-display text-white font-bold text-lg">
-            D&apos;Amato Propiedades
-          </span>
+          <Image
+            src="/logos/logo-h.png"
+            alt="D'Amato Propiedades"
+            width={160}
+            height={40}
+            className="h-8 w-auto object-contain brightness-0 invert"
+          />
           <button
             onClick={onClose}
             aria-label="Cerrar menú"
@@ -62,7 +67,7 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
               key={link.href}
               href={link.href}
               onClick={onClose}
-              className="text-white/90 hover:text-[#e8b931] font-medium text-lg py-3 border-b border-white/10 transition-colors"
+              className="text-white/90 hover:text-[#00b4d8] font-medium text-lg py-3 border-b border-white/10 transition-colors"
             >
               {link.label}
             </Link>
@@ -75,14 +80,14 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
             href="tel:01120052222"
             className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
           >
-            <Phone className="w-5 h-5 text-[#e8b931]" />
+            <Phone className="w-5 h-5 text-[#00b4d8]" />
             <span className="text-sm">011 2005-2222</span>
           </a>
           <a
             href="mailto:contacto@damatopropiedades.com.ar"
             className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
           >
-            <Mail className="w-5 h-5 text-[#e8b931]" />
+            <Mail className="w-5 h-5 text-[#00b4d8]" />
             <span className="text-sm">contacto@damatopropiedades.com.ar</span>
           </a>
         </div>

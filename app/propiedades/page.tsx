@@ -8,9 +8,9 @@ import { searchProperties } from "@/lib/tokko";
 import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Propiedades en Venta y Alquiler en Buenos Aires",
+  title: "Propiedades en Venta y Alquiler — Villa Devoto y General San Martín",
   description:
-    "Buscá entre cientos de propiedades en venta y alquiler en Buenos Aires. Filtrá por tipo, precio y ambientes.",
+    "Buscá propiedades en venta y alquiler en Villa Devoto, CABA y General San Martín. Filtrá por tipo, precio y ambientes.",
 };
 
 export const revalidate = 300;
@@ -108,9 +108,9 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
   const title = buildTitle(params);
 
   return (
-    <div className="min-h-screen pt-20">
+    <div className="min-h-screen">
       {/* Page header */}
-      <div className="bg-[#0c1b2e] py-10 px-4 sm:px-6">
+      <div className="bg-[#0c1b2e] pt-28 pb-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
             {title}

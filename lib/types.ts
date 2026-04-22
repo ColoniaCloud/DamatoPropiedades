@@ -86,6 +86,46 @@ export interface Property {
   deleted_at: string | null;
   branch: Branch;
   producer: Producer | null;
+  development?: { id: number; name: string } | null;
+}
+
+export interface Development {
+  id: number;
+  name: string;
+  publication_title: string;
+  description: string;
+  address: string;
+  fake_address: string;
+  type: { code: string; id: number; name: string };
+  construction_status: number;
+  construction_date: string;
+  display_on_web: boolean;
+  is_starred_on_web: boolean;
+  geo_lat: number;
+  geo_long: number;
+  location: {
+    divisions: { id: number; name: string }[];
+    full_location: string;
+  };
+  photos: { description: string | null; image: string }[];
+  videos: unknown[];
+  tags: { id: number; name: string; type: number }[];
+  files: unknown[];
+  reference_code: string;
+  financing_details: string;
+  users_in_charge: {
+    cellphone: string;
+    email: string;
+    id: number;
+    name: string;
+  };
+  branch: {
+    display_name: string;
+    email: string;
+    phone: string;
+    phone_area: string;
+  };
+  deleted_at: string | null;
 }
 
 export interface TokkoMeta {
@@ -99,6 +139,11 @@ export interface TokkoMeta {
 export interface TokkoPropertyList {
   meta: TokkoMeta;
   objects: Property[];
+}
+
+export interface TokkoDevelopmentList {
+  meta: TokkoMeta;
+  objects: Development[];
 }
 
 export interface SearchFilters {

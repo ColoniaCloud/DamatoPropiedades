@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!propType) return {};
   return {
     title: `${propType.name}s en Venta en Buenos Aires | D'Amato Propiedades`,
-    description: `Encontrá ${propType.name.toLowerCase()}s en venta en Buenos Aires. Amplio catálogo de ${propType.name.toLowerCase()}s con todos los detalles y fotos.`,
+    description: `Encontrá ${propType.name.toLowerCase()}s en venta en Villa Devoto y General San Martín. Amplio catálogo con todos los detalles y fotos.`,
   };
 }
 
@@ -48,8 +48,8 @@ export default async function VentaTipoPage({ params }: PageProps) {
   }
 
   return (
-    <div className="min-h-screen pt-20">
-      <div className="bg-[#0c1b2e] py-10 px-4 sm:px-6">
+    <div className="min-h-screen">
+      <div className="bg-[#0c1b2e] pt-28 pb-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <nav className="text-sm text-white/50 mb-3">
             <a href="/" className="hover:text-white/80">Inicio</a>

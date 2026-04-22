@@ -266,9 +266,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     lng={property.geo_long}
                     address={property.fake_address}
                   />
-                  <p className="text-xs text-[#5a5a6e] mt-2">
-                    La ubicación es aproximada para preservar la privacidad.
-                  </p>
                 </div>
               )}
 

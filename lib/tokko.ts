@@ -1,4 +1,4 @@
-import type { TokkoPropertyList, Property, ContactPayload } from "./types";
+import type { TokkoPropertyList, TokkoDevelopmentList, Property, Development, ContactPayload } from "./types";
 
 const API_BASE = "https://www.tokkobroker.com/api/v1";
 const API_KEY = process.env.TOKKO_API_KEY!;
@@ -135,6 +135,29 @@ export async function getSimilarProperties(
   } catch {
     return [];
   }
+}
+
+export async function getDevelopments(): Promise<Development[]> {
+  const url = `${API_BASE}/development/?format=json&key=${API_KEY}&lang=es_ar&display_on_web=true`;
+  const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+  if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
+  const data: TokkoDevelopmentList = await res.json();
+  return data.objects ?? [];
+}
+
+export async function getDevelopment(id: number | string): Promise<Development> {
+  const url = `${API_BASE}/development/${id}/?format=json&key=${API_KEY}&lang=es_ar`;
+  const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+  if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
+  return res.json();
+}
+
+export async function getPropertiesByDevelopment(developmentId: number): Promise<Property[]> {
+  const url = `${API_BASE}/property/?format=json&key=${API_KEY}&lang=es_ar&development__isnull=false`;
+  const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+  if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
+  const data: TokkoPropertyList = await res.json();
+  return (data.objects ?? []).filter((p) => p.development?.id === developmentId);
 }
 
 export async function sendContact(payload: ContactPayload): Promise<{ success: boolean }> {
