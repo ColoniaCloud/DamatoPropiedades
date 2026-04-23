@@ -1,6 +1,6 @@
 import type { TokkoPropertyList, TokkoDevelopmentList, Property, Development, ContactPayload } from "./types";
 
-const API_BASE = "https://www.tokkobroker.com/api/v1";
+const API_BASE = "http://www.tokkobroker.com/api/v1";
 const API_KEY = process.env.TOKKO_API_KEY!;
 
 const REVALIDATE = 300;
@@ -138,7 +138,7 @@ export async function getSimilarProperties(
 }
 
 export async function getDevelopments(): Promise<Development[]> {
-  const url = `${API_BASE}/development/?format=json&key=${API_KEY}&lang=es_ar&display_on_web=true`;
+  const url = `${API_BASE}/development/?format=json&key=${API_KEY}&lang=es_ar`;
   const res = await fetch(url, { next: { revalidate: REVALIDATE } });
   if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
   const data: TokkoDevelopmentList = await res.json();

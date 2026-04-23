@@ -3,6 +3,7 @@ import type { Property, Development } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Hero from "@/components/home/Hero";
+import TaglineBanner from "@/components/home/TaglineBanner";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
 import WhyUs from "@/components/home/WhyUs";
 import Emprendimientos from "@/components/home/Emprendimientos";
@@ -37,6 +38,7 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+      <TaglineBanner />
       <FeaturedProperties properties={featuredProperties} />
       <Emprendimientos developments={developments} />
       <WhyUs />
