@@ -33,12 +33,26 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
       title: `${property.publication_title} | D'Amato Propiedades`,
       description: `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}m². ` : ""}D'Amato Propiedades.`,
       openGraph: {
-        images: property.photos?.[0]?.image ? [property.photos[0].image] : [],
+        images: property.photos?.[0]?.image ? [property.photos[0].image] : ["/hero-nosotros.jpg"],
         type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: property.photos?.[0]?.image ? [property.photos[0].image] : ["/hero-nosotros.jpg"],
       },
     };
   } catch {
-    return { title: "Propiedad | D'Amato Propiedades" };
+    return {
+      title: "Propiedad | D'Amato Propiedades",
+      openGraph: {
+        images: ["/hero-nosotros.jpg"],
+        type: "website",
+      },
+      twitter: {
+        card: "summary_large_image",
+        images: ["/hero-nosotros.jpg"],
+      },
+    };
   }
 }
 
