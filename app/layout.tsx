@@ -1,16 +1,16 @@
 import type { Metadata } from "next";
-import { Epilogue, Poppins } from "next/font/google";
+import { Montserrat, Poppins } from "next/font/google";
 import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/contact/WhatsAppFloat";
 import { Toaster } from "sonner";
 
-const epilogue = Epilogue({
+const montserrat = Montserrat({
   subsets: ["latin"],
   weight: ["300", "400", "500", "600", "700"],
   style: ["normal", "italic"],
-  variable: "--font-epilogue",
+  variable: "--font-montserrat",
   display: "swap",
 });
 
@@ -51,7 +51,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="es-AR" className={`h-full antialiased ${epilogue.variable} ${poppins.variable}`}>
+    <html lang="es-AR" className={`h-full antialiased ${montserrat.variable} ${poppins.variable}`}>
       <body className="min-h-full flex flex-col bg-[#fafbfc]">
         <Header />
         <main className="flex-1">{children}</main>

@@ -14,6 +14,7 @@ const CONTACT_INFO = [
     icon: MapPin,
     label: "Dirección",
     value: "Av. Francisco Beiro 4701, CABA",
+    href: "https://maps.google.com/?q=Av.+Francisco+Beiro+4701,+CABA,+Argentina",
   },
   {
     icon: Phone,

@@ -17,6 +17,7 @@ export default function Hero() {
   const [typeId, setTypeId] = useState("");
   const [typeOpen, setTypeOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
@@ -26,6 +27,12 @@ export default function Hero() {
     }
     document.addEventListener("mousedown", onClickOutside);
     return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
+
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    video.play().catch(() => {});
   }, []);
 
   function handleSearch() {
@@ -41,13 +48,14 @@ export default function Hero() {
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
       {/* Background video */}
       <video
+        ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
         src="https://res.cloudinary.com/deelc02ob/video/upload/q_auto/f_auto/v1776909598/15443517_3840_2160_25fps_xprrb6.mp4"
         autoPlay
         loop
         muted
         playsInline
-        preload="none"
+        preload="auto"
       />
       <div className="absolute inset-0 bg-gradient-to-b from-[#0c1b2e]/70 via-[#0c1b2e]/60 to-[#0c1b2e]/80" />
 

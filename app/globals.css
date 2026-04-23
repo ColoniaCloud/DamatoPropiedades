@@ -39,7 +39,7 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-epilogue), system-ui, sans-serif;
+  --font-sans: var(--font-montserrat), system-ui, sans-serif;
   --font-display: var(--font-poppins), system-ui, sans-serif;
 }
 
@@ -54,7 +54,7 @@ html {
 body {
   background: var(--color-bg-primary);
   color: var(--color-text-primary);
-  font-family: var(--font-epilogue), system-ui, sans-serif;
+  font-family: var(--font-montserrat), system-ui, sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 }
@@ -71,7 +71,7 @@ body {
   }
 
   p, button, a, input, select, textarea, label, nav, li {
-    font-family: var(--font-epilogue), system-ui, sans-serif;
+    font-family: var(--font-montserrat), system-ui, sans-serif;
   }
 }
 
