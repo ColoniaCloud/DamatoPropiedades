@@ -2,6 +2,9 @@
 
 import { motion } from "framer-motion";
 
+// Usar la misma constante de ease que Reveal.tsx para evitar errores de tipo
+const EASE = [0.22, 1, 0.36, 1] as const;
+
 const TEXT = "Expertos en conectar personas con negocios inmobiliarios seguros, transparentes y rentables.";
 const WORDS = TEXT.split(" ");
 
@@ -21,7 +24,7 @@ const word = {
     opacity: 1,
     y: 0,
     filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
+    transition: { duration: 0.7, ease: EASE },
   },
 };
 
