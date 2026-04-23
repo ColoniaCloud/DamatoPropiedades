@@ -18,6 +18,7 @@ function WhatsAppIcon({ className }: { className?: string }) {
 export default function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
+  const [nearFooter, setNearFooter] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -26,6 +27,20 @@ export default function WhatsAppFloat() {
       textareaRef.current.select();
     }
   }, [open]);
+
+  useEffect(() => {
+    const footer = document.getElementById("site-footer");
+    if (!footer) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        setNearFooter(entry.isIntersecting);
+        if (entry.isIntersecting) setOpen(false);
+      },
+      { threshold: 0 }
+    );
+    observer.observe(footer);
+    return () => observer.disconnect();
+  }, []);
 
   function handleSend() {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
@@ -41,7 +56,11 @@ export default function WhatsAppFloat() {
   }
 
   return (
-    <div className="fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3">
+    <div
+      className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-transform duration-300 ease-in-out ${
+        nearFooter ? "translate-x-[calc(100%+1.5rem)]" : "translate-x-0"
+      }`}
+    >
       {/* Chat modal */}
       {open && (
         <div className="w-80 rounded-2xl overflow-hidden shadow-2xl border border-white/10 animate-in slide-in-from-bottom-4 fade-in duration-200">

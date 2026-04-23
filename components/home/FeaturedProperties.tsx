@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight } from "lucide-react";
 import PropertyCard from "@/components/property/PropertyCard";
+import { Reveal, RevealGroup, RevealItem } from "@/components/ui/Reveal";
 import type { Property } from "@/lib/types";
 
 interface FeaturedPropertiesProps {
@@ -12,28 +13,36 @@ export default function FeaturedProperties({ properties }: FeaturedPropertiesPro
     <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
       {/* Header */}
       <div className="flex items-end justify-between mb-8">
-        <div>
-          <span className="text-[#1a5fb4] text-sm font-semibold uppercase tracking-widest">
-            Selección especial
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mt-1">
-            Propiedades Destacadas
-          </h2>
-        </div>
-        <Link
-          href="/propiedades"
-          className="hidden sm:flex items-center gap-1 text-[#1a5fb4] text-sm font-medium hover:gap-2 transition-all"
-        >
-          Ver todas <ArrowRight className="w-4 h-4" />
-        </Link>
+        <RevealGroup className="flex flex-col">
+          <RevealItem>
+            <span className="text-[#1a5fb4] text-sm font-semibold uppercase tracking-widest">
+              Selección especial
+            </span>
+          </RevealItem>
+          <RevealItem>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mt-1">
+              Propiedades Destacadas
+            </h2>
+          </RevealItem>
+        </RevealGroup>
+        <Reveal delay={0.2} className="hidden sm:block">
+          <Link
+            href="/propiedades"
+            className="flex items-center gap-1 text-[#1a5fb4] text-sm font-medium hover:gap-2 transition-all"
+          >
+            Ver todas <ArrowRight className="w-4 h-4" />
+          </Link>
+        </Reveal>
       </div>
 
       {/* Desktop grid */}
-      <div className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
+      <RevealGroup stagger={0.08} className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
         {properties.map((property) => (
-          <PropertyCard key={property.id} property={property} />
+          <RevealItem key={property.id} y={20}>
+            <PropertyCard property={property} />
+          </RevealItem>
         ))}
-      </div>
+      </RevealGroup>
 
       {/* Mobile horizontal scroll */}
       <div className="sm:hidden -mx-4 px-4">

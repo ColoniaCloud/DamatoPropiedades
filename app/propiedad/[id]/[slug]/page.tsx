@@ -85,11 +85,77 @@ export default async function PropertyDetailPage({ params }: PageProps) {
     {}
   );
 
+  const waUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP || "5491140931881"}?text=${encodeURIComponent(whatsappMsg)}`;
+
   return (
     <>
       <PropertySchema property={property} />
 
-      <div className="min-h-screen pt-20">
+      {/* Hero */}
+      <section
+        className="relative h-[62vh] min-h-[400px] flex items-end"
+        style={
+          property.photos?.[0]?.image
+            ? {
+                backgroundImage: `url(${property.photos[0].image})`,
+                backgroundSize: "cover",
+                backgroundPosition: "center",
+                backgroundAttachment: "fixed",
+                backgroundColor: "#0c1b2e",
+              }
+            : { backgroundColor: "#0c1b2e" }
+        }
+      >
+        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1b2e] via-[#0c1b2e]/55 to-[#0c1b2e]/20" />
+
+        <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 scroll-mt-24">
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
+            {/* Left: info */}
+            <div>
+              {op && (
+                <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full mb-3 ${getOperationColor(op.operation_type)}`}>
+                  {op.operation_type}
+                </span>
+              )}
+              <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-2">
+                {property.publication_title}
+              </h1>
+              <div className="flex items-center gap-1.5 text-white/70 mb-3">
+                <MapPin className="w-4 h-4 flex-shrink-0" />
+                <span className="text-sm">
+                  {property.fake_address}
+                  {neighborhood ? ` · ${neighborhood}` : ""}
+                </span>
+              </div>
+              <p className="text-2xl sm:text-3xl font-bold text-white">{price}</p>
+            </div>
+
+            {/* Right: CTAs */}
+            <div className="flex gap-3 flex-shrink-0">
+              <a
+                href="#consultar"
+                className="inline-flex items-center justify-center gap-2 bg-white text-[#1a1a2e] font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white/90 transition-colors min-h-[44px] whitespace-nowrap"
+              >
+                Consultar
+              </a>
+              <a
+                href={waUrl}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold text-sm px-6 py-3 rounded-xl transition-colors min-h-[44px] whitespace-nowrap"
+              >
+                <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
+                  <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
+                  <path d="M12 0C5.373 0 0 5.373 0 12c0 2.127.558 4.122 1.532 5.849L.057 23.571a.75.75 0 00.92.92l5.788-1.474A11.955 11.955 0 0012 24c6.627 0 12-5.373 12-12S18.627 0 12 0zm0 22c-1.886 0-3.65-.497-5.176-1.367l-.371-.214-3.838.977.995-3.757-.234-.386A9.955 9.955 0 012 12C2 6.477 6.477 2 12 2s10 4.477 10 10-4.477 10-10 10z" />
+                </svg>
+                WhatsApp
+              </a>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <div className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
           <div className="flex flex-col lg:flex-row gap-8">
             {/* Main content */}
@@ -100,33 +166,10 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 title={property.publication_title}
               />
 
-              {/* Title & operation */}
-              <div className="mt-6 mb-4">
-                {op && (
-                  <span
-                    className={`inline-block text-xs font-semibold px-3 py-1 rounded-full mb-3 ${getOperationColor(op.operation_type)}`}
-                  >
-                    {op.operation_type}
-                  </span>
-                )}
-                <h1 className="font-display text-2xl sm:text-3xl font-bold text-[#1a1a2e] leading-snug">
-                  {property.publication_title}
-                </h1>
-
-                {/* Location */}
-                <div className="flex items-center gap-2 mt-2 text-[#5a5a6e]">
-                  <MapPin className="w-4 h-4 flex-shrink-0" />
-                  <span className="text-sm">
-                    {property.fake_address}
-                    {neighborhood ? ` · ${neighborhood}` : ""}
-                  </span>
-                </div>
-
-                {/* Reference */}
-                <div className="flex items-center gap-1 mt-1 text-[#5a5a6e]">
-                  <Hash className="w-3.5 h-3.5" />
-                  <span className="text-xs">{property.reference_code}</span>
-                </div>
+              {/* Reference */}
+              <div className="flex items-center gap-1 mt-4 mb-2 text-[#5a5a6e]">
+                <Hash className="w-3.5 h-3.5" />
+                <span className="text-xs">{property.reference_code}</span>
               </div>
 
               {/* Price */}
@@ -295,7 +338,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             </div>
 
             {/* Desktop sticky sidebar */}
-            <aside className="hidden lg:block w-80 flex-shrink-0">
+            <aside id="consultar" className="hidden lg:block w-80 flex-shrink-0 scroll-mt-24">
               <div className="sticky top-24 bg-white border border-[#e2e4e8] rounded-xl p-6 shadow-sm">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-5">
                   Consultar

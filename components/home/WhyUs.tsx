@@ -1,4 +1,5 @@
 import { ShieldCheck, Users, Briefcase, Zap } from "lucide-react";
+import { RevealGroup, RevealItem } from "@/components/ui/Reveal";
 
 const FEATURES = [
   {
@@ -31,29 +32,32 @@ export default function WhyUs() {
   return (
     <section className="py-14 lg:py-20 bg-[#f4f7fb]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-10 lg:mb-14">
-          <span className="text-[#1a5fb4] text-sm font-semibold uppercase tracking-widest">
-            ¿Por qué elegirnos?
-          </span>
-          <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mt-2">
-            La diferencia D&apos;Amato
-          </h2>
-        </div>
+        <RevealGroup className="text-center mb-10 lg:mb-14">
+          <RevealItem>
+            <span className="text-[#1a5fb4] text-sm font-semibold uppercase tracking-widest">
+              ¿Por qué elegirnos?
+            </span>
+          </RevealItem>
+          <RevealItem>
+            <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mt-2">
+              La diferencia D&apos;Amato
+            </h2>
+          </RevealItem>
+        </RevealGroup>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <RevealGroup stagger={0.1} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
           {FEATURES.map(({ icon: Icon, title, description }) => (
-            <div
-              key={title}
-              className="bg-white rounded-xl p-6 border border-[#e2e4e8] hover:shadow-md transition-shadow"
-            >
-              <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-4">
-                <Icon className="w-6 h-6 text-[#1a5fb4]" />
+            <RevealItem key={title} y={20}>
+              <div className="bg-white rounded-xl p-6 border border-[#e2e4e8] hover:shadow-md transition-shadow">
+                <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-4">
+                  <Icon className="w-6 h-6 text-[#1a5fb4]" />
+                </div>
+                <h3 className="font-semibold text-[#1a1a2e] mb-2">{title}</h3>
+                <p className="text-sm text-[#5a5a6e] leading-relaxed">{description}</p>
               </div>
-              <h3 className="font-semibold text-[#1a1a2e] mb-2">{title}</h3>
-              <p className="text-sm text-[#5a5a6e] leading-relaxed">{description}</p>
-            </div>
+            </RevealItem>
           ))}
-        </div>
+        </RevealGroup>
       </div>
     </section>
   );
