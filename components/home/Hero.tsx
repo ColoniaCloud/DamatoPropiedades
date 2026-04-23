@@ -1,8 +1,9 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search } from "lucide-react";
+import { Search, ChevronDown, Check } from "lucide-react";
+import { motion } from "framer-motion";
 import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
 
 const OPERATION_OPTIONS = OPERATION_TYPES.map((o) => ({
@@ -14,6 +15,18 @@ export default function Hero() {
   const router = useRouter();
   const [operation, setOperation] = useState("venta");
   const [typeId, setTypeId] = useState("");
+  const [typeOpen, setTypeOpen] = useState(false);
+  const dropdownRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    function onClickOutside(e: MouseEvent) {
+      if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
+        setTypeOpen(false);
+      }
+    }
+    document.addEventListener("mousedown", onClickOutside);
+    return () => document.removeEventListener("mousedown", onClickOutside);
+  }, []);
 
   function handleSearch() {
     const params = new URLSearchParams();
@@ -21,6 +34,8 @@ export default function Hero() {
     if (typeId) params.set("tipo", typeId);
     router.push(`/propiedades?${params.toString()}`);
   }
+
+  const selectedType = PROPERTY_TYPES.find((t) => String(t.id) === typeId);
 
   return (
     <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
@@ -39,53 +54,136 @@ export default function Hero() {
       {/* Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center pt-20">
         {/* Badge */}
-        <span className="inline-block bg-[#00b4d8]/20 border border-[#00b4d8]/40 text-[#00b4d8] text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6">
+        <motion.span
+          initial={{ opacity: 0, y: 16 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6, ease: [0.22, 1, 0.36, 1], delay: 0.15 }}
+          className="inline-block bg-[#00b4d8]/20 border border-[#00b4d8]/40 text-[#00b4d8] text-xs font-semibold uppercase tracking-widest px-4 py-1.5 rounded-full mb-6"
+        >
           Inmobiliaria en Buenos Aires
-        </span>
+        </motion.span>
 
         {/* Title */}
-        <h1 className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4">
+        <motion.h1
+          initial={{ opacity: 0, y: 28 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, ease: [0.22, 1, 0.36, 1], delay: 0.32 }}
+          className="font-display text-4xl sm:text-5xl lg:text-6xl font-bold text-white leading-tight mb-4"
+        >
           Encontrá tu próximo
           <span className="text-[#00b4d8]"> hogar</span>
-        </h1>
-        <p className="text-white/70 text-lg sm:text-xl mb-10 max-w-xl mx-auto">
+        </motion.h1>
+
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.5 }}
+          className="text-white/70 text-lg sm:text-xl mb-10 max-w-xl mx-auto"
+        >
           Más de 35 años asesorando familias en la compra, venta y alquiler de
           propiedades.
-        </p>
+        </motion.p>
 
         {/* Search box */}
-        <div className="bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)] rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto">
+        <motion.div
+          initial={{ opacity: 0, y: 32 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.65 }}
+          className="bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)] rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto"
+        >
           {/* Operation tabs */}
-          <div className="flex gap-1 mb-4 bg-white/10 rounded-lg p-1">
+          <div className="relative flex gap-1 mb-4 bg-white/10 rounded-lg p-1">
             {OPERATION_OPTIONS.map((opt) => (
               <button
                 key={opt.value}
                 onClick={() => setOperation(opt.value)}
-                className={`flex-1 py-2 px-3 rounded-md text-sm font-medium transition-all min-h-[40px] ${
-                  operation === opt.value
-                    ? "bg-white text-[#1a5fb4] shadow-sm"
-                    : "text-white/80 hover:text-white"
-                }`}
+                className="relative flex-1 py-2 px-3 rounded-md text-sm font-medium min-h-[40px] z-10"
               >
-                {opt.label}
+                {operation === opt.value && (
+                  <motion.div
+                    layoutId="hero-tab-indicator"
+                    className="absolute inset-0 bg-white rounded-md shadow-sm"
+                    transition={{ type: "spring", stiffness: 380, damping: 32 }}
+                  />
+                )}
+                <span
+                  className={`relative z-10 transition-colors duration-150 ${
+                    operation === opt.value ? "text-[#1a5fb4]" : "text-white/80 hover:text-white"
+                  }`}
+                >
+                  {opt.label}
+                </span>
               </button>
             ))}
           </div>
 
           {/* Filters row */}
           <div className="flex flex-col sm:flex-row gap-3">
-            <select
-              value={typeId}
-              onChange={(e) => setTypeId(e.target.value)}
-              className="flex-1 border border-white/20 rounded-lg px-3 py-3 text-sm text-white bg-white/10 placeholder:text-white/50 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-[44px]"
-            >
-              <option value="">Tipo de propiedad</option>
-              {PROPERTY_TYPES.map((t) => (
-                <option key={t.id} value={t.id}>
-                  {t.name}
-                </option>
-              ))}
-            </select>
+            {/* Custom property type dropdown */}
+            <div ref={dropdownRef} className="flex-1 relative">
+              <button
+                type="button"
+                onClick={() => setTypeOpen((v) => !v)}
+                className="w-full flex items-center justify-between border border-white/20 rounded-lg px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-[44px] transition-colors"
+              >
+                <span className={selectedType ? "text-white" : "text-white/50"}>
+                  {selectedType ? selectedType.name : "Tipo de propiedad"}
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 text-white/50 transition-transform duration-200 flex-shrink-0 ml-2 ${
+                    typeOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {typeOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  className="absolute top-full left-0 right-0 mt-1.5 z-30 overflow-hidden rounded-xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+                  style={{
+                    background: "rgba(12,27,46,0.85)",
+                    backdropFilter: "blur(20px) saturate(1.6)",
+                    WebkitBackdropFilter: "blur(20px) saturate(1.6)",
+                  }}
+                >
+                  <div className="py-1">
+                    {/* "All types" option */}
+                    <button
+                      type="button"
+                      onClick={() => { setTypeId(""); setTypeOpen(false); }}
+                      className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors hover:bg-white/8 group"
+                    >
+                      <span className={!typeId ? "text-[#00b4d8]" : "text-white/60 group-hover:text-white"}>
+                        Todos los tipos
+                      </span>
+                      {!typeId && <Check className="w-3.5 h-3.5 text-[#00b4d8]" />}
+                    </button>
+
+                    <div className="mx-3 my-1 h-px bg-white/10" />
+
+                    {PROPERTY_TYPES.map((t) => {
+                      const isSelected = typeId === String(t.id);
+                      return (
+                        <button
+                          key={t.id}
+                          type="button"
+                          onClick={() => { setTypeId(String(t.id)); setTypeOpen(false); }}
+                          className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors hover:bg-white/8 group"
+                        >
+                          <span className={isSelected ? "text-[#00b4d8]" : "text-white/70 group-hover:text-white"}>
+                            {t.name}
+                          </span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-[#00b4d8]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </div>
 
             <button
               onClick={handleSearch}
@@ -95,7 +193,7 @@ export default function Hero() {
               Buscar
             </button>
           </div>
-        </div>
+        </motion.div>
       </div>
 
       {/* Scroll indicator */}
