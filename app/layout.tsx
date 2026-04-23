@@ -35,9 +35,15 @@ export const metadata: Metadata = {
     siteName: "D'Amato Propiedades",
     locale: "es_AR",
     type: "website",
+    images: [
+      "/hero-nosotros.jpg"
+    ],
   },
   twitter: {
     card: "summary_large_image",
+    images: [
+      "/hero-nosotros.jpg"
+    ],
   },
   robots: {
     index: true,
@@ -52,6 +58,9 @@ export default function RootLayout({
 }) {
   return (
     <html lang="es-AR" className={`h-full antialiased ${montserrat.variable} ${poppins.variable}`}>
+      <head>
+        <link rel="icon" href="/logos/Icono.png" type="image/png" />
+      </head>
       <body className="min-h-full flex flex-col bg-[#fafbfc]">
         <Header />
         <main className="flex-1">{children}</main>
