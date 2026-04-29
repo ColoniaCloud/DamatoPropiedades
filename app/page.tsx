@@ -9,7 +9,7 @@ import WhyUs from "@/components/home/WhyUs";
 import Emprendimientos from "@/components/home/Emprendimientos";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertiesMapClient from "@/components/home/PropertiesMapClient";
-import { getProperties, getDevelopments } from "@/lib/tokko";
+import { getProperties, getFeaturedProperties, getDevelopments } from "@/lib/tokko";
 
 export const metadata: Metadata = {
   title: "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín",
@@ -25,8 +25,7 @@ export default async function HomePage() {
   let developments: Development[] = [];
 
   try {
-    const data = await getProperties({ limit: 6, order_by: "-created_at" });
-    featuredProperties = data.objects;
+    featuredProperties = await getFeaturedProperties(6);
   } catch {
     // fail gracefully
   }
