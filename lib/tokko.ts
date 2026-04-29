@@ -119,6 +119,27 @@ export async function getAllProperties(): Promise<Property[]> {
   return all;
 }
 
+export async function getFeaturedProperties(count = 6): Promise<Property[]> {
+  const data = await getProperties({ limit: 80, order_by: "-created_at" });
+  const all = data.objects;
+  const starred = all.filter((p) => p.is_starred_on_web === true);
+
+  if (starred.length >= count) {
+    return starred.slice(0, count);
+  }
+
+  if (starred.length > 0) {
+    const rest = all
+      .filter((p) => !p.is_starred_on_web)
+      .slice(0, count - starred.length);
+    return [...starred, ...rest];
+  }
+
+  // No hay destacadas: random
+  const shuffled = [...all].sort(() => 0.5 - Math.random());
+  return shuffled.slice(0, count);
+}
+
 export async function getSimilarProperties(
   propertyId: number,
   typeId: number,
