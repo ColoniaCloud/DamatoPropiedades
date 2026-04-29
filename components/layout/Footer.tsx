@@ -48,10 +48,10 @@ export default function Footer() {
     <footer id="site-footer" className="bg-[#0c1b2e] text-[#f0f0f5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
 
-        {/* Main columns — 40 / 20 / 40 */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_2fr] gap-8 lg:gap-12">
+        {/* Main columns — 50 / 25 / 25 */}
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] gap-8 lg:gap-12">
 
-          {/* Brand — 40% */}
+          {/* Columna 1 — Marca + Asociados */}
           <div className="text-center lg:text-left">
             <span className="font-display font-bold text-2xl text-white block mb-2">
               D&apos;Amato Propiedades
@@ -60,38 +60,27 @@ export default function Footer() {
               Tu inmobiliaria de confianza en Villa Devoto y General San Martín.
               Más de 35 años de experiencia a tu servicio.
             </p>
-            <div className="flex gap-4 mt-4 justify-center lg:justify-start">
-              <a
-                href="https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="WhatsApp"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#25D366] transition-colors"
-              >
-                <WhatsAppIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.instagram.com/damato.propiedades/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Instagram"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#E1306C] transition-colors"
-              >
-                <InstagramIcon className="w-4 h-4" />
-              </a>
-              <a
-                href="https://www.facebook.com/damatopropiedades/"
-                target="_blank"
-                rel="noopener noreferrer"
-                aria-label="Facebook"
-                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#1877F2] transition-colors"
-              >
-                <FacebookIcon className="w-4 h-4" />
-              </a>
+
+            {/* Asociados */}
+            <div className="mt-5">
+              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider block mb-3">
+                Asociados con:
+              </span>
+              <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
+                {ASOCIADOS.map(({ src, alt }) => (
+                  // eslint-disable-next-line @next/next/no-img-element
+                  <img
+                    key={src}
+                    src={src}
+                    alt={alt}
+                    className="h-8 w-auto object-contain"
+                  />
+                ))}
+              </div>
             </div>
           </div>
 
-          {/* Links — 20%, divididos en 2 columnas internas */}
+          {/* Columna 2 — Links en 2 columnas internas */}
           <div className="text-center lg:text-left">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Explorar
@@ -109,8 +98,8 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Contact — 40% */}
-          <div className="text-center lg:text-left">
+          {/* Columna 3 — Contacto + Redes */}
+          <div className="text-center lg:text-left flex flex-col">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Contacto
             </h3>
@@ -145,27 +134,42 @@ export default function Footer() {
                 </a>
               </li>
             </ul>
+
+            {/* Redes sociales */}
+            <div className="flex gap-3 mt-6 justify-center lg:justify-start">
+              <a
+                href="https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="WhatsApp"
+                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#25D366] transition-colors"
+              >
+                <WhatsAppIcon className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.instagram.com/damato.propiedades/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Instagram"
+                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#E1306C] transition-colors"
+              >
+                <InstagramIcon className="w-4 h-4" />
+              </a>
+              <a
+                href="https://www.facebook.com/damatopropiedades/"
+                target="_blank"
+                rel="noopener noreferrer"
+                aria-label="Facebook"
+                className="w-9 h-9 rounded-full bg-white/10 flex items-center justify-center hover:bg-[#1877F2] transition-colors"
+              >
+                <FacebookIcon className="w-4 h-4" />
+              </a>
+            </div>
           </div>
         </div>
 
-        {/* Asociados — ancho completo, centrado */}
-        <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
-          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider whitespace-nowrap">
-            Asociados con:
-          </span>
-          {ASOCIADOS.map(({ src, alt }) => (
-            // eslint-disable-next-line @next/next/no-img-element
-            <img
-              key={src}
-              src={src}
-              alt={alt}
-              className="h-8 w-auto object-contain brightness-0 invert opacity-50 hover:opacity-80 transition-opacity"
-            />
-          ))}
-        </div>
-
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
             © {new Date().getFullYear()} D&apos;Amato Propiedades. Todos los
             derechos reservados.
