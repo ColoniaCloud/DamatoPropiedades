@@ -36,22 +36,31 @@ const FOOTER_LINKS = [
   { href: "/contacto", label: "Contacto" },
 ];
 
+const ASOCIADOS = [
+  { src: "/asociados/cmcpsm.svg", alt: "CMCPSM" },
+  { src: "/asociados/cpi.jpg", alt: "CPI" },
+  { src: "/asociados/crs.png", alt: "CRS" },
+  { src: "/asociados/cucicba.jpg", alt: "CUCICBA" },
+];
+
 export default function Footer() {
   return (
     <footer id="site-footer" className="bg-[#0c1b2e] text-[#f0f0f5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-12">
-          {/* Brand */}
-          <div className="lg:col-span-2">
+
+        {/* Main columns — 40 / 20 / 40 */}
+        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_2fr] gap-8 lg:gap-12">
+
+          {/* Brand — 40% */}
+          <div className="text-center lg:text-left">
             <span className="font-display font-bold text-2xl text-white block mb-2">
               D&apos;Amato Propiedades
             </span>
-            <p className="text-sm text-white/60 max-w-xs leading-relaxed">
+            <p className="text-sm text-white/60 max-w-xs leading-relaxed mx-auto lg:mx-0">
               Tu inmobiliaria de confianza en Villa Devoto y General San Martín.
               Más de 35 años de experiencia a tu servicio.
             </p>
-            {/* Social */}
-            <div className="flex gap-4 mt-4">
+            <div className="flex gap-4 mt-4 justify-center lg:justify-start">
               <a
                 href="https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes"
                 target="_blank"
@@ -82,33 +91,32 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Links */}
-          <div>
+          {/* Links — 20%, divididos en 2 columnas internas */}
+          <div className="text-center lg:text-left">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Explorar
             </h3>
-            <ul className="space-y-2">
+            <div className="grid grid-cols-2 gap-x-4 gap-y-2 justify-items-center lg:justify-items-start">
               {FOOTER_LINKS.map((link) => (
-                <li key={link.href}>
-                  <Link
-                    href={link.href}
-                    className="text-sm text-white/60 hover:text-[#00b4d8] transition-colors"
-                  >
-                    {link.label}
-                  </Link>
-                </li>
+                <Link
+                  key={link.href}
+                  href={link.href}
+                  className="text-sm text-white/60 hover:text-[#00b4d8] transition-colors"
+                >
+                  {link.label}
+                </Link>
               ))}
-            </ul>
+            </div>
           </div>
 
-          {/* Contact */}
-          <div>
+          {/* Contact — 40% */}
+          <div className="text-center lg:text-left">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Contacto
             </h3>
             <ul className="space-y-3">
-              <li className="flex items-start gap-3">
-                <MapPin className="w-4 h-4 text-[#00b4d8] mt-0.5 flex-shrink-0" />
+              <li className="flex items-start gap-3 justify-center lg:justify-start">
+                <MapPin className="w-4 h-4 text-[#00b4d8] mt-0.5 shrink-0" />
                 <a
                   href="https://maps.google.com/?q=Av.+Francisco+Beiro+4701,+CABA,+Argentina"
                   target="_blank"
@@ -118,8 +126,8 @@ export default function Footer() {
                   Av. Francisco Beiro 4701, CABA
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Phone className="w-4 h-4 text-[#00b4d8] flex-shrink-0" />
+              <li className="flex items-center gap-3 justify-center lg:justify-start">
+                <Phone className="w-4 h-4 text-[#00b4d8] shrink-0" />
                 <a
                   href="tel:01120052222"
                   className="text-sm text-white/60 hover:text-white transition-colors"
@@ -127,8 +135,8 @@ export default function Footer() {
                   011 2005-2222
                 </a>
               </li>
-              <li className="flex items-center gap-3">
-                <Mail className="w-4 h-4 text-[#00b4d8] flex-shrink-0" />
+              <li className="flex items-center gap-3 justify-center lg:justify-start">
+                <Mail className="w-4 h-4 text-[#00b4d8] shrink-0" />
                 <a
                   href="mailto:contacto@damatopropiedades.com.ar"
                   className="text-sm text-white/60 hover:text-white transition-colors break-all"
@@ -140,8 +148,24 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Asociados — ancho completo, centrado */}
+        <div className="mt-10 flex flex-wrap items-center justify-center gap-6">
+          <span className="text-xs font-semibold text-white/40 uppercase tracking-wider whitespace-nowrap">
+            Asociados con:
+          </span>
+          {ASOCIADOS.map(({ src, alt }) => (
+            // eslint-disable-next-line @next/next/no-img-element
+            <img
+              key={src}
+              src={src}
+              alt={alt}
+              className="h-8 w-auto object-contain brightness-0 invert opacity-50 hover:opacity-80 transition-opacity"
+            />
+          ))}
+        </div>
+
         {/* Bottom bar */}
-        <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
+        <div className="border-t border-white/10 mt-8 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
             © {new Date().getFullYear()} D&apos;Amato Propiedades. Todos los
             derechos reservados.
