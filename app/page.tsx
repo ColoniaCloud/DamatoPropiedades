@@ -50,6 +50,8 @@ export default async function HomePage() {
     <>
       <Hero />
 
+      <FeaturedProperties properties={featuredProperties} />
+
       {/* Properties map */}
       <section className="py-14 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -92,8 +94,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-
-      <FeaturedProperties properties={featuredProperties} />
       <Emprendimientos developments={developments} />
       <WhyUs />
 
