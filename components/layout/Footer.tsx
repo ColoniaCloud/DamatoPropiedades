@@ -48,8 +48,8 @@ export default function Footer() {
     <footer id="site-footer" className="bg-[#0c1b2e] text-[#f0f0f5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
 
-        {/* Main columns — 50 / 25 / 25 */}
-        <div className="grid grid-cols-1 lg:grid-cols-[2fr_1fr_1fr] gap-8 lg:gap-12">
+        {/* Main columns — 40 / 30 / 30 */}
+        <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_3fr] gap-8 lg:gap-12">
 
           {/* Columna 1 — Marca + Asociados */}
           <div className="text-center lg:text-left">
@@ -63,7 +63,7 @@ export default function Footer() {
 
             {/* Asociados */}
             <div className="mt-5">
-              <span className="text-xs font-semibold text-white/40 uppercase tracking-wider block mb-3">
+              <span className="text-xs font-semibold text-white uppercase tracking-wider block mb-3">
                 Asociados con:
               </span>
               <div className="flex flex-wrap items-center gap-4 justify-center lg:justify-start">
@@ -73,7 +73,7 @@ export default function Footer() {
                     key={src}
                     src={src}
                     alt={alt}
-                    className="h-8 w-auto object-contain"
+                    className="h-8 w-auto object-contain bg-white rounded-[5px] p-[5px]"
                   />
                 ))}
               </div>
