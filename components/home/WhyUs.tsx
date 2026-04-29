@@ -45,11 +45,11 @@ export default function WhyUs() {
           </RevealItem>
         </RevealGroup>
 
-        <RevealGroup stagger={0.1} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        <RevealGroup stagger={0.12} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {FEATURES.map(({ icon: Icon, title, description }) => (
-            <RevealItem key={title} y={20}>
-              <div className="bg-white rounded-xl p-6 border border-[#e2e4e8] hover:shadow-md transition-shadow">
-                <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-4">
+            <RevealItem key={title} y={32} className="h-full">
+              <div className="h-full bg-white rounded-xl p-6 border border-[#e2e4e8] hover:shadow-md transition-shadow flex flex-col">
+                <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-4 shrink-0">
                   <Icon className="w-6 h-6 text-[#1a5fb4]" />
                 </div>
                 <h3 className="font-semibold text-[#1a1a2e] mb-2">{title}</h3>
