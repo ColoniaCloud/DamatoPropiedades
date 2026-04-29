@@ -88,7 +88,7 @@ export default function ContactForm({
           value={form.name}
           onChange={(e) => setForm({ ...form, name: e.target.value })}
           placeholder="Tu nombre"
-          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-[44px]"
+          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
         />
       </div>
 
@@ -102,7 +102,7 @@ export default function ContactForm({
           value={form.email}
           onChange={(e) => setForm({ ...form, email: e.target.value })}
           placeholder="tu@email.com"
-          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-[44px]"
+          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
         />
       </div>
 
@@ -116,7 +116,7 @@ export default function ContactForm({
           value={form.phone}
           onChange={(e) => setForm({ ...form, phone: e.target.value })}
           placeholder="11 5555-0000"
-          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-[44px]"
+          className="w-full border border-[#e2e4e8] rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
         />
       </div>
 
@@ -135,7 +135,7 @@ export default function ContactForm({
       <button
         type="submit"
         disabled={loading}
-        className="w-full bg-[#1a5fb4] hover:bg-[#0e3d7a] disabled:opacity-60 text-white font-semibold py-3.5 rounded-lg text-sm transition-colors min-h-[44px] flex items-center justify-center gap-2"
+        className="w-full bg-[#1a5fb4] hover:bg-[#0e3d7a] disabled:opacity-60 text-white font-semibold py-3.5 rounded-lg text-sm transition-colors min-h-11 flex items-center justify-center gap-2"
       >
         {loading ? (
           <div className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full animate-spin" />

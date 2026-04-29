@@ -2,11 +2,9 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
+import { useState } from "react";
 import { Menu } from "lucide-react";
 import MobileMenu from "./MobileMenu";
-import { cn } from "@/lib/utils";
 
 const NAV_LINKS = [
   { href: "/propiedades?operacion=venta", label: "Venta" },
@@ -20,16 +18,6 @@ const NAV_LINKS = [
 const WHATSAPP_URL = "https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes";
 const INSTAGRAM_URL = "https://www.instagram.com/damato.propiedades/";
 const FACEBOOK_URL = "https://www.facebook.com/damatopropiedades/";
-
-// Páginas cuya primera sección tiene fondo oscuro (hero)
-const DARK_TOP_PATHS = [
-  "/",
-  "/propiedades",
-  "/contacto",
-  "/nosotros",
-  "/emprendimientos",
-  "/alquiler-temporario",
-];
 
 function InstagramIcon({ className }: { className?: string }) {
   return (
@@ -58,86 +46,38 @@ function FacebookIcon({ className }: { className?: string }) {
 
 export default function Header() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
-  const pathname = usePathname();
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 80);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  const isDark =
-    !scrolled &&
-    (DARK_TOP_PATHS.includes(pathname) ||
-      pathname.startsWith("/venta/") ||
-      pathname.startsWith("/alquiler/") ||
-      pathname.startsWith("/propiedad/"));
 
   return (
     <>
-      {/* SVG filter para efecto liquid glass — solo Chromium */}
-      <svg
-        aria-hidden="true"
-        style={{ display: "none" }}
-      >
-        <defs>
-          <filter id="header-glass-filter" x="-20%" y="-20%" width="140%" height="140%" colorInterpolationFilters="sRGB">
-            <feTurbulence type="fractalNoise" baseFrequency="0.65 0.75" numOctaves="2" seed="3" stitchTiles="stitch" result="noise" />
-            <feDisplacementMap in="SourceGraphic" in2="noise" scale="3" xChannelSelector="R" yChannelSelector="G" />
-          </filter>
-        </defs>
-      </svg>
-
       <div className="fixed top-4 left-0 right-0 z-50 px-4 sm:px-6 lg:px-8">
         <header
-          className={cn(
-            "max-w-7xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl transition-all duration-300 border",
-            isDark
-              ? "bg-white/10 backdrop-blur-2xl border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.12)]"
-              : "bg-white/30 border-white/20"
-          )}
-          style={
-            !isDark
-              ? {
-                  backdropFilter: "url(#header-glass-filter) blur(20px) saturate(1.8) brightness(1.05)",
-                  WebkitBackdropFilter: "blur(20px) saturate(1.8) brightness(1.05)",
-                  boxShadow:
-                    "0 0 2px 1px rgba(0,0,0,0.06) inset, 0 1px 0 0 rgba(255,255,255,0.55) inset, 0 4px 24px rgba(0,0,0,0.1), 0 8px 32px rgba(0,0,0,0.05)",
-                }
-              : undefined
-          }
+          className="max-w-7xl mx-auto flex items-center justify-between px-5 py-3 rounded-2xl border border-gray-200/70 bg-white/90"
+          style={{
+            backdropFilter: "blur(8px)",
+            WebkitBackdropFilter: "blur(8px)",
+          }}
         >
           {/* Logo */}
-          <Link href="/" className="flex-shrink-0">
+          <Link href="/" className="shrink-0">
             <Image
               src="/logos/logo-h.png"
               alt="D'Amato Propiedades"
               width={180}
               height={44}
-              className={cn(
-                "h-9 w-auto object-contain transition-all duration-300",
-                isDark && "brightness-0 invert"
-              )}
+              className="h-9 w-auto object-contain"
               priority
             />
           </Link>
 
           {/* Right side */}
-          <div className="flex items-center gap-5">
-            {/* Desktop nav */}
-            <nav className="hidden md:flex items-center gap-7 mr-1">
+          <div className="flex items-center gap-4">
+            {/* Desktop nav — visible only on lg+ */}
+            <nav className="hidden lg:flex items-center gap-3 xl:gap-5 mr-1">
               {NAV_LINKS.map((link) => (
                 <Link
                   key={link.href}
                   href={link.href}
-                  className={cn(
-                    "text-sm font-medium transition-colors",
-                    isDark
-                      ? "text-white drop-shadow-sm hover:text-[#00b4d8]"
-                      : "text-[#1a1a2e] hover:text-[#1a5fb4]"
-                  )}
+                  className="text-[clamp(0.7rem,0.8vw,0.875rem)] font-medium whitespace-nowrap text-[#1a1a2e] hover:text-[#1a5fb4] transition-colors"
                 >
                   {link.label}
                 </Link>
@@ -145,10 +85,7 @@ export default function Header() {
             </nav>
 
             {/* Divider */}
-            <span className={cn(
-              "hidden md:block h-5 w-px transition-colors duration-300",
-              isDark ? "bg-white/30" : "bg-gray-300"
-            )} />
+            <span className="hidden lg:block h-5 w-px bg-gray-300" />
 
             {/* WhatsApp */}
             <a
@@ -156,10 +93,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="WhatsApp"
-              className={cn(
-                "transition-colors",
-                isDark ? "text-white/90 hover:text-[#25D366]" : "text-[#1a1a2e]/70 hover:text-[#25D366]"
-              )}
+              className="text-[#1a1a2e]/70 hover:text-[#25D366] transition-colors"
             >
               <WhatsAppIcon className="w-5 h-5" />
             </a>
@@ -170,10 +104,7 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Instagram"
-              className={cn(
-                "transition-colors",
-                isDark ? "text-white/90 hover:text-[#E1306C]" : "text-[#1a1a2e]/70 hover:text-[#E1306C]"
-              )}
+              className="text-[#1a1a2e]/70 hover:text-[#E1306C] transition-colors"
             >
               <InstagramIcon className="w-5 h-5" />
             </a>
@@ -184,22 +115,16 @@ export default function Header() {
               target="_blank"
               rel="noopener noreferrer"
               aria-label="Facebook"
-              className={cn(
-                "transition-colors",
-                isDark ? "text-white/90 hover:text-[#1877F2]" : "text-[#1a1a2e]/70 hover:text-[#1877F2]"
-              )}
+              className="text-[#1a1a2e]/70 hover:text-[#1877F2] transition-colors"
             >
               <FacebookIcon className="w-5 h-5" />
             </a>
 
-            {/* Mobile hamburger */}
+            {/* Hamburger — visible below lg (tablet y mobile) */}
             <button
               aria-label="Abrir menú"
               onClick={() => setMenuOpen(true)}
-              className={cn(
-                "md:hidden p-1 transition-colors",
-                isDark ? "text-white/90 hover:text-white" : "text-[#1a1a2e] hover:text-[#1a5fb4]"
-              )}
+              className="lg:hidden p-1 text-[#1a1a2e] hover:text-[#1a5fb4] transition-colors"
             >
               <Menu className="w-6 h-6" />
             </button>

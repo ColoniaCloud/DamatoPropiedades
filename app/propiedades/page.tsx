@@ -22,6 +22,11 @@ interface PageProps {
     ambientes?: string | string[];
     precio_min?: string;
     precio_max?: string;
+    moneda?: string;
+    superficie_min?: string;
+    cochera?: string;
+    credito?: string;
+    barrio?: string;
     orden?: string;
     pagina?: string;
   }>;
@@ -31,7 +36,6 @@ function buildSearchData(params: Awaited<PageProps["searchParams"]>) {
   const data: Record<string, unknown> = {};
 
   if (params.operacion) {
-    // Pass the slug — tokko.ts normalizeSearchData maps it to integer ID
     const opMap: Record<string, string> = {
       venta: "Venta",
       alquiler: "Alquiler",
@@ -61,8 +65,36 @@ function buildSearchData(params: Awaited<PageProps["searchParams"]>) {
 
   if (params.precio_min) data.price_from = Number(params.precio_min);
   if (params.precio_max) data.price_to = Number(params.precio_max);
+  if (params.moneda === "USD") data.currency = "USD";
 
   return data;
+}
+
+function applyLocalFilters(properties: Property[], params: Awaited<PageProps["searchParams"]>): Property[] {
+  let result = properties;
+
+  if (params.superficie_min) {
+    const min = Number(params.superficie_min);
+    result = result.filter((p) => (parseFloat(String(p.roofed_surface)) || 0) >= min);
+  }
+
+  if (params.cochera === "1") {
+    result = result.filter((p) => p.parking_lot_amount >= 1);
+  }
+
+  if (params.credito === "1") {
+    result = result.filter((p) => p.credit_eligible === "Apto crédito");
+  }
+
+  if (params.barrio) {
+    const barrio = params.barrio.toLowerCase();
+    result = result.filter((p) =>
+      p.location.full_location?.toLowerCase().includes(barrio) ||
+      p.location.name?.toLowerCase().includes(barrio)
+    );
+  }
+
+  return result;
 }
 
 function buildTitle(params: Awaited<PageProps["searchParams"]>): string {
@@ -93,14 +125,23 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
   const orderBy = params.orden || "-created_at";
 
   const searchData = buildSearchData(params);
+  const hasLocalFilters = !!(params.superficie_min || params.cochera || params.credito || params.barrio);
 
   let properties: Property[] = [];
   let totalCount = 0;
 
   try {
-    const result = await searchProperties(searchData, { limit, offset, order_by: orderBy });
-    properties = result.objects;
-    totalCount = result.meta.total_count;
+    if (hasLocalFilters) {
+      // Fetch all results and filter locally (dataset is small, ISR-cached)
+      const result = await searchProperties(searchData, { limit: 200, offset: 0, order_by: orderBy });
+      const filtered = applyLocalFilters(result.objects, params);
+      totalCount = filtered.length;
+      properties = filtered.slice(offset, offset + limit);
+    } else {
+      const result = await searchProperties(searchData, { limit, offset, order_by: orderBy });
+      properties = result.objects;
+      totalCount = result.meta.total_count;
+    }
   } catch {
     // show empty state
   }

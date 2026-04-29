@@ -25,7 +25,7 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
       )}
     >
       {/* Photo */}
-      <div className="relative aspect-[4/3] overflow-hidden bg-gray-100">
+      <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
         {photo ? (
           <Image
             src={photo}
@@ -36,7 +36,7 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
             loading="lazy"
           />
         ) : (
-          <div className="absolute inset-0 bg-gradient-to-br from-[#1a5fb4]/20 to-[#0c1b2e]/40 flex items-center justify-center">
+          <div className="absolute inset-0 bg-linear-to-br from-[#1a5fb4]/20 to-[#0c1b2e]/40 flex items-center justify-center">
             <span className="text-white/40 text-sm">Sin foto</span>
           </div>
         )}

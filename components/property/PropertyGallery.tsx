@@ -36,7 +36,7 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
       {/* Main gallery */}
       <div className="relative">
         {/* Hero image */}
-        <div className="relative aspect-[16/9] md:aspect-[4/3] lg:aspect-[16/9] rounded-xl overflow-hidden bg-gray-100">
+        <div className="relative aspect-video md:aspect-4/3 lg:aspect-video rounded-xl overflow-hidden bg-gray-100">
           <Image
             src={photos[current].image}
             alt={photos[current].description || title}
@@ -89,7 +89,7 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
                 key={idx}
                 onClick={() => setCurrent(idx)}
                 className={cn(
-                  "flex-shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all",
+                  "shrink-0 w-16 h-12 rounded-lg overflow-hidden border-2 transition-all",
                   current === idx
                     ? "border-[#1a5fb4]"
                     : "border-transparent opacity-60 hover:opacity-100"

@@ -107,7 +107,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
       {/* Hero */}
       <section
-        className="relative h-[62vh] min-h-[400px] flex items-end"
+        className="relative h-[62vh] min-h-100 flex items-end"
         style={
           property.photos?.[0]?.image
             ? {
@@ -120,7 +120,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             : { backgroundColor: "#0c1b2e" }
         }
       >
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1b2e] via-[#0c1b2e]/55 to-[#0c1b2e]/20" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0c1b2e] via-[#0c1b2e]/55 to-[#0c1b2e]/20" />
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
@@ -135,7 +135,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 {property.publication_title}
               </h1>
               <div className="flex items-center gap-1.5 text-white/70 mb-3">
-                <MapPin className="w-4 h-4 flex-shrink-0" />
+                <MapPin className="w-4 h-4 shrink-0" />
                 <span className="text-sm">
                   {property.fake_address}
                   {neighborhood ? ` · ${neighborhood}` : ""}
@@ -145,10 +145,10 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             </div>
 
             {/* Right: CTAs */}
-            <div className="flex gap-3 flex-shrink-0">
+            <div className="flex gap-3 shrink-0">
               <a
                 href="#consultar"
-                className="inline-flex items-center justify-center gap-2 bg-white text-[#1a1a2e] font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white/90 transition-colors min-h-[44px] whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2 bg-white text-[#1a1a2e] font-semibold text-sm px-6 py-3 rounded-xl hover:bg-white/90 transition-colors min-h-11 whitespace-nowrap"
               >
                 Consultar
               </a>
@@ -156,7 +156,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 href={waUrl}
                 target="_blank"
                 rel="noopener noreferrer"
-                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold text-sm px-6 py-3 rounded-xl transition-colors min-h-[44px] whitespace-nowrap"
+                className="inline-flex items-center justify-center gap-2 bg-[#25D366] hover:bg-[#1ebe5d] text-white font-semibold text-sm px-6 py-3 rounded-xl transition-colors min-h-11 whitespace-nowrap"
               >
                 <svg viewBox="0 0 24 24" fill="currentColor" className="w-5 h-5">
                   <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347z" />
@@ -304,7 +304,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
                     {property.tags.map((tag) => (
                       <div key={tag.id} className="flex items-center gap-2 text-sm text-[#1a1a2e]">
-                        <Check className="w-4 h-4 text-[#10b981] flex-shrink-0" />
+                        <Check className="w-4 h-4 text-[#10b981] shrink-0" />
                         {tag.name}
                       </div>
                     ))}
@@ -352,7 +352,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
             </div>
 
             {/* Desktop sticky sidebar */}
-            <aside id="consultar" className="hidden lg:block w-80 flex-shrink-0 scroll-mt-24">
+            <aside id="consultar" className="hidden lg:block w-80 shrink-0 scroll-mt-24">
               <div className="sticky top-24 bg-white border border-[#e2e4e8] rounded-xl p-6 shadow-sm">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-5">
                   Consultar

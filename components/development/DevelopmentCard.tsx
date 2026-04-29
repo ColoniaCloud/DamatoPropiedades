@@ -46,7 +46,7 @@ export default function DevelopmentCard({ development, priority }: Props) {
             <Building2 className="w-12 h-12 text-[#c0c4cc]" />
           </div>
         )}
-        <div className="absolute inset-0 bg-gradient-to-t from-[#0c1b2e]/60 via-transparent to-transparent" />
+        <div className="absolute inset-0 bg-linear-to-t from-[#0c1b2e]/60 via-transparent to-transparent" />
 
         {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
@@ -68,7 +68,7 @@ export default function DevelopmentCard({ development, priority }: Props) {
         </h3>
 
         <div className="flex items-center gap-1.5 text-[#5a5a6e] text-sm mb-4">
-          <MapPin className="w-3.5 h-3.5 flex-shrink-0 text-[#00b4d8]" />
+          <MapPin className="w-3.5 h-3.5 shrink-0 text-[#00b4d8]" />
           <span>{neighborhood || fake_address}</span>
         </div>
 
@@ -91,7 +91,7 @@ export default function DevelopmentCard({ development, priority }: Props) {
         </div>
 
         <div className="flex items-center gap-1.5 text-[#5a5a6e] text-xs">
-          <Calendar className="w-3.5 h-3.5 flex-shrink-0 text-[#00b4d8]" />
+          <Calendar className="w-3.5 h-3.5 shrink-0 text-[#00b4d8]" />
           <span>Entrega estimada: {formatConstructionDate(construction_date)}</span>
         </div>
       </div>
