@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, SlidersHorizontal } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
@@ -14,8 +14,14 @@ export default function FilterDrawer() {
   const [operation, setOperation] = useState(searchParams.get("operacion") || "");
   const [types, setTypes] = useState<string[]>(searchParams.getAll("tipo"));
   const [rooms, setRooms] = useState<string[]>(searchParams.getAll("ambientes"));
+  const [currency, setCurrency] = useState<"ARS" | "USD">(
+    (searchParams.get("moneda") as "ARS" | "USD") || "ARS"
+  );
   const [priceFrom, setPriceFrom] = useState(searchParams.get("precio_min") || "");
   const [priceTo, setPriceTo] = useState(searchParams.get("precio_max") || "");
+  const [surfaceMin, setSurfaceMin] = useState(searchParams.get("superficie_min") || "");
+  const [withParking, setWithParking] = useState(searchParams.get("cochera") === "1");
+  const [creditEligible, setCreditEligible] = useState(searchParams.get("credito") === "1");
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -34,8 +40,12 @@ export default function FilterDrawer() {
     if (operation) params.set("operacion", operation);
     types.forEach((t) => params.append("tipo", t));
     rooms.forEach((r) => params.append("ambientes", r));
+    params.set("moneda", currency);
     if (priceFrom) params.set("precio_min", priceFrom);
     if (priceTo) params.set("precio_max", priceTo);
+    if (surfaceMin) params.set("superficie_min", surfaceMin);
+    if (withParking) params.set("cochera", "1");
+    if (creditEligible) params.set("credito", "1");
     router.push(`/propiedades?${params.toString()}`);
     setOpen(false);
   }
@@ -44,8 +54,12 @@ export default function FilterDrawer() {
     setOperation("");
     setTypes([]);
     setRooms([]);
+    setCurrency("ARS");
     setPriceFrom("");
     setPriceTo("");
+    setSurfaceMin("");
+    setWithParking(false);
+    setCreditEligible(false);
     router.push("/propiedades");
     setOpen(false);
   }
@@ -56,14 +70,29 @@ export default function FilterDrawer() {
     ...rooms,
     priceFrom,
     priceTo,
+    surfaceMin,
+    withParking ? "1" : "",
+    creditEligible ? "1" : "",
   ].filter(Boolean).length;
+
+  const contentProps = {
+    operation, setOperation,
+    types, toggleType,
+    rooms, toggleRoom,
+    currency, setCurrency,
+    priceFrom, setPriceFrom,
+    priceTo, setPriceTo,
+    surfaceMin, setSurfaceMin,
+    withParking, setWithParking,
+    creditEligible, setCreditEligible,
+  };
 
   return (
     <>
       {/* Mobile trigger */}
       <button
         onClick={() => setOpen(true)}
-        className="lg:hidden fixed bottom-20 right-4 z-30 bg-[#1a5fb4] text-white rounded-full px-5 py-3 flex items-center gap-2 shadow-lg font-semibold text-sm min-h-[44px]"
+        className="lg:hidden fixed bottom-20 right-4 z-30 bg-[#1a5fb4] text-white rounded-full px-5 py-3 flex items-center gap-2 shadow-lg font-semibold text-sm min-h-11"
       >
         <SlidersHorizontal className="w-4 h-4" />
         Filtrar
@@ -98,30 +127,19 @@ export default function FilterDrawer() {
         </div>
 
         <div className="overflow-y-auto flex-1 p-5 space-y-6">
-          <FilterContent
-            operation={operation}
-            setOperation={setOperation}
-            types={types}
-            toggleType={toggleType}
-            rooms={rooms}
-            toggleRoom={toggleRoom}
-            priceFrom={priceFrom}
-            setPriceFrom={setPriceFrom}
-            priceTo={priceTo}
-            setPriceTo={setPriceTo}
-          />
+          <FilterContent {...contentProps} />
         </div>
 
         <div className="p-5 border-t border-[#e2e4e8] flex gap-3">
           <button
             onClick={clearFilters}
-            className="flex-1 border border-[#e2e4e8] text-[#5a5a6e] font-medium py-3 rounded-lg text-sm min-h-[44px]"
+            className="flex-1 border border-[#e2e4e8] text-[#5a5a6e] font-medium py-3 rounded-lg text-sm min-h-11"
           >
             Limpiar
           </button>
           <button
             onClick={applyFilters}
-            className="flex-1 bg-[#1a5fb4] text-white font-semibold py-3 rounded-lg text-sm min-h-[44px]"
+            className="flex-1 bg-[#1a5fb4] text-white font-semibold py-3 rounded-lg text-sm min-h-11"
           >
             Aplicar filtros
           </button>
@@ -129,7 +147,7 @@ export default function FilterDrawer() {
       </div>
 
       {/* Desktop sidebar */}
-      <aside className="hidden lg:block w-72 flex-shrink-0">
+      <aside className="hidden lg:block w-72 shrink-0">
         <div className="bg-white border border-[#e2e4e8] rounded-xl p-6 sticky top-24">
           <div className="flex items-center justify-between mb-5">
             <h2 className="font-semibold text-[#1a1a2e]">Filtros</h2>
@@ -143,22 +161,11 @@ export default function FilterDrawer() {
             )}
           </div>
           <div className="space-y-6">
-            <FilterContent
-              operation={operation}
-              setOperation={setOperation}
-              types={types}
-              toggleType={toggleType}
-              rooms={rooms}
-              toggleRoom={toggleRoom}
-              priceFrom={priceFrom}
-              setPriceFrom={setPriceFrom}
-              priceTo={priceTo}
-              setPriceTo={setPriceTo}
-            />
+            <FilterContent {...contentProps} />
           </div>
           <button
             onClick={applyFilters}
-            className="w-full mt-6 bg-[#1a5fb4] text-white font-semibold py-3 rounded-lg text-sm hover:bg-[#0e3d7a] transition-colors min-h-[44px]"
+            className="w-full mt-6 bg-[#1a5fb4] text-white font-semibold py-3 rounded-lg text-sm hover:bg-[#0e3d7a] transition-colors min-h-11"
           >
             Aplicar filtros
           </button>
@@ -175,23 +182,30 @@ interface FilterContentProps {
   toggleType: (id: string) => void;
   rooms: string[];
   toggleRoom: (r: string) => void;
+  currency: "ARS" | "USD";
+  setCurrency: (v: "ARS" | "USD") => void;
   priceFrom: string;
   setPriceFrom: (v: string) => void;
   priceTo: string;
   setPriceTo: (v: string) => void;
+  surfaceMin: string;
+  setSurfaceMin: (v: string) => void;
+  withParking: boolean;
+  setWithParking: (v: boolean) => void;
+  creditEligible: boolean;
+  setCreditEligible: (v: boolean) => void;
 }
 
 function FilterContent({
-  operation,
-  setOperation,
-  types,
-  toggleType,
-  rooms,
-  toggleRoom,
-  priceFrom,
-  setPriceFrom,
-  priceTo,
-  setPriceTo,
+  operation, setOperation,
+  types, toggleType,
+  rooms, toggleRoom,
+  currency, setCurrency,
+  priceFrom, setPriceFrom,
+  priceTo, setPriceTo,
+  surfaceMin, setSurfaceMin,
+  withParking, setWithParking,
+  creditEligible, setCreditEligible,
 }: FilterContentProps) {
   return (
     <>
@@ -260,26 +274,93 @@ function FilterContent({
         </div>
       </div>
 
+      {/* Currency toggle */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Moneda
+        </p>
+        <div className="flex rounded-lg border border-[#e2e4e8] overflow-hidden">
+          {(["ARS", "USD"] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => { setCurrency(c); setPriceFrom(""); setPriceTo(""); }}
+              className={cn(
+                "flex-1 py-2 text-sm font-medium transition-colors",
+                currency === c
+                  ? "bg-[#1a5fb4] text-white"
+                  : "text-[#5a5a6e] hover:bg-gray-50"
+              )}
+            >
+              {c}
+            </button>
+          ))}
+        </div>
+      </div>
+
       {/* Price */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
-          Precio
+          Precio ({currency})
         </p>
         <div className="space-y-2">
           <input
             type="number"
-            placeholder="Desde"
+            placeholder={currency === "USD" ? "Desde (USD)" : "Desde (ARS)"}
             value={priceFrom}
             onChange={(e) => setPriceFrom(e.target.value)}
-            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-[44px]"
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
           />
           <input
             type="number"
-            placeholder="Hasta"
+            placeholder={currency === "USD" ? "Hasta (USD)" : "Hasta (ARS)"}
             value={priceTo}
             onChange={(e) => setPriceTo(e.target.value)}
-            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-[44px]"
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
           />
+        </div>
+      </div>
+
+      {/* Surface */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Superficie cubierta mínima
+        </p>
+        <div className="relative">
+          <input
+            type="number"
+            placeholder="Ej: 50"
+            value={surfaceMin}
+            onChange={(e) => setSurfaceMin(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#5a5a6e]">m²</span>
+        </div>
+      </div>
+
+      {/* Extra options */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Características
+        </p>
+        <div className="space-y-3">
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={withParking}
+              onChange={(e) => setWithParking(e.target.checked)}
+              className="w-4 h-4 text-[#1a5fb4] rounded"
+            />
+            <span className="text-sm text-[#1a1a2e]">Con cochera</span>
+          </label>
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={creditEligible}
+              onChange={(e) => setCreditEligible(e.target.checked)}
+              className="w-4 h-4 text-[#1a5fb4] rounded"
+            />
+            <span className="text-sm text-[#1a1a2e]">Apto crédito</span>
+          </label>
         </div>
       </div>
     </>

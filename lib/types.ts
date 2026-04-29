@@ -30,6 +30,9 @@ export interface PropertyOperation {
 
 export interface PropertyLocation {
   divisions: Array<{ id: number; name: string }>;
+  name: string;
+  full_location: string;
+  short_location?: string;
 }
 
 export interface PropertyTag {
@@ -79,6 +82,7 @@ export interface Property {
   property_condition: string | null;
   disposition: string | null;
   tags: PropertyTag[];
+  credit_eligible: string | null;
   reference_code: string;
   public_url: string;
   status: number;

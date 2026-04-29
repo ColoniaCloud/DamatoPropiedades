@@ -2,27 +2,51 @@
 
 import { useState, useRef, useEffect } from "react";
 import { useRouter } from "next/navigation";
-import { Search, ChevronDown, Check } from "lucide-react";
+import { Search, ChevronDown, Check, Home, MapPin, BedDouble } from "lucide-react";
 import { motion } from "framer-motion";
-import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
+import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
+import { cn } from "@/lib/utils";
 
 const OPERATION_OPTIONS = OPERATION_TYPES.map((o) => ({
   value: o.slug,
   label: o.label,
 }));
 
+// Locations derived from live API data
+const LOCATION_OPTIONS = [
+  { value: "", label: "Todos los barrios" },
+  { value: "San Martin", label: "San Martín" },
+  { value: "Villa Devoto", label: "Villa Devoto" },
+  { value: "Villa del Parque", label: "Villa del Parque" },
+  { value: "Monte Castro", label: "Monte Castro" },
+  { value: "Belgrano", label: "Belgrano" },
+  { value: "Caseros", label: "Caseros" },
+  { value: "Villa Luro", label: "Villa Luro" },
+  { value: "Villa Crespo", label: "Villa Crespo" },
+  { value: "Villa Ortuzar", label: "Villa Ortuzar" },
+  { value: "Congreso", label: "Congreso" },
+  { value: "Monserrat", label: "Monserrat" },
+];
+
 export default function Hero() {
   const router = useRouter();
   const [operation, setOperation] = useState("venta");
   const [typeId, setTypeId] = useState("");
+  const [location, setLocation] = useState("");
+  const [rooms, setRooms] = useState<string[]>([]);
   const [typeOpen, setTypeOpen] = useState(false);
+  const [locationOpen, setLocationOpen] = useState(false);
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const locationRef = useRef<HTMLDivElement>(null);
   const videoRef = useRef<HTMLVideoElement>(null);
 
   useEffect(() => {
     function onClickOutside(e: MouseEvent) {
       if (dropdownRef.current && !dropdownRef.current.contains(e.target as Node)) {
         setTypeOpen(false);
+      }
+      if (locationRef.current && !locationRef.current.contains(e.target as Node)) {
+        setLocationOpen(false);
       }
     }
     document.addEventListener("mousedown", onClickOutside);
@@ -35,17 +59,25 @@ export default function Hero() {
     video.play().catch(() => {});
   }, []);
 
+  function toggleRoom(r: string) {
+    setRooms((prev) =>
+      prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+    );
+  }
+
   function handleSearch() {
     const params = new URLSearchParams();
     params.set("operacion", operation);
     if (typeId) params.set("tipo", typeId);
+    rooms.forEach((r) => params.append("ambientes", r));
+    if (location) params.set("barrio", location);
     router.push(`/propiedades?${params.toString()}`);
   }
 
   const selectedType = PROPERTY_TYPES.find((t) => String(t.id) === typeId);
 
   return (
-    <section className="relative h-screen flex flex-col items-center justify-center overflow-hidden">
+    <section className="relative h-screen flex flex-col items-center justify-center">
       {/* Background video */}
       <video
         ref={videoRef}
@@ -57,7 +89,7 @@ export default function Hero() {
         playsInline
         preload="auto"
       />
-      <div className="absolute inset-0 bg-gradient-to-b from-[#0c1b2e]/70 via-[#0c1b2e]/60 to-[#0c1b2e]/80" />
+      <div className="absolute inset-0 bg-linear-to-b from-[#0c1b2e]/70 via-[#0c1b2e]/60 to-[#0c1b2e]/80" />
 
       {/* Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center pt-20">
@@ -105,7 +137,7 @@ export default function Hero() {
               <button
                 key={opt.value}
                 onClick={() => setOperation(opt.value)}
-                className="relative flex-1 py-2 px-3 rounded-md text-sm font-medium min-h-[40px] z-10"
+                className="relative flex-1 py-2 px-3 rounded-md text-sm font-medium min-h-10 z-10"
               >
                 {operation === opt.value && (
                   <motion.div
@@ -125,20 +157,21 @@ export default function Hero() {
             ))}
           </div>
 
-          {/* Filters row */}
-          <div className="flex flex-col sm:flex-row gap-3">
-            {/* Custom property type dropdown */}
+          {/* Row 1: Tipo + Ubicación */}
+          <div className="flex flex-col sm:flex-row gap-3 mb-3">
+            {/* Property type custom dropdown */}
             <div ref={dropdownRef} className="flex-1 relative">
               <button
                 type="button"
                 onClick={() => setTypeOpen((v) => !v)}
-                className="w-full flex items-center justify-between border border-white/20 rounded-lg px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-[44px] transition-colors"
+                className="w-full flex items-center justify-between border border-white/20 rounded-lg px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-11 transition-colors"
               >
-                <span className={selectedType ? "text-white" : "text-white/50"}>
+                <span className={`flex items-center gap-2 ${selectedType ? "text-white" : "text-white/50"}`}>
+                  <Home className="w-4 h-4 shrink-0" />
                   {selectedType ? selectedType.name : "Tipo de propiedad"}
                 </span>
                 <ChevronDown
-                  className={`w-4 h-4 text-white/50 transition-transform duration-200 flex-shrink-0 ml-2 ${
+                  className={`w-4 h-4 text-white/50 transition-transform duration-200 shrink-0 ml-2 ${
                     typeOpen ? "rotate-180" : ""
                   }`}
                 />
@@ -152,13 +185,12 @@ export default function Hero() {
                   transition={{ duration: 0.15, ease: "easeOut" }}
                   className="absolute top-full left-0 right-0 mt-1.5 z-30 overflow-hidden rounded-xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
                   style={{
-                    background: "rgba(12,27,46,0.85)",
-                    backdropFilter: "blur(20px) saturate(1.6)",
-                    WebkitBackdropFilter: "blur(20px) saturate(1.6)",
+                    background: "rgba(12,27,46,0.97)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
                   }}
                 >
                   <div className="py-1">
-                    {/* "All types" option */}
                     <button
                       type="button"
                       onClick={() => { setTypeId(""); setTypeOpen(false); }}
@@ -193,9 +225,91 @@ export default function Hero() {
               )}
             </div>
 
+            {/* Location custom dropdown */}
+            <div ref={locationRef} className="flex-1 relative">
+              <button
+                type="button"
+                onClick={() => setLocationOpen((v) => !v)}
+                className="w-full flex items-center justify-between border border-white/20 rounded-lg px-3 py-3 text-sm text-white bg-white/10 hover:bg-white/15 focus:outline-none focus:ring-2 focus:ring-white/40 min-h-11 transition-colors"
+              >
+                <span className={`flex items-center gap-2 ${location ? "text-white" : "text-white/50"}`}>
+                  <MapPin className="w-4 h-4 shrink-0" />
+                  {LOCATION_OPTIONS.find((o) => o.value === location)?.label ?? "Todos los barrios"}
+                </span>
+                <ChevronDown
+                  className={`w-4 h-4 text-white/50 transition-transform duration-200 shrink-0 ml-2 ${
+                    locationOpen ? "rotate-180" : ""
+                  }`}
+                />
+              </button>
+
+              {locationOpen && (
+                <motion.div
+                  initial={{ opacity: 0, y: -6, scale: 0.97 }}
+                  animate={{ opacity: 1, y: 0, scale: 1 }}
+                  exit={{ opacity: 0, y: -6, scale: 0.97 }}
+                  transition={{ duration: 0.15, ease: "easeOut" }}
+                  className="absolute top-full left-0 right-0 mt-1.5 z-30 overflow-hidden rounded-xl border border-white/15 shadow-[0_8px_32px_rgba(0,0,0,0.4)]"
+                  style={{
+                    background: "rgba(12,27,46,0.97)",
+                    backdropFilter: "blur(8px)",
+                    WebkitBackdropFilter: "blur(8px)",
+                  }}
+                >
+                  <div className="py-1">
+                    {LOCATION_OPTIONS.map((opt) => {
+                      const isSelected = location === opt.value;
+                      return (
+                        <button
+                          key={opt.value}
+                          type="button"
+                          onClick={() => { setLocation(opt.value); setLocationOpen(false); }}
+                          className="w-full flex items-center justify-between px-4 py-2.5 text-sm text-left transition-colors hover:bg-white/8 group"
+                        >
+                          <span className={isSelected ? "text-[#00b4d8]" : "text-white/70 group-hover:text-white"}>
+                            {opt.label}
+                          </span>
+                          {isSelected && <Check className="w-3.5 h-3.5 text-[#00b4d8]" />}
+                        </button>
+                      );
+                    })}
+                  </div>
+                </motion.div>
+              )}
+            </div>
+          </div>
+
+          {/* Row 2: Ambientes + Buscar */}
+          <div className="flex items-center gap-3">
+            {/* Rooms label + buttons */}
+            <div className="flex items-center gap-2 flex-1">
+              <div className="hidden sm:flex flex-col items-center justify-center gap-0.5 h-11">
+                <span className="text-xs text-white/50 whitespace-nowrap leading-none">Amb.</span>
+                <BedDouble className="w-3.5 h-3.5 text-white/40" />
+              </div>
+              <div className="flex gap-1.5 flex-1">
+                {ROOM_OPTIONS.map((r) => (
+                  <button
+                    key={r}
+                    type="button"
+                    onClick={() => toggleRoom(String(r))}
+                    className={cn(
+                      "flex-1 py-2 rounded-lg border text-sm font-medium min-h-11 transition-colors",
+                      rooms.includes(String(r))
+                        ? "bg-white text-[#1a5fb4] border-white"
+                        : "border-white/20 text-white/70 hover:text-white hover:border-white/40 bg-white/10"
+                    )}
+                  >
+                    {r === 4 ? "4+" : r}
+                  </button>
+                ))}
+              </div>
+            </div>
+
+            {/* Search button */}
             <button
               onClick={handleSearch}
-              className="bg-[#00b4d8] hover:bg-[#0096b7] text-[#1a1a2e] font-bold px-6 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors min-h-[44px] whitespace-nowrap"
+              className="bg-[#00b4d8] hover:bg-[#0096b7] text-[#1a1a2e] font-bold px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors min-h-11 whitespace-nowrap"
             >
               <Search className="w-4 h-4" />
               Buscar
