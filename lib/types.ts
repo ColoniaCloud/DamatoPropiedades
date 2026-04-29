@@ -91,6 +91,7 @@ export interface Property {
   branch: Branch;
   producer: Producer | null;
   development?: { id: number; name: string } | null;
+  is_starred_on_web: boolean;
 }
 
 export interface Development {
