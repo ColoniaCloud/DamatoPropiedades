@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import Link from "next/link";
 import { MapPin, Calendar, Hash, Tag, Phone, Mail, ChevronRight } from "lucide-react";
 import PropertyGallery from "@/components/property/PropertyGallery";
@@ -8,7 +9,7 @@ import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertyCard from "@/components/property/PropertyCard";
 import { getDevelopment, getPropertiesByDevelopment } from "@/lib/tokko";
-import { formatConstructionDate, getConstructionStatusInfo } from "@/lib/utils";
+import { formatConstructionDate, getConstructionStatusInfo, slugify } from "@/lib/utils";
 import { SITE_URL } from "@/lib/constants";
 
 interface PageProps {
@@ -55,7 +56,14 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
 
   const statusInfo = getConstructionStatusInfo(development.construction_status);
   const neighborhood = development.location?.divisions?.[0]?.name ?? "";
-  const whatsappMsg = `Hola, me interesa el emprendimiento ${development.name} en ${development.fake_address}. ¿Podrían darme más información?`;
+  const headersList = await headers();
+  const host = headersList.get("host") ?? "localhost:3000";
+  const protocol = host.startsWith("localhost") ? "http" : "https";
+  const developmentUrl = `${protocol}://${host}/emprendimientos/${development.id}/${slugify(development.name)}`;
+  const whatsappMsg = `Hola, me interesa este emprendimiento en ${development.fake_address}.
+*Nombre:* _${development.name}_
+*Link:* _${developmentUrl}_`;
+  const formMsg = `Hola, me interesa este emprendimiento en ${development.fake_address}.\nNombre: ${development.name}\nLink: ${developmentUrl}`;
 
   const photos = development.photos.map((p) => ({
     image: p.image,
@@ -242,7 +250,7 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
                 Consultar
               </h2>
               <div className="bg-white border border-[#e2e4e8] rounded-xl p-5">
-                <ContactForm initialMessage={whatsappMsg} />
+                <ContactForm initialMessage={formMsg} />
               </div>
             </div>
           </div>
@@ -256,7 +264,7 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
                 <h2 className="font-display text-lg font-bold text-[#1a1a2e] mb-4">
                   Consultar este proyecto
                 </h2>
-                <ContactForm initialMessage={whatsappMsg} />
+                <ContactForm initialMessage={formMsg} />
               </div>
 
               {/* WhatsApp */}

@@ -8,6 +8,7 @@ interface ContactFormProps {
   propertyId?: number;
   propertyRef?: string;
   propertyAddress?: string;
+  propertyUrl?: string;
   initialMessage?: string;
 }
 
@@ -15,11 +16,12 @@ export default function ContactForm({
   propertyId,
   propertyRef,
   propertyAddress,
+  propertyUrl,
   initialMessage,
 }: ContactFormProps) {
   const defaultMessage = initialMessage
     ?? (propertyRef && propertyAddress
-      ? `Hola, me interesa la propiedad ${propertyRef} en ${propertyAddress}. ¿Podrían darme más información?`
+      ? `Hola, me interesa esta propiedad en ${propertyAddress}.\nRef de la propiedad: ${propertyRef}${propertyUrl ? `\nLink: ${propertyUrl}` : ""}`
       : "Hola, me gustaría recibir información sobre sus propiedades.");
 
   const [form, setForm] = useState({

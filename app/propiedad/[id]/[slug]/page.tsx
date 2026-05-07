@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import type { Property } from "@/lib/types";
 import { notFound } from "next/navigation";
+import { headers } from "next/headers";
 import { BedDouble, Bath, Maximize2, Car, Calendar, Home, MapPin, Hash, Check } from "lucide-react";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyMap from "@/components/property/PropertyMap";
@@ -17,6 +18,7 @@ import {
   getOperationColor,
   getNeighborhood,
   formatPrice,
+  getPropertyPath,
 } from "@/lib/utils";
 import { SITE_URL } from "@/lib/constants";
 
@@ -75,7 +77,13 @@ export default async function PropertyDetailPage({ params }: PageProps) {
   const op = getMainOperation(property);
   const price = getMainPrice(property);
   const neighborhood = getNeighborhood(property);
-  const whatsappMsg = `Hola, me interesa la propiedad ${property.reference_code} en ${property.fake_address}. ¿Podría darme más información?`;
+  const headersList = await headers();
+  const host = headersList.get("host") ?? "localhost:3000";
+  const protocol = host.startsWith("localhost") ? "http" : "https";
+  const propertyUrl = `${protocol}://${host}${getPropertyPath(property)}`;
+  const whatsappMsg = `Hola, me interesa esta propiedad en ${property.fake_address}.
+*Ref de la propiedad:* _${property.reference_code}_
+*Link:* _${propertyUrl}_`;
 
   let similar: Property[] = [];
   try {
@@ -336,6 +344,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     propertyId={property.id}
                     propertyRef={property.reference_code}
                     propertyAddress={property.fake_address}
+                    propertyUrl={propertyUrl}
                   />
                   <div className="mt-4 pt-4 border-t border-[#e2e4e8]">
                     <WhatsAppButton
@@ -361,6 +370,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   propertyId={property.id}
                   propertyRef={property.reference_code}
                   propertyAddress={property.fake_address}
+                  propertyUrl={propertyUrl}
                 />
                 <div className="mt-4 pt-4 border-t border-[#e2e4e8]">
                   <WhatsAppButton

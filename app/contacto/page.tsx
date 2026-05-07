@@ -13,8 +13,8 @@ const CONTACT_INFO = [
   {
     icon: MapPin,
     label: "Dirección",
-    value: "Av. Francisco Beiro 4701, CABA",
-    href: "https://maps.google.com/?q=Av.+Francisco+Beiro+4701,+CABA,+Argentina",
+    value: "Av. Francisco Beiro 4701 — Villa Devoto, CABA",
+    href: "https://maps.google.com/?q=Av.+Francisco+Beiro+4701,+Villa+Devoto,+Buenos+Aires,+Argentina",
   },
   {
     icon: Phone,
@@ -31,7 +31,7 @@ const CONTACT_INFO = [
   {
     icon: Clock,
     label: "Horario",
-    value: "Lunes a viernes 9:00 – 18:00 hs",
+    value: "Lun a Vier 10:00 – 19:00 hs · Sáb 10:00 – 13:00 hs",
   },
 ];
 
@@ -98,13 +98,14 @@ export default function ContactPage() {
             {/* Map */}
             <div className="rounded-xl overflow-hidden border border-[#e2e4e8] h-52">
               <iframe
-                src="https://www.openstreetmap.org/export/embed.html?bbox=-58.5175%2C-34.6005%2C-58.4975%2C-34.5905&layer=mapnik&marker=-34.5955%2C-58.5075"
+                src="https://www.google.com/maps?q=Av.+Francisco+Beiro+4701,+Villa+Devoto,+Buenos+Aires,+Argentina&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
-                title="Ubicación D'Amato Propiedades"
+                referrerPolicy="no-referrer-when-downgrade"
+                title="Ubicación D'Amato Propiedades — Av. Francisco Beiro 4701, Villa Devoto"
               />
             </div>
           </div>

@@ -26,6 +26,8 @@ interface PageProps {
     superficie_min?: string;
     cochera?: string;
     credito?: string;
+    tags?: string;
+    suite?: string;
     barrio?: string;
     orden?: string;
     pagina?: string;
@@ -86,6 +88,17 @@ function applyLocalFilters(properties: Property[], params: Awaited<PageProps["se
     result = result.filter((p) => p.credit_eligible === "Apto crédito");
   }
 
+  if (params.tags) {
+    const requiredTagIds = params.tags.split(",").map(Number).filter(Boolean);
+    result = result.filter((p) =>
+      requiredTagIds.every((id) => p.tags.some((t) => t.id === id))
+    );
+  }
+
+  if (params.suite === "1") {
+    result = result.filter((p) => p.suite_amount > 0);
+  }
+
   if (params.barrio) {
     const barrio = params.barrio.toLowerCase();
     result = result.filter((p) =>
@@ -125,7 +138,7 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
   const orderBy = params.orden || "-created_at";
 
   const searchData = buildSearchData(params);
-  const hasLocalFilters = !!(params.superficie_min || params.cochera || params.credito || params.barrio);
+  const hasLocalFilters = !!(params.superficie_min || params.cochera || params.credito || params.tags || params.suite || params.barrio);
 
   let properties: Property[] = [];
   let totalCount = 0;
