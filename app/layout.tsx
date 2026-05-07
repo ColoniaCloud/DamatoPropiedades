@@ -21,7 +21,7 @@ const poppins = Poppins({
   display: "swap",
 });
 
-const SITE_TITLE = "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín";
+const SITE_TITLE = "D'Amato Propiedades — Inmobiliaria en Villa Devoto, CABA";
 const SITE_DESCRIPTION =
   "Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades en Villa Devoto, CABA y General San Martín. D'Amato Propiedades.";
 const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://damatopropiedades.com.ar";
