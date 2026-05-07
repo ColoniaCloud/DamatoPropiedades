@@ -27,33 +27,40 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id, slug } = await params;
+  const canonicalPath = `/propiedad/${id}/${slug}`;
   try {
     const property = await getProperty(Number(id));
     const op = getMainOperation(property);
+    const title = property.publication_title;
+    const description = `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}m². ` : ""}D'Amato Propiedades.`;
+    const ogImage = property.photos?.[0]?.image
+      ? [{ url: property.photos[0].image, width: 1200, height: 800, alt: title }]
+      : [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }];
     return {
-      title: `${property.publication_title} | D'Amato Propiedades`,
-      description: `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}m². ` : ""}D'Amato Propiedades.`,
+      title,
+      description,
+      alternates: { canonical: canonicalPath },
       openGraph: {
-        images: property.photos?.[0]?.image ? [property.photos[0].image] : ["/hero-nosotros.jpg"],
+        title,
+        description,
+        url: canonicalPath,
         type: "website",
+        images: ogImage,
       },
       twitter: {
         card: "summary_large_image",
-        images: property.photos?.[0]?.image ? [property.photos[0].image] : ["/hero-nosotros.jpg"],
+        title,
+        description,
+        images: ogImage.map((i) => i.url),
       },
     };
   } catch {
     return {
       title: "Propiedad | D'Amato Propiedades",
-      openGraph: {
-        images: ["/hero-nosotros.jpg"],
-        type: "website",
-      },
-      twitter: {
-        card: "summary_large_image",
-        images: ["/hero-nosotros.jpg"],
-      },
+      alternates: { canonical: canonicalPath },
+      openGraph: { images: ["/og-image.jpg"], type: "website" },
+      twitter: { card: "summary_large_image", images: ["/og-image.jpg"] },
     };
   }
 }

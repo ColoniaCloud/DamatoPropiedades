@@ -21,29 +21,47 @@ const poppins = Poppins({
   display: "swap",
 });
 
+const SITE_TITLE = "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín";
+const SITE_DESCRIPTION =
+  "Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades en Villa Devoto, CABA y General San Martín. D'Amato Propiedades.";
+const SITE_URL = process.env.NEXT_PUBLIC_SITE_URL || "https://damatopropiedades.com.ar";
+const OG_IMAGE = "/og-image.jpg";
+
 export const metadata: Metadata = {
   title: {
     template: "%s | D'Amato Propiedades",
-    default: "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín",
+    default: SITE_TITLE,
   },
-  description:
-    "Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades en Villa Devoto, CABA y General San Martín. D'Amato Propiedades.",
-  metadataBase: new URL(
-    process.env.NEXT_PUBLIC_SITE_URL || "https://damatopropiedades.com.ar"
-  ),
+  description: SITE_DESCRIPTION,
+  metadataBase: new URL(SITE_URL),
+  alternates: {
+    canonical: "/",
+  },
   openGraph: {
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    url: "/",
     siteName: "D'Amato Propiedades",
     locale: "es_AR",
     type: "website",
     images: [
-      "/hero-nosotros.jpg"
+      {
+        url: OG_IMAGE,
+        width: 1200,
+        height: 630,
+        alt: "D'Amato Propiedades — Inmobiliaria en Villa Devoto",
+      },
     ],
   },
   twitter: {
     card: "summary_large_image",
-    images: [
-      "/hero-nosotros.jpg"
-    ],
+    title: SITE_TITLE,
+    description: SITE_DESCRIPTION,
+    images: [OG_IMAGE],
+  },
+  icons: {
+    icon: [{ url: "/favicon.png", type: "image/png" }],
+    apple: "/favicon.png",
   },
   robots: {
     index: true,
