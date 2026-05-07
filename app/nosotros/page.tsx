@@ -14,12 +14,9 @@ export default function NosotrosPage() {
     <div className="min-h-screen">
       {/* Hero */}
       <div
-        className="relative h-screen flex items-center justify-center"
+        className="relative h-[75vh] lg:h-[95vh] flex items-center justify-center bg-cover bg-center bg-no-repeat supports-[background-attachment:fixed]:bg-fixed"
         style={{
           backgroundImage: "url('/hero-nosotros.jpg')",
-          backgroundAttachment: "fixed",
-          backgroundSize: "cover",
-          backgroundPosition: "center center",
         }}
       >
         <div className="absolute inset-0 bg-[#0c1b2e]/60" />

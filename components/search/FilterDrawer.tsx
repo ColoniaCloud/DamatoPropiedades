@@ -22,6 +22,10 @@ export default function FilterDrawer() {
   const [surfaceMin, setSurfaceMin] = useState(searchParams.get("superficie_min") || "");
   const [withParking, setWithParking] = useState(searchParams.get("cochera") === "1");
   const [creditEligible, setCreditEligible] = useState(searchParams.get("credito") === "1");
+  const [tagIds, setTagIds] = useState<string[]>(
+    searchParams.get("tags")?.split(",").filter(Boolean) ?? []
+  );
+  const [withSuite, setWithSuite] = useState(searchParams.get("suite") === "1");
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -32,6 +36,12 @@ export default function FilterDrawer() {
   function toggleRoom(r: string) {
     setRooms((prev) =>
       prev.includes(r) ? prev.filter((x) => x !== r) : [...prev, r]
+    );
+  }
+
+  function toggleTag(id: string) {
+    setTagIds((prev) =>
+      prev.includes(id) ? prev.filter((x) => x !== id) : [...prev, id]
     );
   }
 
@@ -46,6 +56,8 @@ export default function FilterDrawer() {
     if (surfaceMin) params.set("superficie_min", surfaceMin);
     if (withParking) params.set("cochera", "1");
     if (creditEligible) params.set("credito", "1");
+    if (tagIds.length > 0) params.set("tags", tagIds.join(","));
+    if (withSuite) params.set("suite", "1");
     router.push(`/propiedades?${params.toString()}`);
     setOpen(false);
   }
@@ -60,6 +72,8 @@ export default function FilterDrawer() {
     setSurfaceMin("");
     setWithParking(false);
     setCreditEligible(false);
+    setTagIds([]);
+    setWithSuite(false);
     router.push("/propiedades");
     setOpen(false);
   }
@@ -73,6 +87,8 @@ export default function FilterDrawer() {
     surfaceMin,
     withParking ? "1" : "",
     creditEligible ? "1" : "",
+    ...tagIds,
+    withSuite ? "1" : "",
   ].filter(Boolean).length;
 
   const contentProps = {
@@ -85,6 +101,8 @@ export default function FilterDrawer() {
     surfaceMin, setSurfaceMin,
     withParking, setWithParking,
     creditEligible, setCreditEligible,
+    tagIds, toggleTag,
+    withSuite, setWithSuite,
   };
 
   return (
@@ -194,7 +212,19 @@ interface FilterContentProps {
   setWithParking: (v: boolean) => void;
   creditEligible: boolean;
   setCreditEligible: (v: boolean) => void;
+  tagIds: string[];
+  toggleTag: (id: string) => void;
+  withSuite: boolean;
+  setWithSuite: (v: boolean) => void;
 }
+
+const CHARACTERISTIC_TAGS = [
+  { id: 10, label: "Balcón" },
+  { id: 19, label: "Jardín" },
+  { id: 23, label: "Patio" },
+  { id: 25, label: "Terraza" },
+  { id: 26, label: "Toilette" },
+] as const;
 
 function FilterContent({
   operation, setOperation,
@@ -206,6 +236,8 @@ function FilterContent({
   surfaceMin, setSurfaceMin,
   withParking, setWithParking,
   creditEligible, setCreditEligible,
+  tagIds, toggleTag,
+  withSuite, setWithSuite,
 }: FilterContentProps) {
   return (
     <>
@@ -360,6 +392,26 @@ function FilterContent({
               className="w-4 h-4 text-[#1a5fb4] rounded"
             />
             <span className="text-sm text-[#1a1a2e]">Apto crédito</span>
+          </label>
+          {CHARACTERISTIC_TAGS.map((tag) => (
+            <label key={tag.id} className="flex items-center gap-3 cursor-pointer">
+              <input
+                type="checkbox"
+                checked={tagIds.includes(String(tag.id))}
+                onChange={() => toggleTag(String(tag.id))}
+                className="w-4 h-4 text-[#1a5fb4] rounded"
+              />
+              <span className="text-sm text-[#1a1a2e]">{tag.label}</span>
+            </label>
+          ))}
+          <label className="flex items-center gap-3 cursor-pointer">
+            <input
+              type="checkbox"
+              checked={withSuite}
+              onChange={(e) => setWithSuite(e.target.checked)}
+              className="w-4 h-4 text-[#1a5fb4] rounded"
+            />
+            <span className="text-sm text-[#1a1a2e]">Suite</span>
           </label>
         </div>
       </div>
