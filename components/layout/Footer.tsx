@@ -107,12 +107,12 @@ export default function Footer() {
               <li className="flex items-start gap-3 justify-center lg:justify-start">
                 <MapPin className="w-4 h-4 text-[#00b4d8] mt-0.5 shrink-0" />
                 <a
-                  href="https://maps.google.com/?q=Av.+Francisco+Beiro+4701,+CABA,+Argentina"
+                  href="https://maps.google.com/?q=Av.+Francisco+Beiro+4763,+CABA,+Argentina"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
-                  Av. Francisco Beiro 4701, CABA
+                  Av. Francisco Beiro 4763, CABA
                 </a>
               </li>
               <li className="flex items-center gap-3 justify-center lg:justify-start">
