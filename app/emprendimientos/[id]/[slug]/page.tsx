@@ -17,18 +17,40 @@ interface PageProps {
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { id } = await params;
+  const { id, slug } = await params;
+  const canonicalPath = `/emprendimientos/${id}/${slug}`;
   try {
     const dev = await getDevelopment(Number(id));
+    const title = dev.name;
+    const description = `${dev.publication_title} — ${dev.fake_address}. Entrega estimada: ${formatConstructionDate(dev.construction_date)}.`;
+    const ogImage = dev.photos?.[0]?.image
+      ? [{ url: dev.photos[0].image, width: 1200, height: 800, alt: title }]
+      : [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }];
     return {
-      title: `${dev.name} | D'Amato Propiedades`,
-      description: `${dev.publication_title} — ${dev.fake_address}. Entrega estimada: ${formatConstructionDate(dev.construction_date)}.`,
+      title,
+      description,
+      alternates: { canonical: canonicalPath },
       openGraph: {
-        images: dev.photos?.[0]?.image ? [dev.photos[0].image] : [],
+        title,
+        description,
+        url: canonicalPath,
+        type: "website",
+        images: ogImage,
+      },
+      twitter: {
+        card: "summary_large_image",
+        title,
+        description,
+        images: ogImage.map((i) => i.url),
       },
     };
   } catch {
-    return { title: "Emprendimiento | D'Amato Propiedades" };
+    return {
+      title: "Emprendimiento | D'Amato Propiedades",
+      alternates: { canonical: canonicalPath },
+      openGraph: { images: ["/og-image.jpg"], type: "website" },
+      twitter: { card: "summary_large_image", images: ["/og-image.jpg"] },
+    };
   }
 }
 
