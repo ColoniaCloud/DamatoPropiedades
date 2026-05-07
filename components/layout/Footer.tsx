@@ -57,7 +57,7 @@ export default function Footer() {
               D&apos;Amato Propiedades
             </span>
             <p className="text-sm text-white/60 max-w-xs leading-relaxed mx-auto lg:mx-0">
-              Tu inmobiliaria de confianza en Villa Devoto y General San Martín.
+              Tu inmobiliaria de confianza en Villa Devoto.
               Más de 35 años de experiencia a tu servicio.
             </p>
 

@@ -19,6 +19,7 @@ export default function WhatsAppFloat() {
   const [open, setOpen] = useState(false);
   const [message, setMessage] = useState(DEFAULT_MESSAGE);
   const [nearFooter, setNearFooter] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   useEffect(() => {
@@ -42,6 +43,15 @@ export default function WhatsAppFloat() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    function onScroll() {
+      setScrolled(window.scrollY > 100);
+    }
+    window.addEventListener("scroll", onScroll, { passive: true });
+    onScroll();
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   function handleSend() {
     const url = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`;
     window.open(url, "_blank", "noopener,noreferrer");
@@ -57,9 +67,9 @@ export default function WhatsAppFloat() {
 
   return (
     <div
-      className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-transform duration-300 ease-in-out ${
+      className={`fixed bottom-6 right-6 z-50 flex flex-col items-end gap-3 transition-all duration-300 ease-in-out ${
         nearFooter ? "translate-x-[calc(100%+1.5rem)]" : "translate-x-0"
-      }`}
+      } ${!scrolled ? "max-lg:opacity-0 max-lg:pointer-events-none max-lg:translate-y-4" : ""}`}
     >
       {/* Chat modal */}
       {open && (
