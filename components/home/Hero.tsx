@@ -280,9 +280,11 @@ export default function Hero() {
           </div>
 
           {/* Row 2: Ambientes + Buscar */}
-          <div className="flex items-center gap-3">
+          <div className="flex items-end gap-3">
             {/* Rooms label + buttons */}
-            <div className="flex items-center gap-2 flex-1">
+            <div className="flex flex-col gap-1.5 flex-1">
+              <span className="sm:hidden text-xs text-white/50 text-left leading-none">Ambientes</span>
+              <div className="flex items-center gap-2">
               <div className="hidden sm:flex flex-col items-center justify-center gap-0.5 h-11">
                 <span className="text-xs text-white/50 whitespace-nowrap leading-none">Amb.</span>
                 <BedDouble className="w-3.5 h-3.5 text-white/40" />
@@ -303,6 +305,7 @@ export default function Hero() {
                     {r === 4 ? "4+" : r}
                   </button>
                 ))}
+              </div>
               </div>
             </div>
 
