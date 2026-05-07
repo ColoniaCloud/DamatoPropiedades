@@ -4,9 +4,9 @@ import PropertyGrid from "@/components/property/PropertyGrid";
 import { searchProperties } from "@/lib/tokko";
 
 export const metadata: Metadata = {
-  title: "Alquiler Temporario en Villa Devoto y General San Martín | D'Amato Propiedades",
+  title: "Alquiler Temporario en Villa Devoto | D'Amato Propiedades",
   description:
-    "Propiedades en alquiler temporario en Villa Devoto y General San Martín. Departamentos, casas y PH disponibles por temporada.",
+    "Propiedades en alquiler temporario en Villa Devoto. Departamentos, casas y PH disponibles por temporada.",
 };
 
 export const revalidate = 300;

@@ -23,7 +23,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!propType) return {};
   return {
     title: `${propType.name}s en Alquiler en Buenos Aires | D'Amato Propiedades`,
-    description: `Encontrá ${propType.name.toLowerCase()}s en alquiler en Villa Devoto y General San Martín. Amplio catálogo con todos los detalles y fotos.`,
+    description: `Encontrá ${propType.name.toLowerCase()}s en alquiler en Villa Devoto. Amplio catálogo con todos los detalles y fotos.`,
   };
 }
 

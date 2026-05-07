@@ -6,7 +6,7 @@ import DevelopmentCard from "@/components/development/DevelopmentCard";
 export const metadata: Metadata = {
   title: "Emprendimientos | D'Amato Propiedades",
   description:
-    "Conocé nuestros emprendimientos en construcción en Villa Devoto y General San Martín. Invertí desde el pozo con D'Amato Propiedades.",
+    "Conocé nuestros emprendimientos en construcción en Villa Devoto. Invertí desde el pozo con D'Amato Propiedades.",
 };
 
 export const revalidate = 300;
