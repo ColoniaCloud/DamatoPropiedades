@@ -8,9 +8,9 @@ import { searchProperties } from "@/lib/tokko";
 import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Propiedades en Venta y Alquiler — Villa Devoto y General San Martín",
+  title: "Propiedades en Venta y Alquiler — Villa Devoto",
   description:
-    "Buscá propiedades en venta y alquiler en Villa Devoto, CABA y General San Martín. Filtrá por tipo, precio y ambientes.",
+    "Buscá propiedades en venta y alquiler en Villa Devoto. Filtrá por tipo, precio y ambientes.",
 };
 
 export const revalidate = 300;

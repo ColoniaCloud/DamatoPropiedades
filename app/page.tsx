@@ -12,9 +12,9 @@ import PropertiesMapClient from "@/components/home/PropertiesMapClient";
 import { getProperties, getFeaturedProperties, getDevelopments } from "@/lib/tokko";
 
 export const metadata: Metadata = {
-  title: "D'Amato Propiedades — Inmobiliaria en Villa Devoto y General San Martín",
+  title: "D'Amato Propiedades — Tu inmobiliaria de confianza en Villa Devoto",
   description:
-    "Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades en Villa Devoto, CABA y General San Martín. Tasaciones, venta e inversiones inmobiliarias.",
+    "Tu inmobiliaria de confianza en Villa Devoto. Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades. Tasaciones, venta e inversiones inmobiliarias.",
 };
 
 export const revalidate = 300;

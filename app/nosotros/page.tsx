@@ -4,7 +4,7 @@ import { ShieldCheck, Target, Eye } from "lucide-react";
 export const metadata: Metadata = {
   title: "Nosotros | D'Amato Propiedades",
   description:
-    "Más de 35 años de experiencia en construcción e intermediación inmobiliaria en Villa Devoto, CABA y General San Martín. Conocé nuestra misión, visión y valores.",
+    "Tu inmobiliaria de confianza en Villa Devoto. Más de 35 años de experiencia en construcción e intermediación inmobiliaria. Conocé nuestra misión, visión y valores.",
 };
 
 const VALUES = ["Compromiso", "Integridad", "Profesionalismo"];
@@ -47,9 +47,7 @@ export default function NosotrosPage() {
           <p className="text-lg text-[#1a1a2e] leading-relaxed">
             Con más de 35 años de experiencia en el rubro de la construcción y
             la intermediación en la compra y venta de propiedades en el barrio
-            de <strong className="text-[#1a5fb4]">Villa Devoto, Capital Federal</strong> y
-            en la localidad de{" "}
-            <strong className="text-[#1a5fb4]">General San Martín</strong>, le
+            de <strong className="text-[#1a5fb4]">Villa Devoto</strong>, le
             ofrecemos nuestros servicios de tasaciones, venta, informes y
             asesoramiento sobre inversiones en desarrollos inmobiliarios.
           </p>
