@@ -1,6 +1,6 @@
 import type { TokkoPropertyList, TokkoDevelopmentList, Property, Development, ContactPayload } from "./types";
 
-const API_BASE = "http://www.tokkobroker.com/api/v1";
+const API_BASE = "https://www.tokkobroker.com/api/v1";
 const API_KEY = process.env.TOKKO_API_KEY!;
 
 const REVALIDATE = 300;
