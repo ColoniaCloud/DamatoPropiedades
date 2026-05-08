@@ -64,7 +64,7 @@ export default function EmprendimientosSlider({ developments }: Props) {
       <div className="absolute inset-0 bg-linear-to-t from-[#0c1b2e]/70 via-transparent to-transparent" />
 
       {/* Content — respects site max-width */}
-      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-16 sm:pb-20">
+      <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-36 sm:pb-20">
         {/* Eyebrow */}
         <span className="text-[#00b4d8] text-xs font-semibold uppercase tracking-widest mb-3">
           Emprendimientos
