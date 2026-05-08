@@ -1,7 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 
 const API_KEY = process.env.TOKKO_API_KEY!;
-const API_BASE = "http://www.tokkobroker.com/api/v1";
+const API_BASE = "https://www.tokkobroker.com/api/v1";
 
 export async function POST(req: NextRequest) {
   try {
