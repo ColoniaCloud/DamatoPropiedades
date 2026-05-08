@@ -126,17 +126,36 @@ export default function EmprendimientosSlider({ developments }: Props) {
       {/* Navigation arrows */}
       {developments.length > 1 && (
         <>
+          {/* Mobile: flechas centradas sobre los dots */}
+          <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex gap-4 sm:hidden">
+            <button
+              onClick={() => goTo(current - 1)}
+              aria-label="Anterior"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+            >
+              <ChevronLeft className="w-5 h-5" />
+            </button>
+            <button
+              onClick={() => goTo(current + 1)}
+              aria-label="Siguiente"
+              className="w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+            >
+              <ChevronRight className="w-5 h-5" />
+            </button>
+          </div>
+
+          {/* Desktop: flechas en los laterales */}
           <button
             onClick={() => goTo(current - 1)}
             aria-label="Anterior"
-            className="absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+            className="hidden sm:flex absolute left-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm items-center justify-center text-white transition-colors"
           >
             <ChevronLeft className="w-5 h-5" />
           </button>
           <button
             onClick={() => goTo(current + 1)}
             aria-label="Siguiente"
-            className="absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm flex items-center justify-center text-white transition-colors"
+            className="hidden sm:flex absolute right-4 top-1/2 -translate-y-1/2 z-20 w-10 h-10 rounded-full bg-white/10 hover:bg-white/25 backdrop-blur-sm items-center justify-center text-white transition-colors"
           >
             <ChevronRight className="w-5 h-5" />
           </button>
