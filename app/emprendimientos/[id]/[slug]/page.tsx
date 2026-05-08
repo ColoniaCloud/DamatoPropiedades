@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
 import Link from "next/link";
-import { MapPin, Calendar, Hash, Tag, Phone, Mail, ChevronRight } from "lucide-react";
+import { MapPin, Calendar, Hash, Tag, Mail, ChevronRight } from "lucide-react";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyMap from "@/components/property/PropertyMap";
 import ContactForm from "@/components/contact/ContactForm";
@@ -10,7 +10,7 @@ import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertyCard from "@/components/property/PropertyCard";
 import { getDevelopment, getPropertiesByDevelopment } from "@/lib/tokko";
 import { formatConstructionDate, getConstructionStatusInfo, slugify } from "@/lib/utils";
-import { SITE_URL } from "@/lib/constants";
+import { SITE_URL, BRANCH } from "@/lib/constants";
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>;
@@ -289,36 +289,17 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
                 <ContactForm initialMessage={formMsg} />
               </div>
 
-              {/* WhatsApp */}
-              <WhatsAppButton message={whatsappMsg} />
-
-              {/* User in charge */}
-              {development.users_in_charge?.name && (
-                <div className="bg-white border border-[#e2e4e8] rounded-xl p-5">
-                  <p className="text-xs text-[#5a5a6e] uppercase tracking-wider mb-3">Asesor a cargo</p>
-                  <p className="font-semibold text-[#1a1a2e] mb-3">{development.users_in_charge.name}</p>
-                  <div className="space-y-2">
-                    {development.users_in_charge.cellphone && (
-                      <a
-                        href={`tel:${development.users_in_charge.cellphone.replace(/\D/g, "")}`}
-                        className="flex items-center gap-2 text-sm text-[#5a5a6e] hover:text-[#1a5fb4] transition-colors"
-                      >
-                        <Phone className="w-4 h-4 text-[#00b4d8]" />
-                        {development.users_in_charge.cellphone}
-                      </a>
-                    )}
-                    {development.users_in_charge.email && (
-                      <a
-                        href={`mailto:${development.users_in_charge.email}`}
-                        className="flex items-center gap-2 text-sm text-[#5a5a6e] hover:text-[#1a5fb4] transition-colors break-all"
-                      >
-                        <Mail className="w-4 h-4 text-[#00b4d8]" />
-                        {development.users_in_charge.email}
-                      </a>
-                    )}
-                  </div>
-                </div>
-              )}
+              {/* WhatsApp + Email */}
+              <div className="flex gap-3">
+                <WhatsAppButton message={whatsappMsg} />
+                <a
+                  href={`mailto:${BRANCH.email}`}
+                  className="flex-1 inline-flex items-center justify-center gap-2 bg-white border border-[#e2e4e8] hover:border-[#1a5fb4] text-[#1a1a2e] font-semibold text-sm px-4 py-3 rounded-xl transition-colors min-h-11"
+                >
+                  <Mail className="w-4 h-4 text-[#1a5fb4]" />
+                  Email
+                </a>
+              </div>
 
               {/* Reference */}
               <div className="text-xs text-[#5a5a6e] space-y-1 px-1">

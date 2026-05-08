@@ -59,8 +59,8 @@ export function RevealItem({ children, className, y = 24 }: RevealItemProps) {
   return (
     <motion.div
       variants={{
-        hidden: { opacity: 0, y },
-        visible: { opacity: 1, y: 0, transition: { duration: 0.6, ease: EASE } },
+        hidden: { opacity: 0, y, scale: 0.93 },
+        visible: { opacity: 1, y: 0, scale: 1, transition: { duration: 0.65, ease: EASE } },
       }}
       className={className}
     >

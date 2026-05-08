@@ -6,15 +6,15 @@ import WhatsAppButton from "@/components/contact/WhatsAppButton";
 export const metadata: Metadata = {
   title: "Contacto — D'Amato Propiedades",
   description:
-    "Contactanos para comprar, vender o alquilar tu propiedad. Estamos en Av. Francisco Beiro 4763, CABA. Tel: 011 2005-2222.",
+    "Contactanos para comprar, vender o alquilar tu propiedad. Estamos en Av. Fco. Beiro 4701, CABA. Tel: 011 2005-2222.",
 };
 
 const CONTACT_INFO = [
   {
     icon: MapPin,
     label: "Dirección",
-    value: "Av. Francisco Beiro 4763 — Villa Devoto, CABA",
-    href: "https://maps.google.com/?q=Av.+Francisco+Beiro+4763,+Villa+Devoto,+Buenos+Aires,+Argentina",
+    value: "Av. Fco. Beiro 4701, CABA",
+    href: "https://maps.google.com/?q=Av.+Fco.+Beiro+4701,+CABA,+Argentina",
   },
   {
     icon: Phone,
@@ -98,14 +98,14 @@ export default function ContactPage() {
             {/* Map */}
             <div className="rounded-xl overflow-hidden border border-[#e2e4e8] h-52">
               <iframe
-                src="https://www.google.com/maps?q=Av.+Francisco+Beiro+4763,+Villa+Devoto,+Buenos+Aires,+Argentina&output=embed"
+                src="https://www.google.com/maps?q=Av.+Fco.+Beiro+4701,+CABA,+Argentina&output=embed"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}
                 allowFullScreen
                 loading="lazy"
                 referrerPolicy="no-referrer-when-downgrade"
-                title="Ubicación D'Amato Propiedades — Av. Francisco Beiro 4763, Villa Devoto"
+                title="Ubicación D'Amato Propiedades — Av. Fco. Beiro 4701, CABA"
               />
             </div>
           </div>

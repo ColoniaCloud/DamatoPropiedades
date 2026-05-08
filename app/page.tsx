@@ -7,6 +7,7 @@ import TaglineBanner from "@/components/home/TaglineBanner";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
 import WhyUs from "@/components/home/WhyUs";
 import Emprendimientos from "@/components/home/Emprendimientos";
+import EmprendimientosSlider from "@/components/home/EmprendimientosSlider";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertiesMapClient from "@/components/home/PropertiesMapClient";
 import { getProperties, getFeaturedProperties, getDevelopments } from "@/lib/tokko";
@@ -49,6 +50,8 @@ export default async function HomePage() {
   return (
     <>
       <Hero />
+
+      <EmprendimientosSlider developments={developments} />
 
       <FeaturedProperties properties={featuredProperties} />
 
@@ -94,7 +97,6 @@ export default async function HomePage() {
           </div>
         </div>
       </section>
-      <Emprendimientos developments={developments} />
       <WhyUs />
 
       {/* CTA Section */}
@@ -107,7 +109,7 @@ export default async function HomePage() {
             ¿Querés vender o alquilar tu propiedad?
           </h2>
           <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
-            Tasamos tu propiedad sin cargo y la publicamos en los principales
+            Tasamos tu propiedad de manera profesional y la publicamos en los principales
             portales. Contactanos hoy.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">

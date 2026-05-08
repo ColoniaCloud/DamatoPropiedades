@@ -4,7 +4,7 @@ import type { Property } from "@/lib/types";
 import PropertyGrid from "@/components/property/PropertyGrid";
 import FilterDrawer from "@/components/search/FilterDrawer";
 import SortDropdown from "@/components/search/SortDropdown";
-import { searchProperties } from "@/lib/tokko";
+import { searchProperties, getBarrios } from "@/lib/tokko";
 import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
 
 export const metadata: Metadata = {
@@ -142,18 +142,23 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
 
   let properties: Property[] = [];
   let totalCount = 0;
+  let barrios: string[] = [];
 
   try {
+    const [searchResult, barriosResult] = await Promise.all([
+      hasLocalFilters
+        ? searchProperties(searchData, { limit: 200, offset: 0, order_by: orderBy })
+        : searchProperties(searchData, { limit, offset, order_by: orderBy }),
+      getBarrios(),
+    ]);
+    barrios = barriosResult;
     if (hasLocalFilters) {
-      // Fetch all results and filter locally (dataset is small, ISR-cached)
-      const result = await searchProperties(searchData, { limit: 200, offset: 0, order_by: orderBy });
-      const filtered = applyLocalFilters(result.objects, params);
+      const filtered = applyLocalFilters(searchResult.objects, params);
       totalCount = filtered.length;
       properties = filtered.slice(offset, offset + limit);
     } else {
-      const result = await searchProperties(searchData, { limit, offset, order_by: orderBy });
-      properties = result.objects;
-      totalCount = result.meta.total_count;
+      properties = searchResult.objects;
+      totalCount = searchResult.meta.total_count;
     }
   } catch {
     // show empty state
@@ -179,7 +184,7 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
         <div className="flex gap-8">
           {/* Sidebar filters (desktop) */}
           <Suspense>
-            <FilterDrawer />
+            <FilterDrawer barrios={barrios} />
           </Suspense>
 
           {/* Results */}
