@@ -119,6 +119,20 @@ export async function getAllProperties(): Promise<Property[]> {
   return all;
 }
 
+export async function getBarrios(): Promise<string[]> {
+  const all = await getAllProperties();
+  const set = new Set<string>();
+  for (const p of all) {
+    const division = p.location.divisions?.[0]?.name;
+    if (division) {
+      set.add(division);
+    } else if (p.location.name) {
+      set.add(p.location.name);
+    }
+  }
+  return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
+}
+
 export async function getFeaturedProperties(count = 6): Promise<Property[]> {
   const data = await getProperties({ limit: 80, order_by: "-created_at" });
   const all = data.objects;

@@ -4,6 +4,7 @@ import "./globals.css";
 import Header from "@/components/layout/Header";
 import Footer from "@/components/layout/Footer";
 import WhatsAppFloat from "@/components/contact/WhatsAppFloat";
+import CafeTab from "@/components/contact/CafeTab";
 import { Toaster } from "sonner";
 
 const montserrat = Montserrat({
@@ -81,6 +82,7 @@ export default function RootLayout({
         <main className="flex-1">{children}</main>
         <Footer />
         <WhatsAppFloat />
+        <CafeTab />
         <Toaster richColors position="top-right" />
       </body>
     </html>

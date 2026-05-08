@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
         phone: body.phone,
         message: body.message || "",
         properties: body.properties || [],
-        tags: ["Web D'Amato"],
+        tags: body.tags ?? ["Web D'Amato"],
       }),
     });
 

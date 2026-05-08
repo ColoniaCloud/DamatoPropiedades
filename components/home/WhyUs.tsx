@@ -34,20 +34,15 @@ export default function WhyUs() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <RevealGroup className="text-center mb-10 lg:mb-14">
           <RevealItem>
-            <span className="text-[#1a5fb4] text-sm font-semibold uppercase tracking-widest">
-              ¿Por qué elegirnos?
-            </span>
-          </RevealItem>
-          <RevealItem>
             <h2 className="font-display text-3xl sm:text-4xl font-bold text-[#1a1a2e] mt-2">
-              La diferencia D&apos;Amato
+              ¿Por qué elegirnos?
             </h2>
           </RevealItem>
         </RevealGroup>
 
-        <RevealGroup stagger={0.12} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
+        <RevealGroup stagger={0.15} className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 items-stretch">
           {FEATURES.map(({ icon: Icon, title, description }) => (
-            <RevealItem key={title} y={32} className="h-full">
+            <RevealItem key={title} y={60} className="h-full">
               <div className="h-full bg-white rounded-xl p-6 border border-[#e2e4e8] hover:shadow-md transition-shadow flex flex-col">
                 <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-4 shrink-0">
                   <Icon className="w-6 h-6 text-[#1a5fb4]" />

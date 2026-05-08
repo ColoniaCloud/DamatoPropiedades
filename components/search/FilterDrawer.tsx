@@ -6,7 +6,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export default function FilterDrawer() {
+export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
@@ -26,6 +26,7 @@ export default function FilterDrawer() {
     searchParams.get("tags")?.split(",").filter(Boolean) ?? []
   );
   const [withSuite, setWithSuite] = useState(searchParams.get("suite") === "1");
+  const [barrio, setBarrio] = useState(searchParams.get("barrio") || "");
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -58,6 +59,7 @@ export default function FilterDrawer() {
     if (creditEligible) params.set("credito", "1");
     if (tagIds.length > 0) params.set("tags", tagIds.join(","));
     if (withSuite) params.set("suite", "1");
+    if (barrio) params.set("barrio", barrio);
     router.push(`/propiedades?${params.toString()}`);
     setOpen(false);
   }
@@ -74,6 +76,7 @@ export default function FilterDrawer() {
     setCreditEligible(false);
     setTagIds([]);
     setWithSuite(false);
+    setBarrio("");
     router.push("/propiedades");
     setOpen(false);
   }
@@ -89,6 +92,7 @@ export default function FilterDrawer() {
     creditEligible ? "1" : "",
     ...tagIds,
     withSuite ? "1" : "",
+    barrio,
   ].filter(Boolean).length;
 
   const contentProps = {
@@ -103,6 +107,8 @@ export default function FilterDrawer() {
     creditEligible, setCreditEligible,
     tagIds, toggleTag,
     withSuite, setWithSuite,
+    barrio, setBarrio,
+    barrios,
   };
 
   return (
@@ -216,6 +222,9 @@ interface FilterContentProps {
   toggleTag: (id: string) => void;
   withSuite: boolean;
   setWithSuite: (v: boolean) => void;
+  barrio: string;
+  setBarrio: (v: string) => void;
+  barrios: string[];
 }
 
 const CHARACTERISTIC_TAGS = [
@@ -238,9 +247,38 @@ function FilterContent({
   creditEligible, setCreditEligible,
   tagIds, toggleTag,
   withSuite, setWithSuite,
+  barrio, setBarrio,
+  barrios,
 }: FilterContentProps) {
   return (
     <>
+      {/* Barrio */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Barrio
+        </p>
+        {barrios.length > 0 ? (
+          <select
+            value={barrio}
+            onChange={(e) => setBarrio(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11 bg-white"
+          >
+            <option value="">Todos los barrios</option>
+            {barrios.map((b) => (
+              <option key={b} value={b}>{b}</option>
+            ))}
+          </select>
+        ) : (
+          <input
+            type="text"
+            placeholder="Ej: Villa Devoto"
+            value={barrio}
+            onChange={(e) => setBarrio(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
+          />
+        )}
+      </div>
+
       {/* Operation */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
@@ -306,69 +344,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Currency toggle */}
-      <div>
-        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
-          Moneda
-        </p>
-        <div className="flex rounded-lg border border-[#e2e4e8] overflow-hidden">
-          {(["ARS", "USD"] as const).map((c) => (
-            <button
-              key={c}
-              onClick={() => { setCurrency(c); setPriceFrom(""); setPriceTo(""); }}
-              className={cn(
-                "flex-1 py-2 text-sm font-medium transition-colors",
-                currency === c
-                  ? "bg-[#1a5fb4] text-white"
-                  : "text-[#5a5a6e] hover:bg-gray-50"
-              )}
-            >
-              {c}
-            </button>
-          ))}
-        </div>
-      </div>
-
-      {/* Price */}
-      <div>
-        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
-          Precio ({currency})
-        </p>
-        <div className="space-y-2">
-          <input
-            type="number"
-            placeholder={currency === "USD" ? "Desde (USD)" : "Desde (ARS)"}
-            value={priceFrom}
-            onChange={(e) => setPriceFrom(e.target.value)}
-            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
-          />
-          <input
-            type="number"
-            placeholder={currency === "USD" ? "Hasta (USD)" : "Hasta (ARS)"}
-            value={priceTo}
-            onChange={(e) => setPriceTo(e.target.value)}
-            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
-          />
-        </div>
-      </div>
-
-      {/* Surface */}
-      <div>
-        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
-          Superficie cubierta mínima
-        </p>
-        <div className="relative">
-          <input
-            type="number"
-            placeholder="Ej: 50"
-            value={surfaceMin}
-            onChange={(e) => setSurfaceMin(e.target.value)}
-            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
-          />
-          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#5a5a6e]">m²</span>
-        </div>
-      </div>
-
       {/* Extra options */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
@@ -413,6 +388,69 @@ function FilterContent({
             />
             <span className="text-sm text-[#1a1a2e]">Suite</span>
           </label>
+        </div>
+      </div>
+
+      {/* Surface */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Superficie cubierta mínima
+        </p>
+        <div className="relative">
+          <input
+            type="number"
+            placeholder="Ej: 50"
+            value={surfaceMin}
+            onChange={(e) => setSurfaceMin(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 pr-10 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 text-xs text-[#5a5a6e]">m²</span>
+        </div>
+      </div>
+
+      {/* Price */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Precio ({currency})
+        </p>
+        <div className="space-y-2">
+          <input
+            type="number"
+            placeholder={currency === "USD" ? "Desde (USD)" : "Desde (ARS)"}
+            value={priceFrom}
+            onChange={(e) => setPriceFrom(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
+          />
+          <input
+            type="number"
+            placeholder={currency === "USD" ? "Hasta (USD)" : "Hasta (ARS)"}
+            value={priceTo}
+            onChange={(e) => setPriceTo(e.target.value)}
+            className="w-full border border-[#e2e4e8] rounded-lg px-3 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-[#1a5fb4] min-h-11"
+          />
+        </div>
+      </div>
+
+      {/* Currency toggle */}
+      <div>
+        <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
+          Moneda
+        </p>
+        <div className="flex rounded-lg border border-[#e2e4e8] overflow-hidden">
+          {(["ARS", "USD"] as const).map((c) => (
+            <button
+              key={c}
+              onClick={() => { setCurrency(c); setPriceFrom(""); setPriceTo(""); }}
+              className={cn(
+                "flex-1 py-2 text-sm font-medium transition-colors",
+                currency === c
+                  ? "bg-[#1a5fb4] text-white"
+                  : "text-[#5a5a6e] hover:bg-gray-50"
+              )}
+            >
+              {c}
+            </button>
+          ))}
         </div>
       </div>
     </>
