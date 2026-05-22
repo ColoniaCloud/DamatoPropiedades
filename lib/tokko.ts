@@ -1,7 +1,8 @@
 import type { TokkoPropertyList, TokkoDevelopmentList, Property, Development, ContactPayload } from "./types";
 
 const API_BASE = "https://www.tokkobroker.com/api/v1";
-const API_KEY = process.env.TOKKO_API_KEY!;
+const API_KEY = process.env.TOKKO_API_KEY;
+if (!API_KEY) { throw new Error("TOKKO_API_KEY environment variable is not set. Please add it to .env.local"); }
 
 const REVALIDATE = 300;
 

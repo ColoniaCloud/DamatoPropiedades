@@ -1,21 +1,19 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import type { Property, Development } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
 import Hero from "@/components/home/Hero";
-import TaglineBanner from "@/components/home/TaglineBanner";
 import FeaturedProperties from "@/components/home/FeaturedProperties";
 import WhyUs from "@/components/home/WhyUs";
-import Emprendimientos from "@/components/home/Emprendimientos";
 import EmprendimientosSlider from "@/components/home/EmprendimientosSlider";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertiesMapClient from "@/components/home/PropertiesMapClient";
 import { getProperties, getFeaturedProperties, getDevelopments } from "@/lib/tokko";
 
 export const metadata: Metadata = {
-  title: "D'Amato Propiedades — Tu inmobiliaria de confianza en Villa Devoto",
+  title: "D'Amato Propiedades â€” Tu inmobiliaria de confianza en Villa Devoto",
   description:
-    "Tu inmobiliaria de confianza en Villa Devoto. Más de 35 años asesorando familias en la compra, venta y alquiler de propiedades. Tasaciones, venta e inversiones inmobiliarias.",
+    "Tu inmobiliaria de confianza en Villa Devoto. MÃ¡s de 35 aÃ±os asesorando familias en la compra, venta y alquiler de propiedades. Tasaciones, venta e inversiones inmobiliarias.",
 };
 
 export const revalidate = 300;
@@ -67,8 +65,8 @@ export default async function HomePage() {
             </h2>
             <p className="text-[#5a5a6e] mt-1 text-sm">
               {mapProperties.length > 0
-                ? `${mapProperties.length} propiedades activas — hacé clic en un pin para ver detalles`
-                : "Cargando propiedades…"}
+                ? `${mapProperties.length} propiedades activas â€” hacÃ© clic en un pin para ver detalles`
+                : "Cargando propiedadesâ€¦"}
             </p>
           </div>
 
@@ -106,7 +104,7 @@ export default async function HomePage() {
             Propietarios
           </span>
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mt-2 mb-4">
-            ¿Querés vender o alquilar tu propiedad?
+            Â¿QuerÃ©s vender o alquilar tu propiedad?
           </h2>
           <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
             Tasamos tu propiedad de manera profesional y la publicamos en los principales
@@ -114,7 +112,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <WhatsAppButton
-              message="Hola, quiero vender/alquilar mi propiedad. ¿Pueden asesorarme?"
+              message="Hola, quiero vender/alquilar mi propiedad. Â¿Pueden asesorarme?"
               size="lg"
             />
             <Link
@@ -130,3 +128,4 @@ export default async function HomePage() {
     </>
   );
 }
+

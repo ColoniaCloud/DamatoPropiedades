@@ -1,4 +1,5 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
+import Link from "next/link";
 import { notFound } from "next/navigation";
 import type { Property } from "@/lib/types";
 import PropertyGrid from "@/components/property/PropertyGrid";
@@ -23,7 +24,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!propType) return {};
   return {
     title: `${propType.name}s en Alquiler en Buenos Aires | D'Amato Propiedades`,
-    description: `Encontrá ${propType.name.toLowerCase()}s en alquiler en Villa Devoto. Amplio catálogo con todos los detalles y fotos.`,
+    description: `EncontrÃ¡ ${propType.name.toLowerCase()}s en alquiler en Villa Devoto. Amplio catÃ¡logo con todos los detalles y fotos.`,
   };
 }
 
@@ -52,10 +53,10 @@ export default async function AlquilerTipoPage({ params }: PageProps) {
       <div className="bg-[#0c1b2e] pt-28 pb-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <nav className="text-sm text-white/50 mb-3">
-            <a href="/" className="hover:text-white/80">Inicio</a>
-            <span className="mx-2">›</span>
-            <a href="/propiedades?operacion=alquiler" className="hover:text-white/80">Alquiler</a>
-            <span className="mx-2">›</span>
+            <Link href="/" className="hover:text-white/80">Inicio</Link>
+            <span className="mx-2">â€º</span>
+            <Link href="/propiedades?operacion=alquiler" className="hover:text-white/80">Alquiler</Link>
+            <span className="mx-2">â€º</span>
             <span className="text-white/80">{propType.name}s</span>
           </nav>
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
@@ -73,3 +74,5 @@ export default async function AlquilerTipoPage({ params }: PageProps) {
     </div>
   );
 }
+
+

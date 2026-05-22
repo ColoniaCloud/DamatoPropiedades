@@ -1,4 +1,4 @@
-import { type ClassValue, clsx } from "clsx";
+﻿import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 import type { Property, PropertyOperation, Development } from "./types";
 
@@ -14,7 +14,7 @@ export function formatPrice(price: number, currency: "ARS" | "USD" | "EUR" = "AR
   if (currency === "USD") {
     return `USD ${price.toLocaleString("es-AR")}`;
   }
-  return `€ ${price.toLocaleString("es-AR")}`;
+  return `â‚¬ ${price.toLocaleString("es-AR")}`;
 }
 
 export function getMainOperation(property: Property): PropertyOperation | null {
@@ -36,7 +36,7 @@ export function slugify(text: string): string {
   return text
     .toLowerCase()
     .normalize("NFD")
-    .replace(/[̀-ͯ]/g, "")
+    .replace(/[Ì€-Í¯]/g, "")
     .replace(/[^\w\s-]/g, "")
     .replace(/\s+/g, "-")
     .replace(/-+/g, "-")
@@ -50,7 +50,7 @@ export function getPropertyPath(property: Property): string {
 export function getSurface(property: Property): string {
   const total = property.total_surface;
   if (!total) return "";
-  return `${total} m²`;
+  return `${total} mÂ²`;
 }
 
 export function getOperationColor(operationType: string): string {
@@ -73,6 +73,7 @@ export function buildWhatsAppUrl(phone: string, message: string): string {
 export function sanitizeHtml(html: string): string {
   if (typeof window === "undefined") return html;
   try {
+    // eslint-disable-next-line @typescript-eslint/no-require-imports
     const DOMPurify = require("dompurify");
     return DOMPurify.sanitize(html);
   } catch {
@@ -86,7 +87,7 @@ export function getNeighborhood(property: Property): string {
 
 export function truncate(text: string, length: number): string {
   if (text.length <= length) return text;
-  return text.substring(0, length).trim() + "…";
+  return text.substring(0, length).trim() + "â€¦";
 }
 
 export function getDevelopmentPath(development: Development): string {
@@ -107,11 +108,12 @@ export function formatConstructionDate(dateStr: string): string {
 const CONSTRUCTION_STATUS: Record<number, { label: string; color: string }> = {
   1: { label: "En pozo", color: "bg-gray-400" },
   2: { label: "En pozo avanzado", color: "bg-[#00b4d8]/60" },
-  3: { label: "En construcción", color: "bg-[#00b4d8]" },
-  4: { label: "Construcción avanzada", color: "bg-[#1a5fb4]" },
+  3: { label: "En construcciÃ³n", color: "bg-[#00b4d8]" },
+  4: { label: "ConstrucciÃ³n avanzada", color: "bg-[#1a5fb4]" },
   5: { label: "Terminado", color: "bg-[#10b981]" },
 };
 
 export function getConstructionStatusInfo(status: number): { label: string; color: string } {
   return CONSTRUCTION_STATUS[status] ?? { label: "Sin estado", color: "bg-gray-300" };
 }
+
