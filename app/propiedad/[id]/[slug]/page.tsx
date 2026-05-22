@@ -1,4 +1,4 @@
-import type { Metadata } from "next";
+﻿import type { Metadata } from "next";
 import type { Property } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
@@ -9,7 +9,6 @@ import PropertySchema from "@/components/property/PropertySchema";
 import SimilarProperties from "@/components/property/SimilarProperties";
 import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
-import BottomBar from "@/components/layout/BottomBar";
 import BottomBarWrapper from "./BottomBarWrapper";
 import { getProperty, getSimilarProperties } from "@/lib/tokko";
 import {
@@ -20,7 +19,6 @@ import {
   formatPrice,
   getPropertyPath,
 } from "@/lib/utils";
-import { SITE_URL } from "@/lib/constants";
 
 interface PageProps {
   params: Promise<{ id: string; slug: string }>;
@@ -33,7 +31,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const property = await getProperty(Number(id));
     const op = getMainOperation(property);
     const title = property.publication_title;
-    const description = `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}m². ` : ""}D'Amato Propiedades.`;
+    const description = `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}mÂ². ` : ""}D'Amato Propiedades.`;
     const ogImage = property.photos?.[0]?.image
       ? [{ url: property.photos[0].image, width: 1200, height: 800, alt: title }]
       : [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }];
@@ -104,15 +102,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
     // non-critical
   }
 
-  // Group tags by type
-  const tagsByType = property.tags.reduce(
-    (acc: Record<number, typeof property.tags>, tag) => {
-      if (!acc[tag.type]) acc[tag.type] = [];
-      acc[tag.type].push(tag);
-      return acc;
-    },
-    {}
-  );
 
   const waUrl = `https://wa.me/${process.env.NEXT_PUBLIC_WHATSAPP || "5491140931881"}?text=${encodeURIComponent(whatsappMsg)}`;
 
@@ -153,7 +142,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 <MapPin className="w-4 h-4 shrink-0" />
                 <span className="text-sm">
                   {property.fake_address}
-                  {neighborhood ? ` · ${neighborhood}` : ""}
+                  {neighborhood ? ` Â· ${neighborhood}` : ""}
                 </span>
               </div>
               <p className="text-2xl sm:text-3xl font-bold text-white">{price}</p>
@@ -228,7 +217,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
                     <Bath className="w-5 h-5 text-[#1a5fb4]" />
                     <div>
-                      <p className="text-xs text-[#5a5a6e]">Baños</p>
+                      <p className="text-xs text-[#5a5a6e]">BaÃ±os</p>
                       <p className="font-semibold text-[#1a1a2e]">
                         {property.bathroom_amount}
                       </p>
@@ -241,7 +230,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     <div>
                       <p className="text-xs text-[#5a5a6e]">Superficie</p>
                       <p className="font-semibold text-[#1a1a2e]">
-                        {property.total_surface} m²
+                        {property.total_surface} mÂ²
                       </p>
                     </div>
                   </div>
@@ -261,9 +250,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
                     <Calendar className="w-5 h-5 text-[#1a5fb4]" />
                     <div>
-                      <p className="text-xs text-[#5a5a6e]">Antigüedad</p>
+                      <p className="text-xs text-[#5a5a6e]">AntigÃ¼edad</p>
                       <p className="font-semibold text-[#1a1a2e]">
-                        {property.age === 0 ? "A estrenar" : `${property.age} años`}
+                        {property.age === 0 ? "A estrenar" : `${property.age} aÃ±os`}
                       </p>
                     </div>
                   </div>
@@ -285,10 +274,10 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               {(property.roofed_surface || property.unroofed_surface) && (
                 <div className="flex gap-6 mb-6 text-sm text-[#5a5a6e]">
                   {property.roofed_surface && (
-                    <span>Cubierta: <strong className="text-[#1a1a2e]">{property.roofed_surface} m²</strong></span>
+                    <span>Cubierta: <strong className="text-[#1a1a2e]">{property.roofed_surface} mÂ²</strong></span>
                   )}
                   {property.unroofed_surface && (
-                    <span>Descubierta: <strong className="text-[#1a1a2e]">{property.unroofed_surface} m²</strong></span>
+                    <span>Descubierta: <strong className="text-[#1a1a2e]">{property.unroofed_surface} mÂ²</strong></span>
                   )}
                 </div>
               )}
@@ -296,7 +285,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               {/* Description */}
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">
-                  Descripción
+                  DescripciÃ³n
                 </h2>
                 {property.rich_description ? (
                   <div
@@ -331,7 +320,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               {property.geo_lat && property.geo_long && (
                 <div className="mb-8">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">
-                    Ubicación
+                    UbicaciÃ³n
                   </h2>
                   <PropertyMap
                     lat={property.geo_lat}
@@ -407,3 +396,4 @@ export default async function PropertyDetailPage({ params }: PageProps) {
     </>
   );
 }
+
