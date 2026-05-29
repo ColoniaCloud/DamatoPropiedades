@@ -7,10 +7,9 @@ import "leaflet/dist/leaflet.css";
 import Link from "next/link";
 import type { Property } from "@/lib/types";
 import { getPropertyPath, getMainPrice, getMainOperation } from "@/lib/utils";
-import { OPERATION_TYPES } from "@/lib/constants";
+import { BRANCH, OPERATION_TYPES } from "@/lib/constants";
 
-// Default center: D'Amato (Av. Francisco Beiro 4701 - Villa Devoto)
-const defaultCenter: [number, number] = [-34.5943, -58.503];
+const defaultCenter: [number, number] = [BRANCH.geo.lat, BRANCH.geo.lng];
 
 // Color por tipo de operación
 const colorMap: Record<string, string> = {

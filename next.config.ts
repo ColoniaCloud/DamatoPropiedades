@@ -23,6 +23,15 @@ const nextConfig: NextConfig = {
       },
     ],
   },
+  async redirects() {
+    return [
+      {
+        source: "/p/:slug",
+        destination: "/redirect/propiedad/:slug",
+        permanent: false,
+      },
+    ];
+  },
   async headers() {
     return [
       {

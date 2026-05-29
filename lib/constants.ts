@@ -36,3 +36,8 @@ export const BRANCH = {
 
 export const SITE_URL =
   process.env.NEXT_PUBLIC_SITE_URL || "https://damatopropiedades.com.ar";
+
+export const SOCIAL = {
+  instagram: "https://www.instagram.com/damato.propiedades/",
+  facebook: "https://www.facebook.com/damatopropiedades/",
+} as const;

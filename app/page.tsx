@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import type { Property, Development } from "@/lib/types";
 import { ArrowRight } from "lucide-react";
 import Link from "next/link";
@@ -8,12 +8,20 @@ import WhyUs from "@/components/home/WhyUs";
 import EmprendimientosSlider from "@/components/home/EmprendimientosSlider";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertiesMapClient from "@/components/home/PropertiesMapClient";
-import { getProperties, getFeaturedProperties, getDevelopments } from "@/lib/tokko";
+import { getAllProperties, getFeaturedProperties, getDevelopments, getBarrios } from "@/lib/tokko";
 
 export const metadata: Metadata = {
-  title: "D'Amato Propiedades â€” Tu inmobiliaria de confianza en Villa Devoto",
+  title: "D'Amato Propiedades — Inmobiliaria en Villa Devoto",
   description:
-    "Tu inmobiliaria de confianza en Villa Devoto. MÃ¡s de 35 aÃ±os asesorando familias en la compra, venta y alquiler de propiedades. Tasaciones, venta e inversiones inmobiliarias.",
+    "Encontrá tu próxima propiedad en Villa Devoto y alrededores. " +
+    "Departamentos, casas, PHs, terrenos y emprendimientos en pozo. " +
+    "Más de 35 años de experiencia.",
+  openGraph: {
+    title: "D'Amato Propiedades — Inmobiliaria en Villa Devoto",
+    description:
+      "Departamentos, casas, PHs y terrenos en Villa Devoto. " +
+      "Venta, alquiler y emprendimientos en pozo.",
+  },
 };
 
 export const revalidate = 300;
@@ -22,6 +30,7 @@ export default async function HomePage() {
   let featuredProperties: Property[] = [];
   let mapProperties: Property[] = [];
   let developments: Development[] = [];
+  let barrios: string[] = [];
 
   try {
     featuredProperties = await getFeaturedProperties(6);
@@ -30,9 +39,7 @@ export default async function HomePage() {
   }
 
   try {
-    // Fetch all properties for the map (ISR-cached, small dataset)
-    const mapData = await getProperties({ limit: 100, order_by: "-created_at" });
-    mapProperties = mapData.objects.filter(
+    mapProperties = (await getAllProperties()).filter(
       (p) => p.geo_lat != null && p.geo_long != null
     );
   } catch {
@@ -45,9 +52,15 @@ export default async function HomePage() {
     // fail gracefully
   }
 
+  try {
+    barrios = await getBarrios();
+  } catch {
+    // fail gracefully
+  }
+
   return (
     <>
-      <Hero />
+      <Hero barrios={barrios} />
 
       <EmprendimientosSlider developments={developments} />
 
@@ -65,8 +78,8 @@ export default async function HomePage() {
             </h2>
             <p className="text-[#5a5a6e] mt-1 text-sm">
               {mapProperties.length > 0
-                ? `${mapProperties.length} propiedades activas â€” hacÃ© clic en un pin para ver detalles`
-                : "Cargando propiedadesâ€¦"}
+                ? `${mapProperties.length} propiedades activas — hacé clic en un pin para ver detalles`
+                : "Cargando propiedades…"}
             </p>
           </div>
 
@@ -104,7 +117,7 @@ export default async function HomePage() {
             Propietarios
           </span>
           <h2 className="font-display text-3xl sm:text-4xl font-bold text-white mt-2 mb-4">
-            Â¿QuerÃ©s vender o alquilar tu propiedad?
+            ¿Querés vender o alquilar tu propiedad?
           </h2>
           <p className="text-white/70 text-lg mb-8 max-w-xl mx-auto">
             Tasamos tu propiedad de manera profesional y la publicamos en los principales
@@ -112,7 +125,7 @@ export default async function HomePage() {
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <WhatsAppButton
-              message="Hola, quiero vender/alquilar mi propiedad. Â¿Pueden asesorarme?"
+              message="Hola, quiero vender/alquilar mi propiedad. ¿Pueden asesorarme?"
               size="lg"
             />
             <Link

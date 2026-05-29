@@ -1,14 +1,12 @@
 import type { Property } from "@/lib/types";
 import { SITE_URL } from "@/lib/constants";
-import { getMainOperation, getPropertyPath } from "@/lib/utils";
+import { getPropertyPath } from "@/lib/utils";
 
 interface PropertySchemaProps {
   property: Property;
 }
 
 export default function PropertySchema({ property }: PropertySchemaProps) {
-  const op = getMainOperation(property);
-  const price = op?.prices?.[0];
   const url = `${SITE_URL}${getPropertyPath(property)}`;
 
   const schema = {
@@ -17,11 +15,18 @@ export default function PropertySchema({ property }: PropertySchemaProps) {
     name: property.publication_title,
     description: property.description,
     url,
-    image: property.photos?.[0]?.image || "",
+    datePosted: property.created_at ?? undefined,
+    image: property.photos
+      ?.filter((p) => !p.is_blueprint)
+      .map((p) => p.image)
+      .filter(Boolean) ?? [],
     address: {
       "@type": "PostalAddress",
       streetAddress: property.fake_address,
-      addressLocality: "Buenos Aires",
+      addressLocality:
+        property.location?.divisions?.[0]?.name ??
+        property.location?.full_location ??
+        "Buenos Aires",
       addressCountry: "AR",
     },
     ...(property.geo_lat && property.geo_long
@@ -33,15 +38,35 @@ export default function PropertySchema({ property }: PropertySchemaProps) {
           },
         }
       : {}),
-    ...(price
+    numberOfRooms: property.room_amount || undefined,
+    numberOfBathroomsTotal: property.bathroom_amount || undefined,
+    numberOfParkingSpaces: property.parking_lot_amount || undefined,
+    floorSize: property.total_surface
       ? {
-          offers: {
-            "@type": "Offer",
-            price: price.price,
-            priceCurrency: price.currency,
-          },
+          "@type": "QuantitativeValue",
+          value: property.total_surface,
+          unitCode: "MTK",
         }
-      : {}),
+      : undefined,
+    amenityFeature: property.tags?.length
+      ? property.tags.map((tag) => ({
+          "@type": "LocationFeatureSpecification",
+          name: tag.name,
+          value: true,
+        }))
+      : undefined,
+    offers: property.operations?.map((op) => ({
+      "@type": "Offer",
+      price: op.prices?.[0]?.price,
+      priceCurrency: op.prices?.[0]?.currency ?? "ARS",
+      name: op.operation_type,
+    })) ?? [],
+    video: property.videos?.length
+      ? property.videos.map((v) => ({
+          "@type": "VideoObject",
+          contentUrl: v.url,
+        }))
+      : undefined,
   };
 
   return (

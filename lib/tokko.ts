@@ -1,3 +1,4 @@
+import { cache } from "react";
 import type { TokkoPropertyList, TokkoDevelopmentList, Property, Development, ContactPayload } from "./types";
 
 const API_BASE = "https://www.tokkobroker.com/api/v1";
@@ -104,13 +105,20 @@ export async function searchProperties(
   return res.json();
 }
 
-export async function getAllProperties(): Promise<Property[]> {
+// React cache deduplicates calls within the same request.
+// Individual fetches use limit=40 (~1.4 MB each) to stay under the
+// Next.js fetch-cache 2 MB per-item limit.
+export const getAllProperties = cache(async (): Promise<Property[]> => {
   let all: Property[] = [];
   let offset = 0;
-  const limit = 100;
+  const limit = 40;
 
   while (true) {
-    const data = await getProperties({ limit, offset });
+    const searchData = normalizeSearchData({});
+    const url = buildSearchUrl(searchData, { limit, offset });
+    const res = await fetch(url, { next: { revalidate: REVALIDATE } });
+    if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
+    const data: TokkoPropertyList = await res.json();
     all = all.concat(data.objects);
     if (!data.meta.next || all.length >= data.meta.total_count) break;
     offset += limit;
@@ -118,9 +126,9 @@ export async function getAllProperties(): Promise<Property[]> {
   }
 
   return all;
-}
+});
 
-export async function getBarrios(): Promise<string[]> {
+export const getBarrios = cache(async (): Promise<string[]> => {
   const all = await getAllProperties();
   const set = new Set<string>();
   for (const p of all) {
@@ -132,16 +140,13 @@ export async function getBarrios(): Promise<string[]> {
     }
   }
   return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
-}
+});
 
 export async function getFeaturedProperties(count = 6): Promise<Property[]> {
-  const data = await getProperties({ limit: 80, order_by: "-created_at" });
-  const all = data.objects;
+  const all = await getAllProperties();
   const starred = all.filter((p) => p.is_starred_on_web === true);
 
-  if (starred.length >= count) {
-    return starred.slice(0, count);
-  }
+  if (starred.length >= count) return starred.slice(0, count);
 
   if (starred.length > 0) {
     const rest = all
@@ -150,7 +155,6 @@ export async function getFeaturedProperties(count = 6): Promise<Property[]> {
     return [...starred, ...rest];
   }
 
-  // No hay destacadas: random
   const shuffled = [...all].sort(() => 0.5 - Math.random());
   return shuffled.slice(0, count);
 }

@@ -1,9 +1,11 @@
 ﻿import type { Metadata } from "next";
 import Link from "next/link";
+import { Suspense } from "react";
 import { notFound } from "next/navigation";
 import type { Property } from "@/lib/types";
 import PropertyGrid from "@/components/property/PropertyGrid";
-import { searchProperties } from "@/lib/tokko";
+import FilterDrawer from "@/components/search/FilterDrawer";
+import { searchProperties, getBarrios } from "@/lib/tokko";
 import { PROPERTY_TYPES } from "@/lib/constants";
 
 interface PageProps {
@@ -24,7 +26,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   if (!propType) return {};
   return {
     title: `${propType.name}s en Alquiler en Buenos Aires | D'Amato Propiedades`,
-    description: `EncontrÃ¡ ${propType.name.toLowerCase()}s en alquiler en Villa Devoto. Amplio catÃ¡logo con todos los detalles y fotos.`,
+    description: `${propType.name}s en alquiler en Villa Devoto y alrededores. Consultá disponibilidad y precios actualizados.`,
   };
 }
 
@@ -37,13 +39,18 @@ export default async function AlquilerTipoPage({ params }: PageProps) {
 
   let properties: Property[] = [];
   let totalCount = 0;
+  let barrios: string[] = [];
   try {
-    const result = await searchProperties({
-      operation_types: ["Alquiler"],
-      property_types: [propType.id],
-    }, { limit: 12 });
+    const [result, barriosResult] = await Promise.all([
+      searchProperties({
+        operation_types: ["Alquiler"],
+        property_types: [propType.id],
+      }, { limit: 12 }),
+      getBarrios(),
+    ]);
     properties = result.objects;
     totalCount = result.meta.total_count;
+    barrios = barriosResult;
   } catch {
     // show empty state
   }
@@ -54,9 +61,9 @@ export default async function AlquilerTipoPage({ params }: PageProps) {
         <div className="max-w-7xl mx-auto">
           <nav className="text-sm text-white/50 mb-3">
             <Link href="/" className="hover:text-white/80">Inicio</Link>
-            <span className="mx-2">â€º</span>
+            <span className="mx-2">›</span>
             <Link href="/propiedades?operacion=alquiler" className="hover:text-white/80">Alquiler</Link>
-            <span className="mx-2">â€º</span>
+            <span className="mx-2">›</span>
             <span className="text-white/80">{propType.name}s</span>
           </nav>
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
@@ -69,7 +76,18 @@ export default async function AlquilerTipoPage({ params }: PageProps) {
       </div>
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-        <PropertyGrid properties={properties} />
+        <div className="flex gap-8">
+          <Suspense>
+            <FilterDrawer
+              lockedOperacion="alquiler"
+              initialTypes={[String(propType.id)]}
+              barrios={barrios}
+            />
+          </Suspense>
+          <div className="flex-1 min-w-0">
+            <PropertyGrid properties={properties} />
+          </div>
+        </div>
       </div>
     </div>
   );

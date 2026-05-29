@@ -105,7 +105,7 @@ export function formatConstructionDate(dateStr: string): string {
   return `${months[idx] ?? ""} ${year}`;
 }
 
-const CONSTRUCTION_STATUS: Record<number, { label: string; color: string }> = {
+export const CONSTRUCTION_STATUS: Record<number, { label: string; color: string }> = {
   1: { label: "En pozo", color: "bg-gray-400" },
   2: { label: "En pozo avanzado", color: "bg-[#00b4d8]/60" },
   3: { label: "En construcciÃ³n", color: "bg-[#00b4d8]" },

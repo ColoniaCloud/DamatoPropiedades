@@ -9,14 +9,15 @@ import { WhatsAppIcon } from "@/components/ui/Icons";
 interface BottomBarProps {
   propertyRef: string;
   propertyAddress: string;
+  whatsappMsg?: string;
   onConsult: () => void;
 }
 
-export default function BottomBar({ propertyRef, propertyAddress, onConsult }: BottomBarProps) {
-  const whatsappMessage = `Hola, me interesa la propiedad ${propertyRef} en ${propertyAddress}. ¿Podría darme más información?`;
+export default function BottomBar({ propertyRef, propertyAddress, whatsappMsg, onConsult }: BottomBarProps) {
+  const message = whatsappMsg ?? `Hola, me interesa la propiedad ${propertyRef} en ${propertyAddress}. ¿Podría darme más información?`;
   const whatsappUrl = buildWhatsAppUrl(
     process.env.NEXT_PUBLIC_WHATSAPP || "5491140931881",
-    whatsappMessage
+    message
   );
 
   return (

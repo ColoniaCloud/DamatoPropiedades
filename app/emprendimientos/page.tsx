@@ -4,9 +4,10 @@ import { getDevelopments } from "@/lib/tokko";
 import DevelopmentCard from "@/components/development/DevelopmentCard";
 
 export const metadata: Metadata = {
-  title: "Emprendimientos | D'Amato Propiedades",
+  title: "Emprendimientos en pozo",
   description:
-    "Conocé nuestros emprendimientos en construcción en Villa Devoto. Invertí desde el pozo con D'Amato Propiedades.",
+    "Conocé los emprendimientos en construcción de D'Amato Propiedades " +
+    "en Villa Devoto. Unidades desde el pozo con entrega programada.",
 };
 
 export const revalidate = 300;

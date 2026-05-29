@@ -2,7 +2,8 @@
 import type { Property } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";
-import { BedDouble, Bath, Maximize2, Car, Calendar, Home, MapPin, Hash, Check } from "lucide-react";
+import { BedDouble, Bath, Maximize2, Car, Calendar, Home, MapPin, Hash, Check, Compass, Building2 } from "lucide-react";
+import Link from "next/link";
 import PropertyGallery from "@/components/property/PropertyGallery";
 import PropertyMap from "@/components/property/PropertyMap";
 import PropertySchema from "@/components/property/PropertySchema";
@@ -18,6 +19,7 @@ import {
   getNeighborhood,
   formatPrice,
   getPropertyPath,
+  slugify,
 } from "@/lib/utils";
 
 interface PageProps {
@@ -31,9 +33,16 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
     const property = await getProperty(Number(id));
     const op = getMainOperation(property);
     const title = property.publication_title;
-    const description = `${property.type.name} en ${op?.operation_type ?? ""} - ${property.fake_address}. ${property.room_amount > 0 ? `${property.room_amount} ambientes, ` : ""}${property.total_surface ? `${property.total_surface}mÂ². ` : ""}D'Amato Propiedades.`;
-    const ogImage = property.photos?.[0]?.image
-      ? [{ url: property.photos[0].image, width: 1200, height: 800, alt: title }]
+    const rawDesc = [
+      `${property.type.name} en ${op?.operation_type ?? "venta"} en ${getNeighborhood(property) || property.fake_address}.`,
+      property.room_amount > 0 ? `${property.room_amount} amb.` : null,
+      property.roofed_surface ? `${property.roofed_surface} m².` : null,
+      op?.prices?.[0] ? `${formatPrice(op.prices[0].price, op.prices[0].currency)}.` : null,
+    ].filter(Boolean).join(" ");
+    const description = rawDesc.length > 155 ? rawDesc.slice(0, 152) + "..." : rawDesc;
+    const firstPhoto = property.photos?.find((p) => !p.is_blueprint);
+    const ogImage = firstPhoto?.image
+      ? [{ url: firstPhoto.image, width: 1200, height: 800, alt: title }]
       : [{ url: "/og-image.jpg", width: 1200, height: 630, alt: title }];
     return {
       title,
@@ -130,11 +139,21 @@ export default async function PropertyDetailPage({ params }: PageProps) {
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
             {/* Left: info */}
             <div>
-              {op && (
-                <span className={`inline-block text-xs font-semibold px-3 py-1 rounded-full mb-3 ${getOperationColor(op.operation_type)}`}>
-                  {op.operation_type}
-                </span>
-              )}
+              <div className="flex flex-wrap gap-2 mb-3">
+                {property.operations.map((operation) => (
+                  <span
+                    key={operation.operation_type}
+                    className={`text-xs font-semibold px-3 py-1 rounded-full ${getOperationColor(operation.operation_type)}`}
+                  >
+                    {operation.operation_type}
+                  </span>
+                ))}
+                {property.credit_eligible && (
+                  <span className="text-xs font-semibold px-3 py-1 rounded-full bg-[#10b981] text-white">
+                    {property.credit_eligible}
+                  </span>
+                )}
+              </div>
               <h1 className="font-display text-2xl sm:text-3xl lg:text-4xl font-bold text-white leading-tight mb-2">
                 {property.publication_title}
               </h1>
@@ -142,7 +161,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 <MapPin className="w-4 h-4 shrink-0" />
                 <span className="text-sm">
                   {property.fake_address}
-                  {neighborhood ? ` Â· ${neighborhood}` : ""}
+                  {neighborhood ? ` · ${neighborhood}` : ""}
                 </span>
               </div>
               <p className="text-2xl sm:text-3xl font-bold text-white">{price}</p>
@@ -184,6 +203,26 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 title={property.publication_title}
               />
 
+              {/* Videos */}
+              {property.videos.length > 0 && (
+                <div className="mt-6 mb-2">
+                  <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">Videos</h2>
+                  <div className="space-y-4">
+                    {property.videos.map((video, i) => (
+                      <div key={i} className="aspect-video rounded-xl overflow-hidden bg-black">
+                        <iframe
+                          src={video.url}
+                          title={`Video ${i + 1}`}
+                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                          allowFullScreen
+                          className="w-full h-full"
+                        />
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               {/* Reference */}
               <div className="flex items-center gap-1 mt-4 mb-2 text-[#5a5a6e]">
                 <Hash className="w-3.5 h-3.5" />
@@ -192,13 +231,43 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
               {/* Price */}
               <div className="border-t border-b border-[#e2e4e8] py-4 mb-6">
-                <p className="text-3xl font-bold text-[#1a5fb4]">{price}</p>
-                {property.expenses && (
-                  <p className="text-sm text-[#5a5a6e] mt-1">
-                    + Expensas: {formatPrice(property.expenses, "ARS")}/mes
+                {property.operations.map((operation) => {
+                  const opPrice = operation.prices?.[0];
+                  if (!opPrice) return null;
+                  const formatted = formatPrice(opPrice.price, opPrice.currency);
+                  const displayPrice =
+                    operation.operation_type === "Alquiler" ||
+                    operation.operation_type === "Alquiler temporario"
+                      ? `${formatted}/mes`
+                      : formatted;
+                  return (
+                    <div key={operation.operation_type} className="mb-2 last:mb-0">
+                      <p className="text-xs text-[#5a5a6e] uppercase tracking-wide mb-0.5">
+                        {operation.operation_type}
+                      </p>
+                      <p className="text-3xl font-bold text-[#1a5fb4]">{displayPrice}</p>
+                    </div>
+                  );
+                })}
+                {property.expenses != null && (
+                  <p className="text-sm text-[#5a5a6e] mt-2">
+                    {property.expenses === 0
+                      ? "Sin expensas"
+                      : `+ Expensas: ${formatPrice(property.expenses, "ARS")}/mes`}
                   </p>
                 )}
               </div>
+
+              {/* Development back-link */}
+              {property.development && (
+                <Link
+                  href={`/emprendimientos/${property.development.id}/${slugify(property.development.name)}`}
+                  className="inline-flex items-center gap-2 text-sm text-[#1a5fb4] hover:underline mb-6"
+                >
+                  <Building2 className="w-4 h-4" />
+                  Parte de: {property.development.name}
+                </Link>
+              )}
 
               {/* Quick features */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
@@ -217,10 +286,19 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
                     <Bath className="w-5 h-5 text-[#1a5fb4]" />
                     <div>
-                      <p className="text-xs text-[#5a5a6e]">BaÃ±os</p>
+                      <p className="text-xs text-[#5a5a6e]">Baños</p>
                       <p className="font-semibold text-[#1a1a2e]">
                         {property.bathroom_amount}
                       </p>
+                    </div>
+                  </div>
+                )}
+                {property.suite_amount > 0 && (
+                  <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
+                    <BedDouble className="w-5 h-5 text-[#1a5fb4]" />
+                    <div>
+                      <p className="text-xs text-[#5a5a6e]">En suite</p>
+                      <p className="font-semibold text-[#1a1a2e]">{property.suite_amount}</p>
                     </div>
                   </div>
                 )}
@@ -230,7 +308,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     <div>
                       <p className="text-xs text-[#5a5a6e]">Superficie</p>
                       <p className="font-semibold text-[#1a1a2e]">
-                        {property.total_surface} mÂ²
+                        {property.total_surface} m²
                       </p>
                     </div>
                   </div>
@@ -250,9 +328,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
                     <Calendar className="w-5 h-5 text-[#1a5fb4]" />
                     <div>
-                      <p className="text-xs text-[#5a5a6e]">AntigÃ¼edad</p>
+                      <p className="text-xs text-[#5a5a6e]">Antigüedad</p>
                       <p className="font-semibold text-[#1a1a2e]">
-                        {property.age === 0 ? "A estrenar" : `${property.age} aÃ±os`}
+                        {property.age === 0 ? "A estrenar" : `${property.age} años`}
                       </p>
                     </div>
                   </div>
@@ -268,16 +346,25 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                     </div>
                   </div>
                 )}
+                {property.disposition && (
+                  <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
+                    <Compass className="w-5 h-5 text-[#1a5fb4]" />
+                    <div>
+                      <p className="text-xs text-[#5a5a6e]">Orientaci&oacute;n</p>
+                      <p className="font-semibold text-[#1a1a2e]">{property.disposition}</p>
+                    </div>
+                  </div>
+                )}
               </div>
 
               {/* Additional surfaces */}
               {(property.roofed_surface || property.unroofed_surface) && (
                 <div className="flex gap-6 mb-6 text-sm text-[#5a5a6e]">
                   {property.roofed_surface && (
-                    <span>Cubierta: <strong className="text-[#1a1a2e]">{property.roofed_surface} mÂ²</strong></span>
+                    <span>Cubierta: <strong className="text-[#1a1a2e]">{property.roofed_surface} m²</strong></span>
                   )}
                   {property.unroofed_surface && (
-                    <span>Descubierta: <strong className="text-[#1a1a2e]">{property.unroofed_surface} mÂ²</strong></span>
+                    <span>Descubierta: <strong className="text-[#1a1a2e]">{property.unroofed_surface} m²</strong></span>
                   )}
                 </div>
               )}
@@ -285,7 +372,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               {/* Description */}
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">
-                  DescripciÃ³n
+                  Descripción
                 </h2>
                 {property.rich_description ? (
                   <div
@@ -320,7 +407,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               {property.geo_lat && property.geo_long && (
                 <div className="mb-8">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">
-                    UbicaciÃ³n
+                    Ubicación
                   </h2>
                   <PropertyMap
                     lat={property.geo_lat}
@@ -378,9 +465,17 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
                 {/* Branch info */}
                 <div className="mt-5 pt-5 border-t border-[#e2e4e8] text-xs text-[#5a5a6e] space-y-1">
-                  <p className="font-semibold text-[#1a1a2e]">D&apos;Amato Propiedades</p>
-                  <p>011 2005-2222</p>
-                  <p>contacto@damatopropiedades.com.ar</p>
+                  <p className="font-semibold text-[#1a1a2e]">{property.branch.display_name}</p>
+                  <p>{property.branch.phone_area} {property.branch.phone}</p>
+                  <p>{property.branch.email}</p>
+                  {property.producer && (
+                    <p className="text-xs text-[#5a5a6e] mt-1">
+                      Asesor:{" "}
+                      <span className="font-medium text-[#1a1a2e]">
+                        {property.producer.name}
+                      </span>
+                    </p>
+                  )}
                 </div>
               </div>
             </aside>
@@ -392,6 +487,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
       <BottomBarWrapper
         propertyRef={property.reference_code}
         propertyAddress={property.fake_address}
+        whatsappMsg={whatsappMsg}
       />
     </>
   );

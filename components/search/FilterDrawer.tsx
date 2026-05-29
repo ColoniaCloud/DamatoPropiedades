@@ -1,18 +1,33 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { X, SlidersHorizontal } from "lucide-react";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import Link from "next/link";
 import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
 
-export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
+export default function FilterDrawer({
+  barrios = [],
+  lockedOperacion,
+  initialTypes,
+}: {
+  barrios?: string[];
+  lockedOperacion?: string;
+  initialTypes?: string[];
+}) {
   const router = useRouter();
+  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  const [operation, setOperation] = useState(searchParams.get("operacion") || "");
-  const [types, setTypes] = useState<string[]>(searchParams.getAll("tipo"));
+  const [operation, setOperation] = useState(
+    lockedOperacion ?? searchParams.get("operacion") ?? ""
+  );
+  const [types, setTypes] = useState<string[]>(() => {
+    const paramTipos = searchParams.getAll("tipo");
+    return paramTipos.length > 0 ? paramTipos : (initialTypes ?? []);
+  });
   const [rooms, setRooms] = useState<string[]>(searchParams.getAll("ambientes"));
   const [currency, setCurrency] = useState<"ARS" | "USD">(
     (searchParams.get("moneda") as "ARS" | "USD") || "ARS"
@@ -27,6 +42,22 @@ export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
   );
   const [withSuite, setWithSuite] = useState(searchParams.get("suite") === "1");
   const [barrio, setBarrio] = useState(searchParams.get("barrio") || "");
+
+  useEffect(() => {
+    setOperation(lockedOperacion ?? searchParams.get("operacion") ?? "");
+    const paramTipos = searchParams.getAll("tipo");
+    setTypes(paramTipos.length > 0 ? paramTipos : (initialTypes ?? []));
+    setRooms(searchParams.getAll("ambientes"));
+    setCurrency((searchParams.get("moneda") as "ARS" | "USD") || "ARS");
+    setPriceFrom(searchParams.get("precio_min") ?? "");
+    setPriceTo(searchParams.get("precio_max") ?? "");
+    setSurfaceMin(searchParams.get("superficie_min") ?? "");
+    setWithParking(searchParams.get("cochera") === "1");
+    setCreditEligible(searchParams.get("credito") === "1");
+    setTagIds(searchParams.get("tags")?.split(",").filter(Boolean) ?? []);
+    setWithSuite(searchParams.get("suite") === "1");
+    setBarrio(searchParams.get("barrio") ?? "");
+  }, [searchParams]); // lockedOperacion and initialTypes are stable Server Component props
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -47,11 +78,12 @@ export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
   }
 
   function applyFilters() {
+    const currentOrden = searchParams.get("orden");
     const params = new URLSearchParams();
     if (operation) params.set("operacion", operation);
     types.forEach((t) => params.append("tipo", t));
     rooms.forEach((r) => params.append("ambientes", r));
-    params.set("moneda", currency);
+    if (currency === "USD") params.set("moneda", currency);
     if (priceFrom) params.set("precio_min", priceFrom);
     if (priceTo) params.set("precio_max", priceTo);
     if (surfaceMin) params.set("superficie_min", surfaceMin);
@@ -60,7 +92,12 @@ export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
     if (tagIds.length > 0) params.set("tags", tagIds.join(","));
     if (withSuite) params.set("suite", "1");
     if (barrio) params.set("barrio", barrio);
-    router.push(`/propiedades?${params.toString()}`);
+    if (currentOrden && currentOrden !== "-created_at") params.set("orden", currentOrden);
+    // On /venta and /alquiler pages, always redirect to /propiedades with full params
+    const target = (pathname.startsWith("/venta") || pathname.startsWith("/alquiler"))
+      ? `/propiedades?${params.toString()}`
+      : `/propiedades?${params.toString()}`;
+    router.push(target);
     setOpen(false);
   }
 
@@ -109,6 +146,7 @@ export default function FilterDrawer({ barrios = [] }: { barrios?: string[] }) {
     withSuite, setWithSuite,
     barrio, setBarrio,
     barrios,
+    lockedOperacion,
   };
 
   return (
@@ -225,6 +263,7 @@ interface FilterContentProps {
   barrio: string;
   setBarrio: (v: string) => void;
   barrios: string[];
+  lockedOperacion?: string;
 }
 
 const CHARACTERISTIC_TAGS = [
@@ -249,6 +288,7 @@ function FilterContent({
   withSuite, setWithSuite,
   barrio, setBarrio,
   barrios,
+  lockedOperacion,
 }: FilterContentProps) {
   return (
     <>
@@ -286,19 +326,34 @@ function FilterContent({
         </p>
         <div className="space-y-2">
           {OPERATION_TYPES.map((op) => (
-            <label key={op.slug} className="flex items-center gap-3 cursor-pointer">
+            <label
+              key={op.slug}
+              className={cn(
+                "flex items-center gap-3",
+                lockedOperacion ? "cursor-not-allowed opacity-60" : "cursor-pointer"
+              )}
+            >
               <input
                 type="radio"
                 name="operation"
                 value={op.slug}
                 checked={operation === op.slug}
                 onChange={() => setOperation(op.slug)}
+                disabled={!!lockedOperacion}
                 className="w-4 h-4 text-[#1a5fb4]"
               />
               <span className="text-sm text-[#1a1a2e]">{op.label}</span>
             </label>
           ))}
         </div>
+        {lockedOperacion && (
+          <p className="text-xs text-[#5a5a6e] mt-2">
+            Para cambiar la operación,{" "}
+            <Link href="/propiedades" className="text-[#1a5fb4] hover:underline">
+              usá el buscador general
+            </Link>
+          </p>
+        )}
       </div>
 
       {/* Property types */}
