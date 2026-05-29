@@ -5,6 +5,7 @@ import Image from "next/image";
 import { useState } from "react";
 import { Menu } from "lucide-react";
 import { WhatsAppIcon, InstagramIcon, FacebookIcon } from "@/components/ui/Icons";
+import { SOCIAL } from "@/lib/constants";
 
 import MobileMenu from "./MobileMenu";
 
@@ -17,9 +18,9 @@ const NAV_LINKS = [
   { href: "/contacto", label: "Contacto" },
 ];
 
-const WHATSAPP_URL = "https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes";
-const INSTAGRAM_URL = "https://www.instagram.com/damato.propiedades/";
-const FACEBOOK_URL = "https://www.facebook.com/damatopropiedades/";
+const WHATSAPP_URL = `https://api.whatsapp.com/send?phone=${process.env.NEXT_PUBLIC_WHATSAPP || "5491140931881"}&text=Quisiera%20contactarme%20con%20ustedes`;
+const INSTAGRAM_URL = SOCIAL.instagram;
+const FACEBOOK_URL = SOCIAL.facebook;
 
 
 

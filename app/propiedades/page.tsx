@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Suspense } from "react";
+import Link from "next/link";
 import type { Property } from "@/lib/types";
 import PropertyGrid from "@/components/property/PropertyGrid";
 import FilterDrawer from "@/components/search/FilterDrawer";
@@ -8,9 +9,10 @@ import { searchProperties, getBarrios } from "@/lib/tokko";
 import { PROPERTY_TYPES, OPERATION_TYPES } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Propiedades en Venta y Alquiler — Villa Devoto",
+  title: "Todas las propiedades",
   description:
-    "Buscá propiedades en venta y alquiler en Villa Devoto. Filtrá por tipo, precio y ambientes.",
+    "Buscá entre todos los inmuebles disponibles en D'Amato Propiedades. " +
+    "Filtrá por barrio, tipo, precio y operación.",
 };
 
 export const revalidate = 300;
@@ -18,10 +20,15 @@ export const revalidate = 300;
 interface PageProps {
   searchParams: Promise<{
     operacion?: string;
+    operation?: string;
     tipo?: string | string[];
+    type?: string | string[];
     ambientes?: string | string[];
+    rooms?: string | string[];
     precio_min?: string;
+    price_from?: string;
     precio_max?: string;
+    price_to?: string;
     moneda?: string;
     superficie_min?: string;
     cochera?: string;
@@ -29,7 +36,9 @@ interface PageProps {
     tags?: string;
     suite?: string;
     barrio?: string;
+    location?: string;
     orden?: string;
+    order?: string;
     pagina?: string;
   }>;
 }
@@ -131,7 +140,17 @@ function buildTitle(params: Awaited<PageProps["searchParams"]>): string {
 }
 
 export default async function PropiedadesPage({ searchParams }: PageProps) {
-  const params = await searchParams;
+  const raw = await searchParams;
+  const params = {
+    ...raw,
+    operacion: (raw.operacion ?? raw.operation)?.toLowerCase(),
+    tipo: raw.tipo ?? raw.type,
+    ambientes: raw.ambientes ?? raw.rooms,
+    precio_min: raw.precio_min ?? raw.price_from,
+    precio_max: raw.precio_max ?? raw.price_to,
+    barrio: raw.barrio ?? raw.location,
+    orden: raw.orden ?? raw.order,
+  };
   const page = Number(params.pagina) || 1;
   const limit = 12;
   const offset = (page - 1) * limit;
@@ -243,12 +262,12 @@ function Pagination({
   return (
     <div className="flex items-center justify-center gap-2 mt-10">
       {currentPage > 1 && (
-        <a
+        <Link
           href={buildUrl(currentPage - 1)}
           className="px-4 py-2 rounded-lg border border-[#e2e4e8] text-sm text-[#5a5a6e] hover:border-[#1a5fb4] hover:text-[#1a5fb4] transition-colors"
         >
           ← Anterior
-        </a>
+        </Link>
       )}
 
       <span className="text-sm text-[#5a5a6e] px-3">
@@ -256,12 +275,12 @@ function Pagination({
       </span>
 
       {currentPage < totalPages && (
-        <a
+        <Link
           href={buildUrl(currentPage + 1)}
           className="px-4 py-2 rounded-lg border border-[#e2e4e8] text-sm text-[#5a5a6e] hover:border-[#1a5fb4] hover:text-[#1a5fb4] transition-colors"
         >
           Siguiente →
-        </a>
+        </Link>
       )}
     </div>
   );

@@ -28,7 +28,17 @@ const LOCATION_OPTIONS = [
   { value: "Monserrat", label: "Monserrat" },
 ];
 
-export default function Hero() {
+interface HeroProps {
+  barrios?: string[];
+}
+
+export default function Hero({ barrios }: HeroProps) {
+  const locationOptions = barrios?.length
+    ? [
+        { value: "", label: "Todos los barrios" },
+        ...barrios.map((b) => ({ value: b, label: b })),
+      ]
+    : LOCATION_OPTIONS;
   const router = useRouter();
   const [operation, setOperation] = useState("venta");
   const [typeId, setTypeId] = useState("");
@@ -234,7 +244,7 @@ export default function Hero() {
               >
                 <span className={`flex items-center gap-2 ${location ? "text-white" : "text-white/50"}`}>
                   <MapPin className="w-4 h-4 shrink-0" />
-                  {LOCATION_OPTIONS.find((o) => o.value === location)?.label ?? "Todos los barrios"}
+                  {locationOptions.find((o) => o.value === location)?.label ?? "Todos los barrios"}
                 </span>
                 <ChevronDown
                   className={`w-4 h-4 text-white/50 transition-transform duration-200 shrink-0 ml-2 ${
@@ -257,7 +267,7 @@ export default function Hero() {
                   }}
                 >
                   <div className="py-1">
-                    {LOCATION_OPTIONS.map((opt) => {
+                    {locationOptions.map((opt) => {
                       const isSelected = location === opt.value;
                       return (
                         <button

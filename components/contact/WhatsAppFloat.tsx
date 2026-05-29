@@ -5,7 +5,7 @@ import { X, Send } from "lucide-react";
 import { WhatsAppIcon } from "@/components/ui/Icons";
 
 
-const WHATSAPP_NUMBER = "5491140931881";
+const WHATSAPP_NUMBER = process.env.NEXT_PUBLIC_WHATSAPP || "5491140931881";
 const DEFAULT_MESSAGE = "Hola, me gustaría recibir más información sobre sus propiedades.";
 
 

@@ -9,7 +9,7 @@ import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
 import PropertyCard from "@/components/property/PropertyCard";
 import { getDevelopment, getPropertiesByDevelopment } from "@/lib/tokko";
-import { formatConstructionDate, getConstructionStatusInfo, slugify } from "@/lib/utils";
+import { formatConstructionDate, getConstructionStatusInfo, slugify, CONSTRUCTION_STATUS } from "@/lib/utils";
 import { SITE_URL, BRANCH } from "@/lib/constants";
 
 interface PageProps {
@@ -56,13 +56,7 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
 
 export const revalidate = 300;
 
-const STATUS_STEPS = [
-  "En pozo",
-  "En pozo avanzado",
-  "En construcción",
-  "Constr. avanzada",
-  "Terminado",
-];
+const STATUS_STEPS = Object.values(CONSTRUCTION_STATUS).map((s) => s.label);
 
 export default async function DevelopmentDetailPage({ params }: PageProps) {
   const { id } = await params;

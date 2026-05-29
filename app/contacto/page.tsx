@@ -2,31 +2,34 @@ import type { Metadata } from "next";
 import { Phone, Mail, MapPin, Clock } from "lucide-react";
 import ContactForm from "@/components/contact/ContactForm";
 import WhatsAppButton from "@/components/contact/WhatsAppButton";
+import { BRANCH } from "@/lib/constants";
 
 export const metadata: Metadata = {
-  title: "Contacto — D'Amato Propiedades",
+  title: "Contacto",
   description:
-    "Contactanos para comprar, vender o alquilar tu propiedad. Estamos en Av. Fco. Beiro 4701, CABA. Tel: 011 2005-2222.",
+    "Contactate con D'Amato Propiedades. " +
+    "Estamos en Av. Francisco Beiró 4701, Villa Devoto, Buenos Aires. " +
+    "Tel: 011 2005-2222.",
 };
 
 const CONTACT_INFO = [
   {
     icon: MapPin,
     label: "Dirección",
-    value: "Av. Fco. Beiro 4701, CABA",
-    href: "https://maps.google.com/?q=Av.+Fco.+Beiro+4701,+CABA,+Argentina",
+    value: `${BRANCH.address}, CABA`,
+    href: `https://maps.google.com/?q=${encodeURIComponent(`${BRANCH.address}, CABA, Argentina`)}`,
   },
   {
     icon: Phone,
     label: "Teléfono",
-    value: "011 2005-2222",
-    href: "tel:01120052222",
+    value: BRANCH.fullPhone,
+    href: `tel:${BRANCH.fullPhone.replace(/\D/g, "")}`,
   },
   {
     icon: Mail,
     label: "Email",
-    value: "contacto@damatopropiedades.com.ar",
-    href: "mailto:contacto@damatopropiedades.com.ar",
+    value: BRANCH.email,
+    href: `mailto:${BRANCH.email}`,
   },
   {
     icon: Clock,
@@ -98,7 +101,7 @@ export default function ContactPage() {
             {/* Map */}
             <div className="rounded-xl overflow-hidden border border-[#e2e4e8] h-52">
               <iframe
-                src="https://www.google.com/maps?q=Av.+Fco.+Beiro+4701,+CABA,+Argentina&output=embed"
+                src={`https://www.google.com/maps?q=${encodeURIComponent(`${BRANCH.address}, CABA, Argentina`)}&output=embed`}
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

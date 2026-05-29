@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { Phone, Mail, MapPin } from "lucide-react";
 import { WhatsAppIcon, InstagramIcon, FacebookIcon } from "@/components/ui/Icons";
+import { BRANCH, SOCIAL } from "@/lib/constants";
 
 
 
@@ -90,30 +91,30 @@ export default function Footer() {
               <li className="flex items-start gap-3 justify-center lg:justify-start">
                 <MapPin className="w-4 h-4 text-[#00b4d8] mt-0.5 shrink-0" />
                 <a
-                  href="https://maps.google.com/?q=Av.+Fco.+Beiro+4701,+CABA,+Argentina"
+                  href={`https://maps.google.com/?q=${encodeURIComponent(`${BRANCH.address}, CABA, Argentina`)}`}
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
-                  Av. Fco. Beiro 4701, CABA
+                  {BRANCH.address}, CABA
                 </a>
               </li>
               <li className="flex items-center gap-3 justify-center lg:justify-start">
                 <Phone className="w-4 h-4 text-[#00b4d8] shrink-0" />
                 <a
-                  href="tel:01120052222"
+                  href={`tel:${BRANCH.fullPhone.replace(/\D/g, "")}`}
                   className="text-sm text-white/60 hover:text-white transition-colors"
                 >
-                  011 2005-2222
+                  {BRANCH.fullPhone}
                 </a>
               </li>
               <li className="flex items-center gap-3 justify-center lg:justify-start">
                 <Mail className="w-4 h-4 text-[#00b4d8] shrink-0" />
                 <a
-                  href="mailto:contacto@damatopropiedades.com.ar"
+                  href={`mailto:${BRANCH.email}`}
                   className="text-sm text-white/60 hover:text-white transition-colors break-all"
                 >
-                  contacto@damatopropiedades.com.ar
+                  {BRANCH.email}
                 </a>
               </li>
             </ul>
@@ -121,7 +122,7 @@ export default function Footer() {
             {/* Redes sociales */}
             <div className="flex gap-3 mt-6 justify-center lg:justify-start">
               <a
-                href="https://api.whatsapp.com/send?phone=5491140931881&text=Quisiera%20contactarme%20con%20ustedes"
+                href={`https://api.whatsapp.com/send?phone=${BRANCH.whatsapp}&text=Quisiera%20contactarme%20con%20ustedes`}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="WhatsApp"
@@ -130,7 +131,7 @@ export default function Footer() {
                 <WhatsAppIcon className="w-4 h-4" />
               </a>
               <a
-                href="https://www.instagram.com/damato.propiedades/"
+                href={SOCIAL.instagram}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Instagram"
@@ -139,7 +140,7 @@ export default function Footer() {
                 <InstagramIcon className="w-4 h-4" />
               </a>
               <a
-                href="https://www.facebook.com/damatopropiedades/"
+                href={SOCIAL.facebook}
                 target="_blank"
                 rel="noopener noreferrer"
                 aria-label="Facebook"

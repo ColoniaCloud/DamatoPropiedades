@@ -5,6 +5,7 @@ import Link from "next/link";
 import Image from "next/image";
 import { X, Phone, Mail } from "lucide-react";
 import { cn } from "@/lib/utils";
+import { BRANCH } from "@/lib/constants";
 
 interface MobileMenuProps {
   open: boolean;
@@ -77,18 +78,18 @@ export default function MobileMenu({ open, onClose, links }: MobileMenuProps) {
         {/* Contact info */}
         <div className="px-6 py-6 border-t border-white/10 space-y-3">
           <a
-            href="tel:01120052222"
+            href={`tel:${BRANCH.fullPhone.replace(/\D/g, "")}`}
             className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
           >
             <Phone className="w-5 h-5 text-[#00b4d8]" />
-            <span className="text-sm">011 2005-2222</span>
+            <span className="text-sm">{BRANCH.fullPhone}</span>
           </a>
           <a
-            href="mailto:contacto@damatopropiedades.com.ar"
+            href={`mailto:${BRANCH.email}`}
             className="flex items-center gap-3 text-white/80 hover:text-white transition-colors"
           >
             <Mail className="w-5 h-5 text-[#00b4d8]" />
-            <span className="text-sm">contacto@damatopropiedades.com.ar</span>
+            <span className="text-sm">{BRANCH.email}</span>
           </a>
         </div>
       </div>
