@@ -14,12 +14,13 @@ export default async function PropertyRedirectPage({ params }: PageProps) {
 
   try {
     const property = await getProperty(id);
-    if (property && property.status === 2) {
+    console.log("[redirect] property id:", id, "status:", property?.status, "has publication_title:", !!property?.publication_title);
+    if (property?.publication_title) {
       const propertySlug = slugify(property.publication_title);
       redirect(`/propiedad/${id}/${propertySlug}`);
     }
-  } catch {
-    // property not found or fetch error
+  } catch (error) {
+    console.error("[redirect] error fetching property:", id, error);
   }
 
   redirect("/propiedades");
