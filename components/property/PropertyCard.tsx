@@ -1,7 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { BedDouble, Bath, Maximize2 } from "lucide-react";
-import { cn, getMainOperation, getMainPrice, getOperationColor, getPropertyPath, getNeighborhood } from "@/lib/utils";
+import { cn, getMainOperation, getMainPrice, getOperationColor, getPropertyPath } from "@/lib/utils";
 import type { Property } from "@/lib/types";
 
 interface PropertyCardProps {
@@ -13,7 +13,6 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
   const operation = getMainOperation(property);
   const price = getMainPrice(property);
   const photo = property.photos?.[0]?.image;
-  const neighborhood = getNeighborhood(property);
   const path = getPropertyPath(property);
 
   return (
@@ -65,11 +64,6 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
         <p className="text-[#1a1a2e] font-medium text-sm leading-snug line-clamp-1 mb-0.5">
           {property.fake_address}
         </p>
-
-        {/* Neighborhood */}
-        {neighborhood && (
-          <p className="text-[#5a5a6e] text-xs mb-3">{neighborhood}</p>
-        )}
 
         {/* Chips */}
         <div className="flex items-center gap-3 text-xs text-[#5a5a6e]">

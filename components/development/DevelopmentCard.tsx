@@ -21,7 +21,7 @@ export default function DevelopmentCard({ development, priority }: Props) {
   } = development;
 
   const photo = photos?.[0];
-  const neighborhood = location?.divisions?.[0]?.name ?? "";
+  const neighborhood = location?.divisions?.[1]?.name ?? location?.divisions?.[0]?.name ?? "";
   const statusInfo = getConstructionStatusInfo(construction_status);
   const path = getDevelopmentPath(development);
 
