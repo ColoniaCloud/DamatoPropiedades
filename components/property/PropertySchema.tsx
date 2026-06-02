@@ -24,6 +24,7 @@ export default function PropertySchema({ property }: PropertySchemaProps) {
       "@type": "PostalAddress",
       streetAddress: property.fake_address,
       addressLocality:
+        property.location?.divisions?.[1]?.name ??
         property.location?.divisions?.[0]?.name ??
         property.location?.full_location ??
         "Buenos Aires",

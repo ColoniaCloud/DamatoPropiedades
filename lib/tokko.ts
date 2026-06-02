@@ -132,7 +132,7 @@ export const getBarrios = cache(async (): Promise<string[]> => {
   const all = await getAllProperties();
   const set = new Set<string>();
   for (const p of all) {
-    const division = p.location.divisions?.[0]?.name;
+    const division = p.location.divisions?.[1]?.name ?? p.location.divisions?.[0]?.name;
     if (division) {
       set.add(division);
     } else if (p.location.name) {

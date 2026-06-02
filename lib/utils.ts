@@ -82,7 +82,8 @@ export function sanitizeHtml(html: string): string {
 }
 
 export function getNeighborhood(property: Property): string {
-  return property.location?.divisions?.[0]?.name ?? "";
+  const divs = property.location?.divisions;
+  return divs?.[1]?.name ?? divs?.[0]?.name ?? "";
 }
 
 export function truncate(text: string, length: number): string {

@@ -159,7 +159,7 @@ export default function Footer() {
             derechos reservados.
           </p>
           <p className="text-[10px]" style={{ color: "#2d4f7a" }}>
-            Developed by NL360 Cloud
+            Developed by NL360 Cloud - v2.1
           </p>
         </div>
       </div>
