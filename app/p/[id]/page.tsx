@@ -9,25 +9,26 @@ interface Props {
 export default async function FichaInfoRedirect({ params }: Props) {
   const { id } = await params
 
-  // ficha.info manda el formato "3619333-prop" — extraemos solo el número
   const numericId = parseInt(id.replace(/-prop$/, '').replace(/\D/g, ''), 10)
 
   if (isNaN(numericId)) {
     redirect('/propiedades')
   }
 
+  // Solo el fetch va dentro del try/catch — nunca los redirect()
+  let property
   try {
-    const property = await getProperty(numericId)
-
-    if (!property?.publication_title) {
-      redirect('/propiedades')
-    }
-
-    const slug = slugify(property.publication_title)
-    redirect(`/propiedad/${numericId}/${slug}`)
+    property = await getProperty(numericId)
   } catch {
     redirect('/propiedades')
   }
+
+  if (!property?.publication_title) {
+    redirect('/propiedades')
+  }
+
+  const slug = slugify(property.publication_title)
+  redirect(`/propiedad/${numericId}/${slug}`)
 }
 
 export async function generateMetadata() {
