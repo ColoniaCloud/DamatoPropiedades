@@ -132,9 +132,18 @@ export const getBarrios = cache(async (): Promise<string[]> => {
   const all = await getAllProperties();
   const set = new Set<string>();
   for (const p of all) {
-    const division = p.location.divisions?.[1]?.name ?? p.location.divisions?.[0]?.name;
-    if (division) {
-      set.add(division);
+    const barrio = (() => {
+      const fullLocation = p.location?.full_location
+      if (fullLocation) {
+        const parts = fullLocation.split(' | ')
+        if (parts.length >= 3) return parts[2]
+      }
+      return p.location?.divisions?.[1]?.name
+        ?? p.location?.divisions?.[0]?.name
+        ?? null
+    })()
+    if (barrio) {
+      set.add(barrio);
     } else if (p.location.name) {
       set.add(p.location.name);
     }

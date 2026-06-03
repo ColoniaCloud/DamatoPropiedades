@@ -23,11 +23,13 @@ export default function PropertySchema({ property }: PropertySchemaProps) {
     address: {
       "@type": "PostalAddress",
       streetAddress: property.fake_address,
-      addressLocality:
-        property.location?.divisions?.[1]?.name ??
-        property.location?.divisions?.[0]?.name ??
-        property.location?.full_location ??
-        "Buenos Aires",
+      addressLocality: (() => {
+        const fl = property.location?.full_location
+        if (fl) { const p = fl.split(' | '); if (p.length >= 3) return p[2] }
+        return property.location?.divisions?.[1]?.name
+          ?? property.location?.divisions?.[0]?.name
+          ?? "Buenos Aires"
+      })(),
       addressCountry: "AR",
     },
     ...(property.geo_lat && property.geo_long
