@@ -71,7 +71,11 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
   if (!development) notFound();
 
   const statusInfo = getConstructionStatusInfo(development.construction_status);
-  const neighborhood = development.location?.divisions?.[1]?.name ?? development.location?.divisions?.[0]?.name ?? "";
+  const neighborhood = (() => {
+    const fl = development.location?.full_location
+    if (fl) { const p = fl.split(' | '); if (p.length >= 3) return p[2] }
+    return development.location?.divisions?.[1]?.name ?? development.location?.divisions?.[0]?.name ?? ""
+  })()
   const headersList = await headers();
   const host = headersList.get("host") ?? "localhost:3000";
   const protocol = host.startsWith("localhost") ? "http" : "https";

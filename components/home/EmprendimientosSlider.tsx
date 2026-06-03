@@ -36,7 +36,11 @@ export default function EmprendimientosSlider({ developments }: Props) {
 
   const dev = developments[current];
   const photo = dev.photos?.[0];
-  const neighborhood = dev.location?.divisions?.[1]?.name ?? dev.location?.divisions?.[0]?.name ?? dev.location?.full_location ?? "";
+  const neighborhood = (() => {
+    const fl = dev.location?.full_location
+    if (fl) { const p = fl.split(' | '); if (p.length >= 3) return p[2] }
+    return dev.location?.divisions?.[1]?.name ?? dev.location?.divisions?.[0]?.name ?? ""
+  })()
   const statusInfo = getConstructionStatusInfo(dev.construction_status);
   const path = getDevelopmentPath(dev);
 

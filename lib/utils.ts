@@ -81,9 +81,22 @@ export function sanitizeHtml(html: string): string {
   }
 }
 
-export function getNeighborhood(property: Property): string {
-  const divs = property.location?.divisions;
-  return divs?.[1]?.name ?? divs?.[0]?.name ?? "";
+/**
+ * Retorna el Localidad/Partido de una propiedad.
+ * Usa full_location que tiene formato fijo:
+ * "Argentina | Región | Localidad/Partido [| Sub-division]"
+ * El índice [2] siempre es Localidad/Partido — nunca Sub-division.
+ */
+export function getNeighborhood(property: Property): string | null {
+  const fullLocation = property.location?.full_location
+  if (fullLocation) {
+    const parts = fullLocation.split(' | ')
+    if (parts.length >= 3) return parts[2]
+  }
+  // Fallback solo si full_location no existe
+  return property.location?.divisions?.[1]?.name
+    ?? property.location?.divisions?.[0]?.name
+    ?? null
 }
 
 export function truncate(text: string, length: number): string {
