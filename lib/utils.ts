@@ -108,6 +108,53 @@ export function getDevelopmentPath(development: Development): string {
   return `/emprendimientos/${development.id}/${slugify(development.name)}`;
 }
 
+export function isVideoUrl(url: string): boolean {
+  if (!url) return false;
+  try {
+    const u = new URL(url);
+    if (['www.youtube.com', 'youtube.com', 'youtu.be'].includes(u.hostname)) return true;
+    if (['vimeo.com', 'www.vimeo.com', 'player.vimeo.com'].includes(u.hostname)) return true;
+    const ext = u.pathname.split('.').pop()?.toLowerCase() ?? '';
+    return ['mp4', 'webm', 'ogg'].includes(ext);
+  } catch {
+    return false;
+  }
+}
+
+export function getVideoEmbedUrl(url: string): string | null {
+  if (!url) return null;
+  try {
+    const u = new URL(url);
+    if (u.hostname === 'www.youtube.com' || u.hostname === 'youtube.com') {
+      if (u.pathname.startsWith('/embed/')) return url;
+      if (u.pathname.startsWith('/shorts/')) {
+        const id = u.pathname.split('/')[2];
+        if (id) return `https://www.youtube.com/embed/${id}`;
+      }
+      const v = u.searchParams.get('v');
+      if (v) return `https://www.youtube.com/embed/${v}`;
+    }
+    if (u.hostname === 'youtu.be') {
+      const id = u.pathname.slice(1).split('?')[0];
+      if (id) return `https://www.youtube.com/embed/${id}`;
+    }
+    if (u.hostname === 'vimeo.com' || u.hostname === 'www.vimeo.com') {
+      const id = u.pathname.split('/').filter(Boolean)[0];
+      if (id && /^\d+$/.test(id)) return `https://player.vimeo.com/video/${id}`;
+    }
+    if (u.hostname === 'player.vimeo.com') return url;
+  } catch {
+    return null;
+  }
+  return url;
+}
+
+export function isDirectVideoFile(url: string): boolean {
+  if (!url) return false;
+  const ext = url.split('.').pop()?.split('?')[0]?.toLowerCase() ?? '';
+  return ['mp4', 'webm', 'ogg'].includes(ext);
+}
+
 export function formatConstructionDate(dateStr: string): string {
   if (!dateStr) return "A confirmar";
   const months = [
