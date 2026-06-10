@@ -20,6 +20,8 @@ import {
   formatPrice,
   getPropertyPath,
   slugify,
+  getVideoEmbedUrl,
+  isDirectVideoFile,
 } from "@/lib/utils";
 
 interface PageProps {
@@ -208,17 +210,25 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 <div className="mt-6 mb-2">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">Videos</h2>
                   <div className="space-y-4">
-                    {property.videos.map((video, i) => (
-                      <div key={i} className="aspect-video rounded-xl overflow-hidden bg-black">
-                        <iframe
-                          src={video.url}
-                          title={`Video ${i + 1}`}
-                          allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
-                          allowFullScreen
-                          className="w-full h-full"
-                        />
-                      </div>
-                    ))}
+                    {property.videos.map((video, i) => {
+                      const embedUrl = getVideoEmbedUrl(video.url);
+                      if (!embedUrl) return null;
+                      return (
+                        <div key={i} className="aspect-video rounded-xl overflow-hidden bg-black">
+                          {isDirectVideoFile(video.url) ? (
+                            <video src={video.url} controls className="w-full h-full" />
+                          ) : (
+                            <iframe
+                              src={embedUrl}
+                              title={`Video ${i + 1}`}
+                              allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+                              allowFullScreen
+                              className="w-full h-full border-0"
+                            />
+                          )}
+                        </div>
+                      );
+                    })}
                   </div>
                 </div>
               )}
