@@ -32,9 +32,6 @@ function buildSearchUrl(
 function normalizeSearchData(raw: Record<string, unknown>): Record<string, unknown> {
   const data: Record<string, unknown> = {
     property_types: ALL_PROPERTY_TYPES,
-    price_from: 0,
-    price_to: 999999999,
-    currency: "ARS",
   };
 
   // Normalize operation_types: accept strings or IDs
@@ -53,7 +50,7 @@ function normalizeSearchData(raw: Record<string, unknown>): Record<string, unkno
     data.property_types = raw.property_types;
   }
 
-  // Price filters
+  // Price filters — only apply when explicitly provided to avoid excluding USD properties
   if (raw.price_from !== undefined) data.price_from = raw.price_from;
   if (raw.price_to !== undefined) data.price_to = raw.price_to;
   if (raw.currency) data.currency = raw.currency;
@@ -151,21 +148,12 @@ export const getBarrios = cache(async (): Promise<string[]> => {
   return Array.from(set).sort((a, b) => a.localeCompare(b, "es"));
 });
 
-export async function getFeaturedProperties(count = 6): Promise<Property[]> {
+export async function getFeaturedProperties(): Promise<Property[]> {
   const all = await getAllProperties();
   const starred = all.filter((p) => p.is_starred_on_web === true);
-
-  if (starred.length >= count) return starred.slice(0, count);
-
-  if (starred.length > 0) {
-    const rest = all
-      .filter((p) => !p.is_starred_on_web)
-      .slice(0, count - starred.length);
-    return [...starred, ...rest];
-  }
-
-  const shuffled = [...all].sort(() => 0.5 - Math.random());
-  return shuffled.slice(0, count);
+  if (starred.length > 0) return starred;
+  // Fallback: no starred properties in CRM — show nothing
+  return [];
 }
 
 export async function getSimilarProperties(
