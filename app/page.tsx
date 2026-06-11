@@ -33,7 +33,7 @@ export default async function HomePage() {
   let barrios: string[] = [];
 
   try {
-    featuredProperties = await getFeaturedProperties(6);
+    featuredProperties = await getFeaturedProperties();
   } catch {
     // fail gracefully
   }

@@ -60,10 +60,6 @@ export const metadata: Metadata = {
   twitter: {
     card: "summary_large_image",
   },
-  icons: {
-    icon: [{ url: "/favicon.png", type: "image/png" }],
-    apple: "/favicon.png",
-  },
   robots: {
     index: true,
     follow: true,
