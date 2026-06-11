@@ -32,6 +32,8 @@ function buildSearchUrl(
 function normalizeSearchData(raw: Record<string, unknown>): Record<string, unknown> {
   const data: Record<string, unknown> = {
     property_types: ALL_PROPERTY_TYPES,
+    price_from: 0,
+    price_to: 999999999,
   };
 
   // Normalize operation_types: accept strings or IDs
@@ -72,6 +74,7 @@ export async function getProperties(params: {
   const res = await fetch(url, { next: { revalidate: REVALIDATE } });
   if (!res.ok) {
     const text = await res.text();
+    console.error(`[tokko] getProperties failed: ${res.status} — ${text}`);
     throw new Error(`Tokko API error: ${res.status} — ${text}`);
   }
   return res.json();
@@ -97,6 +100,7 @@ export async function searchProperties(
   const res = await fetch(url, { next: { revalidate: REVALIDATE } });
   if (!res.ok) {
     const text = await res.text();
+    console.error(`[tokko] searchProperties failed: ${res.status} — ${text}\nURL: ${url.replace(API_KEY!, "***")}`);
     throw new Error(`Tokko search error: ${res.status} — ${text}`);
   }
   return res.json();
@@ -114,7 +118,11 @@ export const getAllProperties = cache(async (): Promise<Property[]> => {
     const searchData = normalizeSearchData({});
     const url = buildSearchUrl(searchData, { limit, offset });
     const res = await fetch(url, { next: { revalidate: REVALIDATE } });
-    if (!res.ok) throw new Error(`Tokko API error: ${res.status}`);
+    if (!res.ok) {
+      const text = await res.text();
+      console.error(`[tokko] getAllProperties failed at offset=${offset}: ${res.status} — ${text}`);
+      throw new Error(`Tokko API error: ${res.status}`);
+    }
     const data: TokkoPropertyList = await res.json();
     all = all.concat(data.objects);
     if (!data.meta.next || all.length >= data.meta.total_count) break;
@@ -122,6 +130,7 @@ export const getAllProperties = cache(async (): Promise<Property[]> => {
     if (offset > 1000) break;
   }
 
+  console.log(`[tokko] getAllProperties: loaded ${all.length} properties`);
   return all;
 });
 

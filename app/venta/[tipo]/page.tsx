@@ -51,8 +51,8 @@ export default async function VentaTipoPage({ params }: PageProps) {
     properties = result.objects;
     totalCount = result.meta.total_count;
     barrios = barriosResult;
-  } catch {
-    // show empty state
+  } catch (err) {
+    console.error(`[venta/${tipo}] Error fetching properties:`, err);
   }
 
   return (

@@ -179,8 +179,8 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
       properties = searchResult.objects;
       totalCount = searchResult.meta.total_count;
     }
-  } catch {
-    // show empty state
+  } catch (err) {
+    console.error("[propiedades] Error fetching properties:", err);
   }
 
   const title = buildTitle(params);
