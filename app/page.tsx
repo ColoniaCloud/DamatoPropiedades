@@ -34,28 +34,28 @@ export default async function HomePage() {
 
   try {
     featuredProperties = await getFeaturedProperties();
-  } catch {
-    // fail gracefully
+  } catch (err) {
+    console.error("[home] getFeaturedProperties error:", err);
   }
 
   try {
     mapProperties = (await getAllProperties()).filter(
       (p) => p.geo_lat != null && p.geo_long != null
     );
-  } catch {
-    // fail gracefully
+  } catch (err) {
+    console.error("[home] getAllProperties error:", err);
   }
 
   try {
     developments = (await getDevelopments()).filter((d) => d.display_on_web);
-  } catch {
-    // fail gracefully
+  } catch (err) {
+    console.error("[home] getDevelopments error:", err);
   }
 
   try {
     barrios = await getBarrios();
-  } catch {
-    // fail gracefully
+  } catch (err) {
+    console.error("[home] getBarrios error:", err);
   }
 
   return (
