@@ -174,8 +174,7 @@ Este proyecto está bajo licencia **[AGPL-3.0](./LICENSE)**.
 ## 🤝 Créditos
 
 <div align="center">
-Desarrollado  por **[Colonia Cloud](https://colonia.cloud)** — desarrollo web, UX y automatizaciones con IA para PyMEs.
-
+Desarrollado  por **https://colonia.cloud** — desarrollo web, UX y automatizaciones con IA.
 Hecho con 🧉 en Colonia del Sacramento, Uruguay
 
 </div>
