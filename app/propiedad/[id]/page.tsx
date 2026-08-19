@@ -14,20 +14,22 @@ export default async function PropertyRedirect({ params }: Props) {
     redirect('/propiedades')
   }
 
+  // Solo el fetch va dentro del try/catch: redirect() funciona lanzando una
+  // excepción, así que un catch alrededor se la come y nunca llegamos a la ficha.
+  let property
   try {
-    const property = await getProperty(propertyId)
-
-    if (!property?.publication_title) {
-      redirect('/propiedades')
-    }
-
-    const slug = slugify(property.publication_title)
-    redirect(`/propiedad/${propertyId}/${slug}`)
+    property = await getProperty(propertyId)
   } catch {
     redirect('/propiedades')
   }
+
+  if (!property?.publication_title) {
+    redirect('/propiedades')
+  }
+
+  redirect(`/propiedad/${propertyId}/${slugify(property.publication_title)}`)
 }
 
-export async function generateMetadata({ params }: Props) {
+export async function generateMetadata() {
   return { robots: { index: false } }
 }

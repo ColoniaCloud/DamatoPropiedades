@@ -12,15 +12,17 @@ export default async function PropertyRedirectPage({ params }: PageProps) {
   const { slug } = await params;
   const id = slug.split("-")[0];
 
+  // Solo el fetch va dentro del try/catch: redirect() funciona lanzando una
+  // excepción, así que un catch alrededor se la come y nunca llegamos a la ficha.
+  let property;
   try {
-    const property = await getProperty(id);
-    console.log("[redirect] property id:", id, "status:", property?.status, "has publication_title:", !!property?.publication_title);
-    if (property?.publication_title) {
-      const propertySlug = slugify(property.publication_title);
-      redirect(`/propiedad/${id}/${propertySlug}`);
-    }
+    property = await getProperty(id);
   } catch (error) {
-    console.error("[redirect] error fetching property:", id, error);
+    console.error("[redirect] no se pudo traer la propiedad", id, error);
+  }
+
+  if (property?.publication_title) {
+    redirect(`/propiedad/${id}/${slugify(property.publication_title)}`);
   }
 
   redirect("/propiedades");
