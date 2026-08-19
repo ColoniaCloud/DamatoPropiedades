@@ -1,11 +1,36 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { X, SlidersHorizontal } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import type { ReadonlyURLSearchParams } from "next/navigation";
 import Link from "next/link";
 import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
+
+// La URL es la fuente de verdad de los filtros; esto la traduce al estado del
+// drawer. Se usa tanto para el estado inicial como para resincronizar.
+function readFilters(
+  searchParams: ReadonlyURLSearchParams,
+  lockedOperacion?: string,
+  initialTypes?: string[]
+) {
+  const tipos = searchParams.getAll("tipo");
+  return {
+    operation: lockedOperacion ?? searchParams.get("operacion") ?? "",
+    types: tipos.length > 0 ? tipos : (initialTypes ?? []),
+    rooms: searchParams.getAll("ambientes"),
+    currency: (searchParams.get("moneda") as "ARS" | "USD") || "ARS",
+    priceFrom: searchParams.get("precio_min") ?? "",
+    priceTo: searchParams.get("precio_max") ?? "",
+    surfaceMin: searchParams.get("superficie_min") ?? "",
+    withParking: searchParams.get("cochera") === "1",
+    creditEligible: searchParams.get("credito") === "1",
+    tagIds: searchParams.get("tags")?.split(",").filter(Boolean) ?? [],
+    withSuite: searchParams.get("suite") === "1",
+    barrio: searchParams.get("barrio") ?? "",
+  };
+}
 
 export default function FilterDrawer({
   barrios = [],
@@ -20,43 +45,41 @@ export default function FilterDrawer({
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
 
-  const [operation, setOperation] = useState(
-    lockedOperacion ?? searchParams.get("operacion") ?? ""
-  );
-  const [types, setTypes] = useState<string[]>(() => {
-    const paramTipos = searchParams.getAll("tipo");
-    return paramTipos.length > 0 ? paramTipos : (initialTypes ?? []);
-  });
-  const [rooms, setRooms] = useState<string[]>(searchParams.getAll("ambientes"));
-  const [currency, setCurrency] = useState<"ARS" | "USD">(
-    (searchParams.get("moneda") as "ARS" | "USD") || "ARS"
-  );
-  const [priceFrom, setPriceFrom] = useState(searchParams.get("precio_min") || "");
-  const [priceTo, setPriceTo] = useState(searchParams.get("precio_max") || "");
-  const [surfaceMin, setSurfaceMin] = useState(searchParams.get("superficie_min") || "");
-  const [withParking, setWithParking] = useState(searchParams.get("cochera") === "1");
-  const [creditEligible, setCreditEligible] = useState(searchParams.get("credito") === "1");
-  const [tagIds, setTagIds] = useState<string[]>(
-    searchParams.get("tags")?.split(",").filter(Boolean) ?? []
-  );
-  const [withSuite, setWithSuite] = useState(searchParams.get("suite") === "1");
-  const [barrio, setBarrio] = useState(searchParams.get("barrio") || "");
+  const fromUrl = readFilters(searchParams, lockedOperacion, initialTypes);
 
-  useEffect(() => {
-    setOperation(lockedOperacion ?? searchParams.get("operacion") ?? "");
-    const paramTipos = searchParams.getAll("tipo");
-    setTypes(paramTipos.length > 0 ? paramTipos : (initialTypes ?? []));
-    setRooms(searchParams.getAll("ambientes"));
-    setCurrency((searchParams.get("moneda") as "ARS" | "USD") || "ARS");
-    setPriceFrom(searchParams.get("precio_min") ?? "");
-    setPriceTo(searchParams.get("precio_max") ?? "");
-    setSurfaceMin(searchParams.get("superficie_min") ?? "");
-    setWithParking(searchParams.get("cochera") === "1");
-    setCreditEligible(searchParams.get("credito") === "1");
-    setTagIds(searchParams.get("tags")?.split(",").filter(Boolean) ?? []);
-    setWithSuite(searchParams.get("suite") === "1");
-    setBarrio(searchParams.get("barrio") ?? "");
-  }, [searchParams]); // lockedOperacion e initialTypes son props del Server Component: no cambian en cliente
+  const [operation, setOperation] = useState(fromUrl.operation);
+  const [types, setTypes] = useState<string[]>(fromUrl.types);
+  const [rooms, setRooms] = useState<string[]>(fromUrl.rooms);
+  const [currency, setCurrency] = useState<"ARS" | "USD">(fromUrl.currency);
+  const [priceFrom, setPriceFrom] = useState(fromUrl.priceFrom);
+  const [priceTo, setPriceTo] = useState(fromUrl.priceTo);
+  const [surfaceMin, setSurfaceMin] = useState(fromUrl.surfaceMin);
+  const [withParking, setWithParking] = useState(fromUrl.withParking);
+  const [creditEligible, setCreditEligible] = useState(fromUrl.creditEligible);
+  const [tagIds, setTagIds] = useState<string[]>(fromUrl.tagIds);
+  const [withSuite, setWithSuite] = useState(fromUrl.withSuite);
+  const [barrio, setBarrio] = useState(fromUrl.barrio);
+
+  // Cuando cambia la URL hay que releer los filtros. Va en el render y no en un
+  // efecto: React descarta este render y vuelve a entrar con los valores nuevos,
+  // sin llegar a pintar los viejos ni encadenar un segundo render.
+  const paramsKey = searchParams.toString();
+  const [syncedKey, setSyncedKey] = useState(paramsKey);
+  if (syncedKey !== paramsKey) {
+    setSyncedKey(paramsKey);
+    setOperation(fromUrl.operation);
+    setTypes(fromUrl.types);
+    setRooms(fromUrl.rooms);
+    setCurrency(fromUrl.currency);
+    setPriceFrom(fromUrl.priceFrom);
+    setPriceTo(fromUrl.priceTo);
+    setSurfaceMin(fromUrl.surfaceMin);
+    setWithParking(fromUrl.withParking);
+    setCreditEligible(fromUrl.creditEligible);
+    setTagIds(fromUrl.tagIds);
+    setWithSuite(fromUrl.withSuite);
+    setBarrio(fromUrl.barrio);
+  }
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -182,7 +205,7 @@ export default function FilterDrawer({
         </div>
 
         <div className="overflow-y-auto flex-1 p-5 space-y-6">
-          <FilterContent {...contentProps} />
+          <FilterContent {...contentProps} groupName="operation-mobile" />
         </div>
 
         <div className="p-5 border-t border-[#e2e4e8] flex gap-3">
@@ -215,7 +238,7 @@ export default function FilterDrawer({
             )}
           </div>
           <div className="space-y-6">
-            <FilterContent {...contentProps} />
+            <FilterContent {...contentProps} groupName="operation-desktop" />
           </div>
           <button
             onClick={applyFilters}
@@ -256,6 +279,10 @@ interface FilterContentProps {
   setBarrio: (v: string) => void;
   barrios: string[];
   lockedOperacion?: string;
+  // El drawer mobile y la sidebar desktop se renderizan a la vez: sin nombres
+  // distintos el navegador los trata como un solo grupo de radios y la
+  // selección visible se pierde al elegir una operación.
+  groupName: string;
 }
 
 const CHARACTERISTIC_TAGS = [
@@ -281,6 +308,7 @@ function FilterContent({
   barrio, setBarrio,
   barrios,
   lockedOperacion,
+  groupName,
 }: FilterContentProps) {
   return (
     <>
@@ -325,7 +353,7 @@ function FilterContent({
             >
               <input
                 type="radio"
-                name="operation"
+                name={groupName}
                 value={op.slug}
                 checked={operation === op.slug}
                 onChange={() => setOperation(op.slug)}
