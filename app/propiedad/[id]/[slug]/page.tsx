@@ -1,4 +1,4 @@
-﻿import type { Metadata } from "next";
+import type { Metadata } from "next";
 import type { Property } from "@/lib/types";
 import { notFound } from "next/navigation";
 import { headers } from "next/headers";

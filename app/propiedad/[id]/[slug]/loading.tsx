@@ -1,4 +1,4 @@
-﻿export default function Loading() {
+export default function Loading() {
   return (
     <div className="min-h-screen bg-[#fafbfc]">
       <div className="h-[62vh] bg-[#0c1b2e] animate-pulse" />

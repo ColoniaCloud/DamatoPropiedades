@@ -1,4 +1,4 @@
-﻿import type { NextConfig } from "next";
+import type { NextConfig } from "next";
 
 const csp = "default-src 'self'; script-src 'self' 'unsafe-inline' 'unsafe-eval' https://*.tile.openstreetmap.org; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; img-src 'self' data: https: http:; font-src 'self' https://fonts.gstatic.com data:; frame-src https://www.google.com https://www.youtube.com https://player.vimeo.com; media-src 'self' https://res.cloudinary.com; connect-src 'self' https://*.tokkobroker.com https://*.tile.openstreetmap.org";
 

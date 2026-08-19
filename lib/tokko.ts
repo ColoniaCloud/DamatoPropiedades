@@ -127,7 +127,6 @@ export const getAllProperties = cache(async (): Promise<Property[]> => {
     if (offset > 1000) break;
   }
 
-  console.log(`[tokko] getAllProperties: loaded ${all.length} properties`);
   return all;
 });
 
