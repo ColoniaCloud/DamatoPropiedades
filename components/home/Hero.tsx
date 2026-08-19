@@ -12,7 +12,7 @@ const OPERATION_OPTIONS = OPERATION_TYPES.map((o) => ({
   label: o.label,
 }));
 
-// Locations derived from live API data
+// Barrios armados a mano con los que hoy devuelve la API
 const LOCATION_OPTIONS = [
   { value: "", label: "Todos los barrios" },
   { value: "San Martin", label: "San Martín" },
@@ -88,7 +88,6 @@ export default function Hero({ barrios }: HeroProps) {
 
   return (
     <section className="relative h-screen flex flex-col items-center justify-center">
-      {/* Background video */}
       <video
         ref={videoRef}
         className="absolute inset-0 w-full h-full object-cover"
@@ -101,9 +100,7 @@ export default function Hero({ barrios }: HeroProps) {
       />
       <div className="absolute inset-0 bg-linear-to-b from-[#0c1b2e]/70 via-[#0c1b2e]/60 to-[#0c1b2e]/80" />
 
-      {/* Content */}
       <div className="relative z-10 w-full max-w-4xl mx-auto px-4 sm:px-6 text-center pt-20">
-        {/* Badge */}
         <motion.span
           initial={{ opacity: 0, y: 16 }}
           animate={{ opacity: 1, y: 0 }}
@@ -113,7 +110,6 @@ export default function Hero({ barrios }: HeroProps) {
           Inmobiliaria en Buenos Aires
         </motion.span>
 
-        {/* Title */}
         <motion.h1
           initial={{ opacity: 0, y: 28 }}
           animate={{ opacity: 1, y: 0 }}
@@ -134,14 +130,12 @@ export default function Hero({ barrios }: HeroProps) {
           propiedades.
         </motion.p>
 
-        {/* Search box */}
         <motion.div
           initial={{ opacity: 0, y: 32 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay: 0.65 }}
           className="bg-white/10 backdrop-blur-2xl border border-white/20 shadow-[0_8px_32px_rgba(0,0,0,0.25)] rounded-2xl p-4 sm:p-6 max-w-2xl mx-auto"
         >
-          {/* Operation tabs */}
           <div className="relative flex gap-1 mb-4 bg-white/10 rounded-lg p-1">
             {OPERATION_OPTIONS.map((opt) => (
               <button
@@ -167,9 +161,7 @@ export default function Hero({ barrios }: HeroProps) {
             ))}
           </div>
 
-          {/* Row 1: Tipo + Ubicación */}
           <div className="flex flex-col sm:flex-row gap-3 mb-3">
-            {/* Property type custom dropdown */}
             <div ref={dropdownRef} className="flex-1 relative">
               <button
                 type="button"
@@ -235,7 +227,6 @@ export default function Hero({ barrios }: HeroProps) {
               )}
             </div>
 
-            {/* Location custom dropdown */}
             <div ref={locationRef} className="flex-1 relative">
               <button
                 type="button"
@@ -289,9 +280,7 @@ export default function Hero({ barrios }: HeroProps) {
             </div>
           </div>
 
-          {/* Row 2: Ambientes + Buscar */}
           <div className="flex items-end gap-3">
-            {/* Rooms label + buttons */}
             <div className="flex flex-col gap-1.5 flex-1">
               <span className="sm:hidden text-xs text-white/50 text-left leading-none">Ambientes</span>
               <div className="flex items-center gap-2">
@@ -319,7 +308,6 @@ export default function Hero({ barrios }: HeroProps) {
               </div>
             </div>
 
-            {/* Search button */}
             <button
               onClick={handleSearch}
               className="bg-[#00b4d8] hover:bg-[#0096b7] text-[#1a1a2e] font-bold px-5 py-3 rounded-lg flex items-center justify-center gap-2 transition-colors min-h-11 whitespace-nowrap"
@@ -331,7 +319,6 @@ export default function Hero({ barrios }: HeroProps) {
         </motion.div>
       </div>
 
-      {/* Scroll indicator */}
       <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
         <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center pt-2">
           <div className="w-1 h-2 bg-white/60 rounded-full" />

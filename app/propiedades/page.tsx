@@ -187,7 +187,6 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
 
   return (
     <div className="min-h-screen">
-      {/* Page header */}
       <div className="bg-[#0c1b2e] pt-28 pb-10 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <h1 className="font-display text-3xl sm:text-4xl font-bold text-white">
@@ -201,14 +200,11 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         <div className="flex gap-8">
-          {/* Sidebar filters (desktop) */}
           <Suspense>
             <FilterDrawer barrios={barrios} />
           </Suspense>
 
-          {/* Results */}
           <div className="flex-1 min-w-0">
-            {/* Top bar */}
             <div className="flex items-center justify-between mb-6">
               <p className="text-sm text-[#5a5a6e]">
                 {properties.length} de {totalCount} propiedades
@@ -220,7 +216,6 @@ export default async function PropiedadesPage({ searchParams }: PageProps) {
 
             <PropertyGrid properties={properties} />
 
-            {/* Pagination */}
             {totalCount > limit && (
               <Pagination
                 currentPage={page}

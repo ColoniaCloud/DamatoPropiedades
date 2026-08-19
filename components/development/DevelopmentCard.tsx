@@ -34,7 +34,6 @@ export default function DevelopmentCard({ development, priority }: Props) {
       href={path}
       className="group block rounded-2xl overflow-hidden border border-[#e2e4e8] bg-white hover:shadow-lg transition-all duration-300"
     >
-      {/* Image */}
       <div className="relative aspect-video overflow-hidden bg-[#f4f7fb]">
         {photo ? (
           <Image
@@ -52,7 +51,6 @@ export default function DevelopmentCard({ development, priority }: Props) {
         )}
         <div className="absolute inset-0 bg-linear-to-t from-[#0c1b2e]/60 via-transparent to-transparent" />
 
-        {/* Badges */}
         <div className="absolute top-3 left-3 flex gap-2">
           {is_starred_on_web && (
             <span className="bg-[#00b4d8] text-white text-xs font-semibold px-3 py-1 rounded-full">
@@ -65,7 +63,6 @@ export default function DevelopmentCard({ development, priority }: Props) {
         </div>
       </div>
 
-      {/* Content */}
       <div className="p-5">
         <h3 className="font-display font-bold text-[#1a1a2e] text-lg leading-tight mb-1 group-hover:text-[#1a5fb4] transition-colors">
           {name}
@@ -76,7 +73,6 @@ export default function DevelopmentCard({ development, priority }: Props) {
           <span>{neighborhood || fake_address}</span>
         </div>
 
-        {/* Progress bar */}
         <div className="mb-3">
           <div className="flex gap-1 mb-1.5">
             {[1, 2, 3, 4, 5].map((step) => (

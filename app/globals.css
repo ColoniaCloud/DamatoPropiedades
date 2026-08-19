@@ -17,7 +17,7 @@
   --color-alquiler: #10b981;
   --color-temporario: #00b4d8;
 
-  /* shadcn/ui token mapping */
+  /* Alias de los tokens con los nombres que espera shadcn/ui */
   --background: var(--color-bg-primary);
   --foreground: var(--color-text-primary);
   --card: var(--color-bg-card);
@@ -75,7 +75,6 @@ body {
   }
 }
 
-/* Snap scroll carousel */
 .snap-x {
   scroll-snap-type: x mandatory;
   -webkit-overflow-scrolling: touch;
@@ -84,7 +83,6 @@ body {
   scroll-snap-align: start;
 }
 
-/* Scrollbar hide */
 .scrollbar-hide::-webkit-scrollbar {
   display: none;
 }
@@ -93,7 +91,6 @@ body {
   scrollbar-width: none;
 }
 
-/* Image blur placeholder */
 .blur-up {
   filter: blur(5px);
   transition: filter 0.3s;

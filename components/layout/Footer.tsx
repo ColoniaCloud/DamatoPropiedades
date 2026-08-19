@@ -32,10 +32,8 @@ export default function Footer() {
     <footer id="site-footer" className="bg-[#0c1b2e] text-[#f0f0f5]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
 
-        {/* Main columns — 40 / 30 / 30 */}
         <div className="grid grid-cols-1 lg:grid-cols-[4fr_3fr_3fr] gap-8 lg:gap-12">
 
-          {/* Columna 1 — Marca + Asociados */}
           <div className="text-center lg:text-left">
             <span className="font-display font-bold text-2xl text-white block mb-2">
               D&apos;Amato Propiedades
@@ -45,7 +43,6 @@ export default function Footer() {
               Más de 35 años de experiencia a tu servicio.
             </p>
 
-            {/* Asociados */}
             <div className="mt-5">
               <span className="text-xs font-semibold text-white uppercase tracking-wider block mb-3">
                 Asociados con:
@@ -64,7 +61,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Columna 2 — Links en 2 columnas internas */}
           <div className="text-center lg:text-left">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Explorar
@@ -82,7 +78,6 @@ export default function Footer() {
             </div>
           </div>
 
-          {/* Columna 3 — Contacto + Redes */}
           <div className="text-center lg:text-left flex flex-col">
             <h3 className="font-semibold text-white mb-4 text-sm uppercase tracking-wider">
               Contacto
@@ -119,7 +114,6 @@ export default function Footer() {
               </li>
             </ul>
 
-            {/* Redes sociales */}
             <div className="flex gap-3 mt-6 justify-center lg:justify-start">
               <a
                 href={`https://api.whatsapp.com/send?phone=${BRANCH.whatsapp}&text=Quisiera%20contactarme%20con%20ustedes`}
@@ -152,7 +146,6 @@ export default function Footer() {
           </div>
         </div>
 
-        {/* Bottom bar */}
         <div className="border-t border-white/10 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <p className="text-xs" style={{ color: "rgba(255,255,255,0.4)" }}>
             © {new Date().getFullYear()} D&apos;Amato Propiedades. Todos los

@@ -25,7 +25,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
     [isTransitioning, developments.length]
   );
 
-  // Auto-advance every 6 seconds
   useEffect(() => {
     if (developments.length <= 1) return;
     const timer = setInterval(() => goTo(current + 1), 6000);
@@ -46,7 +45,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
 
   return (
     <section className="relative w-full h-[520px] sm:h-[580px] lg:h-[640px] overflow-hidden bg-[#0c1b2e]">
-      {/* Background image */}
       {photo && (
         <div
           key={dev.id}
@@ -63,25 +61,20 @@ export default function EmprendimientosSlider({ developments }: Props) {
         </div>
       )}
 
-      {/* Dark overlay gradient */}
       <div className="absolute inset-0 bg-linear-to-r from-[#0c1b2e]/90 via-[#0c1b2e]/60 to-[#0c1b2e]/20" />
       <div className="absolute inset-0 bg-linear-to-t from-[#0c1b2e]/70 via-transparent to-transparent" />
 
-      {/* Content — respects site max-width */}
       <div className="relative z-10 h-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col justify-end pb-36 sm:pb-20">
-        {/* Eyebrow */}
         <span className="text-[#00b4d8] text-xs font-semibold uppercase tracking-widest mb-3">
           Emprendimientos
         </span>
 
-        {/* Title */}
         <Link href={path} className="group">
           <h2 className="font-display text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight group-hover:text-[#00b4d8] transition-colors max-w-2xl">
             {dev.name}
           </h2>
         </Link>
 
-        {/* Location */}
         {(neighborhood || dev.fake_address) && (
           <div className="flex items-center gap-1.5 mt-3 text-white/70">
             <MapPin className="w-4 h-4 shrink-0" />
@@ -91,9 +84,7 @@ export default function EmprendimientosSlider({ developments }: Props) {
           </div>
         )}
 
-        {/* Spacer */}
         <div className="mt-6 flex items-center gap-4 flex-wrap">
-          {/* Estimated delivery */}
           <div className="flex items-center gap-1.5 text-white/80">
             <Calendar className="w-4 h-4 shrink-0" />
             <span className="text-sm font-medium">
@@ -101,7 +92,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
             </span>
           </div>
 
-          {/* Status badge */}
           <span
             className={`${statusInfo.color} text-white text-xs font-semibold px-3 py-1.5 rounded-full`}
           >
@@ -109,7 +99,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
           </span>
         </div>
 
-        {/* CTA */}
         <div className="mt-6 flex items-center gap-4">
           <Link
             href={path}
@@ -127,10 +116,8 @@ export default function EmprendimientosSlider({ developments }: Props) {
         </div>
       </div>
 
-      {/* Navigation arrows */}
       {developments.length > 1 && (
         <>
-          {/* Mobile: flechas centradas sobre los dots */}
           <div className="absolute bottom-12 left-1/2 -translate-x-1/2 z-20 flex gap-4 sm:hidden">
             <button
               onClick={() => goTo(current - 1)}
@@ -148,7 +135,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
             </button>
           </div>
 
-          {/* Desktop: flechas en los laterales */}
           <button
             onClick={() => goTo(current - 1)}
             aria-label="Anterior"
@@ -164,7 +150,6 @@ export default function EmprendimientosSlider({ developments }: Props) {
             <ChevronRight className="w-5 h-5" />
           </button>
 
-          {/* Dot indicators */}
           <div className="absolute bottom-5 left-1/2 -translate-x-1/2 z-20 flex gap-2">
             {developments.map((_, i) => (
               <button

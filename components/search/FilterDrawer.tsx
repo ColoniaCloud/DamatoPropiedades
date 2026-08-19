@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from "react";
 import { X, SlidersHorizontal } from "lucide-react";
-import { useRouter, useSearchParams, usePathname } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link";
 import { PROPERTY_TYPES, OPERATION_TYPES, ROOM_OPTIONS } from "@/lib/constants";
 import { cn } from "@/lib/utils";
@@ -17,7 +17,6 @@ export default function FilterDrawer({
   initialTypes?: string[];
 }) {
   const router = useRouter();
-  const pathname = usePathname();
   const searchParams = useSearchParams();
   const [open, setOpen] = useState(false);
 
@@ -57,7 +56,7 @@ export default function FilterDrawer({
     setTagIds(searchParams.get("tags")?.split(",").filter(Boolean) ?? []);
     setWithSuite(searchParams.get("suite") === "1");
     setBarrio(searchParams.get("barrio") ?? "");
-  }, [searchParams]); // lockedOperacion and initialTypes are stable Server Component props
+  }, [searchParams]); // lockedOperacion e initialTypes son props del Server Component: no cambian en cliente
 
   function toggleType(id: string) {
     setTypes((prev) =>
@@ -93,11 +92,8 @@ export default function FilterDrawer({
     if (withSuite) params.set("suite", "1");
     if (barrio) params.set("barrio", barrio);
     if (currentOrden && currentOrden !== "-created_at") params.set("orden", currentOrden);
-    // On /venta and /alquiler pages, always redirect to /propiedades with full params
-    const target = (pathname.startsWith("/venta") || pathname.startsWith("/alquiler"))
-      ? `/propiedades?${params.toString()}`
-      : `/propiedades?${params.toString()}`;
-    router.push(target);
+    // Desde /venta y /alquiler también salimos a /propiedades, con todos los filtros aplicados
+    router.push(`/propiedades?${params.toString()}`);
     setOpen(false);
   }
 
@@ -151,7 +147,6 @@ export default function FilterDrawer({
 
   return (
     <>
-      {/* Mobile trigger */}
       <button
         onClick={() => setOpen(true)}
         className="lg:hidden fixed bottom-20 right-4 z-30 bg-[#1a5fb4] text-white rounded-full px-5 py-3 flex items-center gap-2 shadow-lg font-semibold text-sm min-h-11"
@@ -165,7 +160,6 @@ export default function FilterDrawer({
         )}
       </button>
 
-      {/* Backdrop */}
       <div
         className={cn(
           "fixed inset-0 z-40 bg-black/60 transition-opacity duration-300 lg:hidden",
@@ -174,7 +168,6 @@ export default function FilterDrawer({
         onClick={() => setOpen(false)}
       />
 
-      {/* Drawer */}
       <div
         className={cn(
           "fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-2xl transition-transform duration-300 ease-out lg:hidden max-h-[90vh] flex flex-col",
@@ -208,7 +201,6 @@ export default function FilterDrawer({
         </div>
       </div>
 
-      {/* Desktop sidebar */}
       <aside className="hidden lg:block w-72 shrink-0">
         <div className="bg-white border border-[#e2e4e8] rounded-xl p-6 sticky top-24">
           <div className="flex items-center justify-between mb-5">
@@ -292,7 +284,6 @@ function FilterContent({
 }: FilterContentProps) {
   return (
     <>
-      {/* Barrio */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Barrio
@@ -319,7 +310,6 @@ function FilterContent({
         )}
       </div>
 
-      {/* Operation */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Operación
@@ -356,7 +346,6 @@ function FilterContent({
         )}
       </div>
 
-      {/* Property types */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Tipo de propiedad
@@ -376,7 +365,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Rooms */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Ambientes
@@ -399,7 +387,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Extra options */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Características
@@ -446,7 +433,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Surface */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Superficie cubierta mínima
@@ -463,7 +449,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Price */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Precio ({currency})
@@ -486,7 +471,6 @@ function FilterContent({
         </div>
       </div>
 
-      {/* Currency toggle */}
       <div>
         <p className="text-xs font-semibold text-[#5a5a6e] uppercase tracking-wider mb-3">
           Moneda

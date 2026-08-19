@@ -21,7 +21,7 @@ export default async function AlquilerTemporarioPage() {
     properties = result.objects;
     totalCount = result.meta.total_count;
   } catch {
-    // show empty state
+    // Ante un error mostramos el estado vacío en vez de romper la página
   }
 
   return (

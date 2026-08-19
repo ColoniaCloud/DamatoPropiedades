@@ -110,7 +110,7 @@ export default async function PropertyDetailPage({ params }: PageProps) {
       6
     );
   } catch {
-    // non-critical
+    // Si falla, la ficha se muestra igual pero sin la sección de similares
   }
 
 
@@ -120,7 +120,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
     <>
       <PropertySchema property={property} />
 
-      {/* Hero */}
       <section
         className="relative h-[62vh] min-h-100 flex items-end"
         style={
@@ -139,7 +138,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
 
         <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-10 scroll-mt-24">
           <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-5">
-            {/* Left: info */}
             <div>
               <div className="flex flex-wrap gap-2 mb-3">
                 {property.operations.map((operation) => (
@@ -169,7 +167,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
               <p className="text-2xl sm:text-3xl font-bold text-white">{price}</p>
             </div>
 
-            {/* Right: CTAs */}
             <div className="flex gap-3 shrink-0">
               <a
                 href="#consultar"
@@ -197,15 +194,12 @@ export default async function PropertyDetailPage({ params }: PageProps) {
       <div className="min-h-screen">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
           <div className="flex flex-col lg:flex-row gap-8">
-            {/* Main content */}
             <div className="flex-1 min-w-0">
-              {/* Gallery */}
               <PropertyGallery
                 photos={property.photos}
                 title={property.publication_title}
               />
 
-              {/* Videos */}
               {property.videos.length > 0 && (
                 <div className="mt-6 mb-2">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">Videos</h2>
@@ -233,13 +227,11 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Reference */}
               <div className="flex items-center gap-1 mt-4 mb-2 text-[#5a5a6e]">
                 <Hash className="w-3.5 h-3.5" />
                 <span className="text-xs">{property.reference_code}</span>
               </div>
 
-              {/* Price */}
               <div className="border-t border-b border-[#e2e4e8] py-4 mb-6">
                 {property.operations.map((operation) => {
                   const opPrice = operation.prices?.[0];
@@ -268,7 +260,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* Development back-link */}
               {property.development && (
                 <Link
                   href={`/emprendimientos/${property.development.id}/${slugify(property.development.name)}`}
@@ -279,7 +270,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </Link>
               )}
 
-              {/* Quick features */}
               <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
                 {property.room_amount > 0 && (
                   <div className="flex items-center gap-3 bg-[#f4f7fb] rounded-xl p-4">
@@ -367,7 +357,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* Additional surfaces */}
               {(property.roofed_surface || property.unroofed_surface) && (
                 <div className="flex gap-6 mb-6 text-sm text-[#5a5a6e]">
                   {property.roofed_surface && (
@@ -379,7 +368,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Description */}
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">
                   Descripción
@@ -396,7 +384,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 )}
               </div>
 
-              {/* Tags / Features */}
               {property.tags.length > 0 && (
                 <div className="mb-8">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">
@@ -413,7 +400,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Map */}
               {property.geo_lat && property.geo_long && (
                 <div className="mb-8">
                   <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">
@@ -427,7 +413,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
               )}
 
-              {/* Mobile contact form */}
               <div className="lg:hidden mb-20">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4" id="consultar">
                   Consultar
@@ -449,11 +434,9 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                 </div>
               </div>
 
-              {/* Similar properties */}
               <SimilarProperties properties={similar} />
             </div>
 
-            {/* Desktop sticky sidebar */}
             <aside id="consultar" className="hidden lg:block w-80 shrink-0 scroll-mt-24">
               <div className="sticky top-24 bg-white border border-[#e2e4e8] rounded-xl p-6 shadow-sm">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-5">
@@ -473,7 +456,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
                   />
                 </div>
 
-                {/* Branch info */}
                 <div className="mt-5 pt-5 border-t border-[#e2e4e8] text-xs text-[#5a5a6e] space-y-1">
                   <p className="font-semibold text-[#1a1a2e]">{property.branch.display_name}</p>
                   <p>{property.branch.phone_area} {property.branch.phone}</p>
@@ -493,7 +475,6 @@ export default async function PropertyDetailPage({ params }: PageProps) {
         </div>
       </div>
 
-      {/* Mobile bottom bar */}
       <BottomBarWrapper
         propertyRef={property.reference_code}
         propertyAddress={property.fake_address}

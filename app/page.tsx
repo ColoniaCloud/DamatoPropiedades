@@ -66,7 +66,6 @@ export default async function HomePage() {
 
       <FeaturedProperties properties={featuredProperties} />
 
-      {/* Properties map */}
       <section className="py-14 lg:py-20 bg-white">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="mb-8">
@@ -90,7 +89,6 @@ export default async function HomePage() {
             <PropertiesMapClient properties={mapProperties} />
           </div>
 
-          {/* Legend */}
           <div className="flex flex-wrap gap-4 mt-4 justify-end">
             {[
               { color: "#1a5fb4", label: "Venta" },
@@ -110,7 +108,6 @@ export default async function HomePage() {
       </section>
       <WhyUs />
 
-      {/* CTA Section */}
       <section className="py-14 lg:py-20 bg-[#0c1b2e]">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <span className="text-[#00b4d8] text-sm font-semibold uppercase tracking-widest">

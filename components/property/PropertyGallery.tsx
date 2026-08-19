@@ -38,9 +38,7 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
 
   return (
     <>
-      {/* Main gallery */}
       <div className="relative">
-        {/* Hero media */}
         <div className="relative aspect-video md:aspect-4/3 lg:aspect-video rounded-xl overflow-hidden bg-gray-900">
           {currentIsVideo ? (
             currentIsDirectVideo ? (
@@ -69,7 +67,6 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
             />
           )}
 
-          {/* Controls */}
           {photos.length > 1 && (
             <>
               <button
@@ -89,12 +86,10 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
             </>
           )}
 
-          {/* Counter */}
           <div className="absolute bottom-3 left-1/2 -translate-x-1/2 bg-black/60 text-white text-xs px-3 py-1.5 rounded-full z-10">
             {current + 1} / {photos.length}
           </div>
 
-          {/* Expand button — only for images */}
           {!currentIsVideo && (
             <button
               onClick={() => setLightbox(true)}
@@ -106,7 +101,6 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
           )}
         </div>
 
-        {/* Thumbnails */}
         {photos.length > 1 && (
           <div className="mt-3 flex gap-2 overflow-x-auto scrollbar-hide pb-1">
             {photos.slice(0, 10).map((photo, idx) => {
@@ -142,7 +136,6 @@ export default function PropertyGallery({ photos, title }: PropertyGalleryProps)
         )}
       </div>
 
-      {/* Lightbox — only for images */}
       {lightbox && !currentIsVideo && (
         <div
           className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center"

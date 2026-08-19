@@ -41,7 +41,6 @@ export default function Header() {
             WebkitBackdropFilter: "blur(8px)",
           }}
         >
-          {/* Logo */}
           <Link href="/" className="shrink-0">
             <Image
               src="/logos/logo-h.png"
@@ -53,9 +52,7 @@ export default function Header() {
             />
           </Link>
 
-          {/* Right side */}
           <div className="flex items-center gap-4">
-            {/* Desktop nav — visible only on lg+ */}
             <nav className="hidden lg:flex items-center gap-3 xl:gap-5 mr-1">
               {NAV_LINKS.map((link) => (
                 <Link
@@ -68,10 +65,8 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Divider */}
             <span className="hidden lg:block h-5 w-px bg-gray-300" />
 
-            {/* WhatsApp */}
             <a
               href={WHATSAPP_URL}
               target="_blank"
@@ -82,7 +77,6 @@ export default function Header() {
               <WhatsAppIcon className="w-5 h-5" />
             </a>
 
-            {/* Instagram */}
             <a
               href={INSTAGRAM_URL}
               target="_blank"
@@ -93,7 +87,6 @@ export default function Header() {
               <InstagramIcon className="w-5 h-5" />
             </a>
 
-            {/* Facebook */}
             <a
               href={FACEBOOK_URL}
               target="_blank"
@@ -104,7 +97,6 @@ export default function Header() {
               <FacebookIcon className="w-5 h-5" />
             </a>
 
-            {/* Hamburger — visible below lg (tablet y mobile) */}
             <button
               aria-label="Abrir menú"
               onClick={() => setMenuOpen(true)}

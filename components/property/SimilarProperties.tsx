@@ -14,7 +14,6 @@ export default function SimilarProperties({ properties }: SimilarPropertiesProps
         Propiedades similares
       </h2>
 
-      {/* Mobile: horizontal scroll */}
       <div className="md:hidden -mx-4 px-4">
         <div className="flex gap-4 overflow-x-auto snap-x pb-4 scrollbar-hide">
           {properties.map((p) => (
@@ -25,7 +24,6 @@ export default function SimilarProperties({ properties }: SimilarPropertiesProps
         </div>
       </div>
 
-      {/* Desktop: grid */}
       <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-3 gap-5">
         {properties.slice(0, 3).map((p) => (
           <PropertyCard key={p.id} property={p} />

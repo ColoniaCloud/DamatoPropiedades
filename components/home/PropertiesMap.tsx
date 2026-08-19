@@ -11,7 +11,6 @@ import { BRANCH, OPERATION_TYPES } from "@/lib/constants";
 
 const defaultCenter: [number, number] = [BRANCH.geo.lat, BRANCH.geo.lng];
 
-// Color por tipo de operación
 const colorMap: Record<string, string> = {
   Venta: "#1a5fb4",
   Alquiler: "#10b981",

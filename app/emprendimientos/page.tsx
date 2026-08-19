@@ -18,7 +18,6 @@ export default async function EmprendimientosPage() {
 
   return (
     <div className="min-h-screen">
-      {/* Banner */}
       <div className="bg-[#0c1b2e] pt-28 pb-12 px-4 sm:px-6">
         <div className="max-w-7xl mx-auto">
           <span className="text-[#00b4d8] text-sm font-semibold uppercase tracking-widest">
@@ -35,7 +34,6 @@ export default async function EmprendimientosPage() {
         </div>
       </div>
 
-      {/* Content */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 lg:py-14">
         {developments.length === 0 ? (
           <div className="text-center py-20">

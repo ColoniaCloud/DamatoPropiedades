@@ -94,14 +94,13 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
   try {
     units = await getPropertiesByDevelopment(development.id);
   } catch {
-    // non-critical
+    // Si falla el listado de unidades, el emprendimiento se muestra igual
   }
 
   return (
     <div className="min-h-screen pt-20">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 lg:py-10">
 
-        {/* Breadcrumb */}
         <nav className="flex items-center gap-1.5 text-sm text-[#5a5a6e] mb-6">
           <Link href="/" className="hover:text-[#1a5fb4] transition-colors">Inicio</Link>
           <ChevronRight className="w-3.5 h-3.5" />
@@ -111,13 +110,10 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
         </nav>
 
         <div className="flex flex-col lg:flex-row gap-8">
-          {/* Main */}
           <div className="flex-1 min-w-0">
 
-            {/* Gallery */}
             <PropertyGallery photos={photos} title={development.publication_title} />
 
-            {/* Title */}
             <div className="mt-6 mb-5">
               <div className="flex flex-wrap gap-2 mb-3">
                 <span className="bg-[#1a5fb4] text-white text-xs font-semibold px-3 py-1 rounded-full">
@@ -141,7 +137,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Construction status */}
             <div className="bg-white border border-[#e2e4e8] rounded-xl p-5 mb-6">
               <h2 className="font-display font-bold text-[#1a1a2e] mb-4">Estado de obra</h2>
               <div className="flex justify-between items-center mb-2">
@@ -169,7 +164,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             </div>
 
-            {/* Info grid */}
             <div className="grid grid-cols-2 sm:grid-cols-3 gap-4 mb-8">
               <div className="bg-white border border-[#e2e4e8] rounded-xl p-4">
                 <div className="flex items-center gap-2 text-[#5a5a6e] text-xs mb-1">
@@ -198,7 +192,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               )}
             </div>
 
-            {/* Description */}
             {development.description && (
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">Descripción</h2>
@@ -208,7 +201,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Financing */}
             {development.financing_details && (
               <div className="mb-8 bg-[#f4f7fb] rounded-xl p-5 border border-[#e2e4e8]">
                 <h2 className="font-display text-lg font-bold text-[#1a1a2e] mb-2">Financiación</h2>
@@ -218,7 +210,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Tags / Servicios */}
             {development.tags.length > 0 && (
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-3">
@@ -238,7 +229,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Map */}
             {development.geo_lat && development.geo_long && (
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">Ubicación</h2>
@@ -250,7 +240,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Units */}
             {units.length > 0 && (
               <div className="mb-8">
                 <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4">
@@ -264,7 +253,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
               </div>
             )}
 
-            {/* Mobile contact */}
             <div className="lg:hidden mb-10">
               <h2 className="font-display text-xl font-bold text-[#1a1a2e] mb-4" id="consultar">
                 Consultar
@@ -275,11 +263,9 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
             </div>
           </div>
 
-          {/* Sidebar */}
           <div className="lg:w-96 lg:flex-shrink-0">
             <div className="sticky top-24 space-y-4">
 
-              {/* Contact form */}
               <div className="bg-white border border-[#e2e4e8] rounded-xl p-5 hidden lg:block">
                 <h2 className="font-display text-lg font-bold text-[#1a1a2e] mb-4">
                   Consultar este proyecto
@@ -287,7 +273,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
                 <ContactForm initialMessage={formMsg} />
               </div>
 
-              {/* WhatsApp + Email */}
               <div className="flex gap-3">
                 <WhatsAppButton message={whatsappMsg} />
                 <a
@@ -299,7 +284,6 @@ export default async function DevelopmentDetailPage({ params }: PageProps) {
                 </a>
               </div>
 
-              {/* Reference */}
               <div className="text-xs text-[#5a5a6e] space-y-1 px-1">
                 <p>Código: {development.reference_code}</p>
                 <p>Publicado en {SITE_URL.replace("https://", "")}</p>

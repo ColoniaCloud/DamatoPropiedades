@@ -23,7 +23,6 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
         className
       )}
     >
-      {/* Photo */}
       <div className="relative aspect-4/3 overflow-hidden bg-gray-100">
         {photo ? (
           <Image
@@ -40,7 +39,6 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
           </div>
         )}
 
-        {/* Operation badge */}
         {operation && (
           <span
             className={cn(
@@ -53,19 +51,15 @@ export default function PropertyCard({ property, className }: PropertyCardProps)
         )}
       </div>
 
-      {/* Content */}
       <div className="p-4">
-        {/* Price */}
         <p className="text-[#1a5fb4] font-bold text-lg leading-tight mb-1">
           {price}
         </p>
 
-        {/* Address */}
         <p className="text-[#1a1a2e] font-medium text-sm leading-snug line-clamp-1 mb-0.5">
           {property.fake_address}
         </p>
 
-        {/* Chips */}
         <div className="flex items-center gap-3 text-xs text-[#5a5a6e]">
           {property.room_amount > 0 && (
             <span className="flex items-center gap-1">

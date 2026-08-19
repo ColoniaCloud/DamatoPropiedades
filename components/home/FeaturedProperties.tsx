@@ -11,7 +11,6 @@ interface FeaturedPropertiesProps {
 export default function FeaturedProperties({ properties }: FeaturedPropertiesProps) {
   return (
     <section className="py-14 lg:py-20 px-4 sm:px-6 lg:px-8 max-w-7xl mx-auto">
-      {/* Header */}
       <div className="flex items-end justify-between mb-8">
         <RevealGroup className="flex flex-col">
           <RevealItem>
@@ -35,7 +34,6 @@ export default function FeaturedProperties({ properties }: FeaturedPropertiesPro
         </Reveal>
       </div>
 
-      {/* Desktop grid */}
       <RevealGroup stagger={0.08} className="hidden sm:grid sm:grid-cols-2 lg:grid-cols-3 gap-5 lg:gap-6">
         {properties.map((property) => (
           <RevealItem key={property.id} y={20}>
@@ -44,7 +42,6 @@ export default function FeaturedProperties({ properties }: FeaturedPropertiesPro
         ))}
       </RevealGroup>
 
-      {/* Mobile horizontal scroll */}
       <div className="sm:hidden -mx-4 px-4">
         <div className="flex gap-4 overflow-x-auto snap-x pb-4 scrollbar-hide">
           {properties.map((property) => (
@@ -55,7 +52,6 @@ export default function FeaturedProperties({ properties }: FeaturedPropertiesPro
         </div>
       </div>
 
-      {/* Mobile link */}
       <div className="sm:hidden mt-6 text-center">
         <Link
           href="/propiedades"

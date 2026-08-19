@@ -14,7 +14,6 @@ export default function Emprendimientos({ developments }: Props) {
   return (
     <section className="py-14 lg:py-20 bg-[#0c1b2e]">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Header */}
         <div className="flex items-end justify-between mb-8 lg:mb-12">
           <RevealGroup className="flex flex-col">
             <RevealItem>
@@ -46,7 +45,6 @@ export default function Emprendimientos({ developments }: Props) {
           </RevealGroup>
         </div>
 
-        {/* Grid */}
         <RevealGroup stagger={0.1} className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {developments.map((dev, i) => (
             <RevealItem key={dev.id} y={20}>
@@ -55,7 +53,6 @@ export default function Emprendimientos({ developments }: Props) {
           ))}
         </RevealGroup>
 
-        {/* Mobile CTA */}
         <div className="mt-8 flex justify-center sm:hidden">
           <Link
             href="/emprendimientos"

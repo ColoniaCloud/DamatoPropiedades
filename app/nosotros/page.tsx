@@ -12,7 +12,6 @@ const VALUES = ["Compromiso", "Integridad", "Profesionalismo"];
 export default function NosotrosPage() {
   return (
     <div className="min-h-screen">
-      {/* Hero */}
       <div
         className="relative h-[75vh] lg:h-[95vh] flex items-center justify-center bg-cover bg-center bg-no-repeat supports-[background-attachment:fixed]:bg-fixed"
         style={{
@@ -32,7 +31,6 @@ export default function NosotrosPage() {
             intermediación en la compra y venta de propiedades.
           </p>
         </div>
-        {/* Scroll indicator */}
         <div className="absolute bottom-8 left-1/2 -translate-x-1/2 animate-bounce">
           <div className="w-6 h-10 border-2 border-white/30 rounded-full flex items-start justify-center pt-2">
             <div className="w-1 h-2 bg-white/60 rounded-full" />
@@ -41,7 +39,6 @@ export default function NosotrosPage() {
       </div>
 
 
-{/* Description */}
       <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
         <div className="prose prose-lg max-w-none text-[#5a5a6e] leading-relaxed">
           <p className="text-lg text-[#1a1a2e] leading-relaxed">
@@ -53,9 +50,7 @@ export default function NosotrosPage() {
           </p>
         </div>
 
-        {/* Mission / Vision / Values */}
         <div className="mt-16 grid grid-cols-1 md:grid-cols-3 gap-8">
-          {/* Misión */}
           <div className="bg-white rounded-2xl border border-[#e2e4e8] p-8 hover:shadow-md transition-shadow">
             <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-5">
               <Target className="w-6 h-6 text-[#1a5fb4]" />
@@ -72,7 +67,6 @@ export default function NosotrosPage() {
             </p>
           </div>
 
-          {/* Visión */}
           <div className="bg-white rounded-2xl border border-[#e2e4e8] p-8 hover:shadow-md transition-shadow">
             <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-5">
               <Eye className="w-6 h-6 text-[#1a5fb4]" />
@@ -86,7 +80,6 @@ export default function NosotrosPage() {
             </p>
           </div>
 
-          {/* Valores */}
           <div className="bg-white rounded-2xl border border-[#e2e4e8] p-8 hover:shadow-md transition-shadow">
             <div className="w-12 h-12 rounded-xl bg-[#1a5fb4]/10 flex items-center justify-center mb-5">
               <ShieldCheck className="w-6 h-6 text-[#1a5fb4]" />

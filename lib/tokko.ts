@@ -7,7 +7,7 @@ if (!API_KEY) { throw new Error("TOKKO_API_KEY environment variable is not set. 
 
 const REVALIDATE = 300;
 
-// Operation type IDs (verified against live API)
+// IDs de operación de Tokko, verificados contra la API
 const OPERATION_TYPE_IDS: Record<string, number> = {
   Venta: 1,
   Alquiler: 2,
@@ -17,7 +17,6 @@ const OPERATION_TYPE_IDS: Record<string, number> = {
   temporario: 3,
 };
 
-// All property type IDs
 const ALL_PROPERTY_TYPES = [1, 2, 3, 5, 7, 13, 24];
 
 function buildSearchUrl(
@@ -36,7 +35,7 @@ function normalizeSearchData(raw: Record<string, unknown>): Record<string, unkno
     price_to: 999999999,
   };
 
-  // Normalize operation_types: accept strings or IDs
+  // operation_types puede venir como slug/label o como ID numérico
   if (raw.operation_types) {
     const ops = raw.operation_types as (string | number)[];
     data.operation_types = ops.map((op) => {
@@ -47,17 +46,15 @@ function normalizeSearchData(raw: Record<string, unknown>): Record<string, unkno
     data.operation_types = [1, 2, 3];
   }
 
-  // Narrow down property_types if specified
   if (raw.property_types) {
     data.property_types = raw.property_types;
   }
 
-  // Price filters — only apply when explicitly provided to avoid excluding USD properties
+  // El rango por defecto solo se pisa si viene explícito: si no, las propiedades en USD quedan afuera
   if (raw.price_from !== undefined) data.price_from = raw.price_from;
   if (raw.price_to !== undefined) data.price_to = raw.price_to;
   if (raw.currency) data.currency = raw.currency;
 
-  // Room amount filter
   if (raw.room_amount) data.room_amount = raw.room_amount;
 
   return data;
@@ -68,7 +65,7 @@ export async function getProperties(params: {
   offset?: number;
   order_by?: string;
 } = {}): Promise<TokkoPropertyList> {
-  // Use search with all filters to get only active properties
+  // Usamos /search en lugar del listado porque solo devuelve propiedades activas
   const searchData = normalizeSearchData({});
   const url = buildSearchUrl(searchData, params);
   const res = await fetch(url, { next: { revalidate: REVALIDATE } });
@@ -106,9 +103,9 @@ export async function searchProperties(
   return res.json();
 }
 
-// React cache deduplicates calls within the same request.
-// Individual fetches use limit=40 (~1.4 MB each) to stay under the
-// Next.js fetch-cache 2 MB per-item limit.
+// El cache de React evita repetir la paginación dentro de un mismo request.
+// Traemos de a 40 (~1,4 MB por página) para no pasarnos del límite de 2 MB
+// por entrada del fetch cache de Next.
 export const getAllProperties = cache(async (): Promise<Property[]> => {
   let all: Property[] = [];
   let offset = 0;
@@ -161,7 +158,7 @@ export async function getFeaturedProperties(): Promise<Property[]> {
   const all = await getAllProperties();
   const starred = all.filter((p) => p.is_starred_on_web === true);
   if (starred.length > 0) return starred;
-  // Fallback: no starred properties in CRM — show nothing
+  // Si no hay destacadas cargadas en el CRM preferimos no mostrar nada
   return [];
 }
 

@@ -41,7 +41,6 @@ const CONTACT_INFO = [
 export default function ContactPage() {
   return (
     <div className="min-h-screen">
-      {/* Header */}
       <div className="bg-[#0c1b2e] pt-28 pb-12 px-4 sm:px-6">
         <div className="max-w-4xl mx-auto text-center">
           <span className="text-[#00b4d8] text-sm font-semibold uppercase tracking-widest">
@@ -58,7 +57,6 @@ export default function ContactPage() {
 
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
         <div className="grid grid-cols-1 lg:grid-cols-5 gap-10">
-          {/* Contact info */}
           <div className="lg:col-span-2 space-y-6">
             <div>
               <h2 className="font-display text-2xl font-bold text-[#1a1a2e] mb-4">
@@ -98,7 +96,6 @@ export default function ContactPage() {
               />
             </div>
 
-            {/* Map */}
             <div className="rounded-xl overflow-hidden border border-[#e2e4e8] h-52">
               <iframe
                 src={`https://www.google.com/maps?q=${encodeURIComponent(`${BRANCH.address}, CABA, Argentina`)}&output=embed`}
@@ -113,7 +110,6 @@ export default function ContactPage() {
             </div>
           </div>
 
-          {/* Form */}
           <div className="lg:col-span-3">
             <div className="bg-white border border-[#e2e4e8] rounded-2xl p-6 sm:p-8 shadow-sm">
               <h2 className="font-display text-2xl font-bold text-[#1a1a2e] mb-6">

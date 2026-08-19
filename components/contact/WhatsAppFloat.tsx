@@ -66,10 +66,8 @@ export default function WhatsAppFloat() {
         nearFooter ? "translate-x-[calc(100%+1.5rem)]" : "translate-x-0"
       } ${!scrolled ? "max-lg:opacity-0 max-lg:pointer-events-none max-lg:translate-y-4" : ""}`}
     >
-      {/* Chat modal */}
       {open && (
         <div className="w-80 rounded-2xl overflow-hidden shadow-2xl border border-white/10 animate-in slide-in-from-bottom-4 fade-in duration-200">
-          {/* WhatsApp header */}
           <div className="bg-[#075E54] px-4 py-3 flex items-center justify-between">
             <div className="flex items-center gap-3">
               <div className="w-9 h-9 rounded-full bg-white/20 flex items-center justify-center flex-shrink-0">
@@ -91,9 +89,7 @@ export default function WhatsAppFloat() {
             </button>
           </div>
 
-          {/* Chat body */}
           <div className="bg-[#ECE5DD] px-4 py-4">
-            {/* Bubble de bienvenida */}
             <div className="flex justify-start mb-3">
               <div className="bg-white rounded-2xl rounded-tl-sm px-3 py-2 max-w-[85%] shadow-sm">
                 <p className="text-[#1a1a2e] text-sm leading-relaxed">
@@ -105,7 +101,6 @@ export default function WhatsAppFloat() {
               </div>
             </div>
 
-            {/* Input del usuario */}
             <div className="flex justify-end">
               <div className="bg-[#DCF8C6] rounded-2xl rounded-tr-sm px-3 py-2 w-full shadow-sm">
                 <textarea
@@ -122,7 +117,6 @@ export default function WhatsAppFloat() {
             </div>
           </div>
 
-          {/* Send button */}
           <div className="bg-[#ECE5DD] px-4 pb-4">
             <button
               onClick={handleSend}
@@ -135,7 +129,6 @@ export default function WhatsAppFloat() {
         </div>
       )}
 
-      {/* Floating button */}
       <button
         onClick={() => setOpen((v) => !v)}
         aria-label="Abrir chat de WhatsApp"

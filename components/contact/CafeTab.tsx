@@ -16,7 +16,6 @@ export default function CafeTab() {
 
   const firstInputRef = useRef<HTMLInputElement>(null);
 
-  // Lock body scroll on mobile when open
   useEffect(() => {
     if (open) {
       document.body.style.overflow = "hidden";
@@ -27,7 +26,6 @@ export default function CafeTab() {
     return () => { document.body.style.overflow = ""; };
   }, [open]);
 
-  // Close on Escape
   useEffect(() => {
     function onKey(e: KeyboardEvent) {
       if (e.key === "Escape") setOpen(false);
@@ -70,7 +68,6 @@ export default function CafeTab() {
 
   return (
     <>
-      {/* Overlay */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -85,7 +82,6 @@ export default function CafeTab() {
         )}
       </AnimatePresence>
 
-      {/* Slide panel */}
       <AnimatePresence>
         {open && (
           <motion.div
@@ -96,7 +92,6 @@ export default function CafeTab() {
             transition={{ duration: 0.32, ease: [0.22, 1, 0.36, 1] }}
             className="fixed top-0 right-0 h-full z-50 w-full sm:w-[380px] bg-[#0c1b2e] flex flex-col shadow-2xl"
           >
-            {/* Panel header */}
             <div className="flex items-center justify-between px-6 py-5 border-b border-white/10">
               <div>
                 <h2 className="font-display text-xl font-bold text-white">
@@ -115,7 +110,6 @@ export default function CafeTab() {
               </button>
             </div>
 
-            {/* Form */}
             <div className="flex-1 overflow-y-auto px-6 py-6">
               {status === "success" ? (
                 <div className="flex flex-col items-center justify-center h-full text-center gap-4 py-12">
@@ -205,7 +199,6 @@ export default function CafeTab() {
         )}
       </AnimatePresence>
 
-      {/* Tab — hidden when panel is open */}
       <AnimatePresence>
         {!open && (
           <motion.div
@@ -216,7 +209,6 @@ export default function CafeTab() {
             transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
             className="fixed right-0 top-1/2 -translate-y-1/2 z-40 flex flex-col items-center"
           >
-            {/* Hide button */}
             <button
               onClick={() => setTabVisible(false)}
               aria-label="Ocultar solapa"
@@ -225,13 +217,11 @@ export default function CafeTab() {
               <X className="w-3 h-3" />
             </button>
 
-            {/* Main tab button */}
             <button
               onClick={() => setOpen(true)}
               aria-label="Agendá un café"
               className="group flex flex-col items-center gap-2 bg-[#0c1b2e]/80 hover:bg-[#1a5fb4] backdrop-blur-md border-l border-b border-white/20 rounded-bl-xl px-2.5 py-4 text-white transition-all duration-300 shadow-lg min-w-[44px]"
             >
-              {/* Text — hidden on mobile */}
               <span
                 className="hidden sm:block text-[11px] font-semibold tracking-wider whitespace-nowrap leading-none"
                 style={{ writingMode: "vertical-rl", transform: "rotate(180deg)" }}
